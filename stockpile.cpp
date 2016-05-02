@@ -61,7 +61,7 @@ void Stockpile::Debug() const
     printf("[Stockpile (%p)]\n", this);
     for(uint64_t id=resource_first; id<resource_count; ++id)
     {
-        printf("\t[Resource Id=%llu Qty=%lld]\n", id, resources_[id]);
+        printf("\t[Resource Id=%lu Qty=%ld]\n", id, resources_[id]);
     }
 #endif
 }

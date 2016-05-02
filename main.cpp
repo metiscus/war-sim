@@ -13,6 +13,7 @@ void test_production();
 
 int main(int argc, char** argv)
 {
+    test_serialization();
     test_production();
     
     return 0;
