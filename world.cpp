@@ -54,6 +54,11 @@ void World::Simulate()
     // do stuff 
     for(auto country : countries_)
     {
-        country.second->Simulate(this);
+        country.second->GatherResources(this);
+    }
+    
+    for(auto country : countries_)
+    {
+        country.second->ProduceResources(this);
     }
 }

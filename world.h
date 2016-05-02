@@ -6,8 +6,9 @@
 #include <map>
 #include <memory>
 
-#include "territory.h"
 #include "country.h"
+#include "territory.h"
+
 
 class World
 {
@@ -23,7 +24,7 @@ public:
     void AddTerritory(std::shared_ptr<Territory> territory);
     void AddCountry(std::shared_ptr<Country> country);
     std::shared_ptr<Territory> GetTerritory(uint32_t id);
-    std::shared_ptr<Country> GetCountry(uint32_t id);
+    std::shared_ptr<Country> GetCountry(uint32_t id);   
     
     void Simulate();
     

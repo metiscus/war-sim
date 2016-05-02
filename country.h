@@ -54,6 +54,7 @@ public:
     void RemoveTerritory(uint32_t territory);
     const std::set<uint32_t>& GetTerritories() const;
     
-    void Simulate(World* world);
+    void GatherResources(World* world);
+    void ProduceResources(World* world);
     
 };

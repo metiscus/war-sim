@@ -65,16 +65,18 @@ void world_init()
     {
         auto &resources = territory->GetResources();
         resources.SetResource(resource_coal, 5.0);
-        resources.SetResource(resource_manpower, 15.0);
+        //resources.SetResource(resource_manpower, 15.0);
         g_world->AddTerritory(territory);
+        australia->AddTerritory(territory->GetId());
     }
     
     territory = std::make_shared<Territory>(1, "New South Wales", 0);
     {
         auto &resources = territory->GetResources();
         resources.SetResource(resource_iron, 1.0);
-        resources.SetResource(resource_manpower, 5.0);
+        //resources.SetResource(resource_manpower, 5.0);
         g_world->AddTerritory(territory);
+        australia->AddTerritory(territory->GetId());
     }
     
 
