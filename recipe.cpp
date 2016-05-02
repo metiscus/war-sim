@@ -28,8 +28,6 @@ int64_t RecipeSlot::GetQuantity() const
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-
-
 Recipe::Recipe(const std::string& name)
     : name_(name)
 {
@@ -46,22 +44,22 @@ void Recipe::AddOutput(const RecipeSlot& output)
     outputs_.push_back(output);
 }
 
-void Recipe::SetInputs(const RecipeSlotList& inputs)
+void Recipe::SetInputs(const SlotList& inputs)
 {
     inputs_ = inputs;
 }
 
-void Recipe::SetOutputs(const RecipeSlotList& outputs)
+void Recipe::SetOutputs(const SlotList& outputs)
 {
     outputs_ = outputs;
 }
 
-const Recipe::RecipeSlotList& Recipe::GetInputs() const
+const Recipe::SlotList& Recipe::GetInputs() const
 {
     return inputs_;
 }
 
-const Recipe::RecipeSlotList& Recipe::GetOutputs() const
+const Recipe::SlotList& Recipe::GetOutputs() const
 {
     return outputs_;
 }
@@ -69,4 +67,9 @@ const Recipe::RecipeSlotList& Recipe::GetOutputs() const
 const std::string& Recipe::GetName() const
 {
     return name_;
+}
+
+bool Recipe::IsValid() const
+{
+    return inputs_.size() > 0 && outputs_.size() > 0;
 }

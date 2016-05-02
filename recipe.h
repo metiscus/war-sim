@@ -17,6 +17,17 @@ private:
     int64_t quantity_;
     bool is_consumed_;
 
+    template<class Archive>
+    void serialize(Archive& archive, const unsigned int version)
+    {
+        (void)version;
+        int64_t resource = resource_;
+        archive & (resource);
+        resource_ = (ResourceId)resource;
+        archive & (quantity_);
+        archive & (is_consumed_);
+    }
+
 public:
     RecipeSlot();
     ~RecipeSlot() = default;
@@ -24,16 +35,6 @@ public:
     
     ResourceId GetResourceId() const;
     int64_t GetQuantity() const;
-    
-    template<class Archive>
-    void serialize(Archive& archive, const unsigned int version)
-    {
-        int64_t resource = resource_;
-        archive & (resource);
-        resource_ = (ResourceId)resource;
-        archive & (quantity_);
-        archive & (is_consumed_);
-    }
 };
 
 class Recipe
@@ -41,29 +42,31 @@ class Recipe
     friend class boost::serialization::access;
 
 public:
-    typedef std::vector<RecipeSlot> RecipeSlotList;
+    typedef std::vector<RecipeSlot> SlotList;
 
 private:
-    RecipeSlotList inputs_;
-    RecipeSlotList outputs_;
+    SlotList inputs_;
+    SlotList outputs_;
     std::string name_;
 
-public:
-    Recipe(const std::string& name);
-    ~Recipe() = default;
-    void AddInput(const RecipeSlot& input);
-    void AddOutput(const RecipeSlot& output);
-    void SetInputs(const RecipeSlotList& inputs);
-    void SetOutputs(const RecipeSlotList& outputs);
-    const RecipeSlotList& GetInputs() const;
-    const RecipeSlotList& GetOutputs() const;
-    const std::string& GetName() const;
-    
     template<class Archive>
     void serialize(Archive& archive, const unsigned int version)
     {
+        (void)version;
         archive & (inputs_);
         archive & (outputs_);
         archive & (name_);
     }
+
+public:
+    Recipe(const std::string& name = "invalid recipe");
+    ~Recipe() = default;
+    void AddInput(const RecipeSlot& input);
+    void AddOutput(const RecipeSlot& output);
+    void SetInputs(const SlotList& inputs);
+    void SetOutputs(const SlotList& outputs);
+    const SlotList& GetInputs() const;
+    const SlotList& GetOutputs() const;
+    const std::string& GetName() const;
+    bool IsValid() const;
 };
