@@ -8,9 +8,14 @@
 #include "resource_id.h"
 #include "recipe.h"
 #include "stockpile.h"
+#include "country.h"
+#include "territory.h"
+#include "world.h"
 
-void test_serialization();
+void world_init();
 void test_production();
+
+std::shared_ptr<World> g_world;
 
 struct ProductionDemand
 {
@@ -20,7 +25,7 @@ struct ProductionDemand
 
 int main(int argc, char** argv)
 {
-    test_serialization();
+    world_init();
     test_production();
     
     return 0;
@@ -34,44 +39,45 @@ void test_production()
     boost::archive::text_iarchive ia(file);
     ia>>recipes;
     
-    std::shared_ptr<Stockpile> stockpile = std::make_shared<Stockpile>();
-    stockpile->AddResource(resource_manpower, 8);
-    stockpile->AddResource(resource_coal, 1000);
-    stockpile->AddResource(resource_iron, 2000);
-    
-    std::vector<Factory> factories;
-    factories.resize(3);
-    factories[0].SetStockpile(stockpile);
-    factories[0].SetRecipe(recipes[0]);
-    factories[1].SetStockpile(stockpile);
-    factories[1].SetRecipe(recipes[1]);
-    factories[2].SetStockpile(stockpile);
-    factories[2].SetRecipe(recipes[2]);
-    
-    stockpile->Debug();
     printf("==========[Starting]==========\n");
     for(uint32_t ii=0; ii<10; ++ii)
     {
-        for(auto& factory : factories)
-        {
-            factory.GatherResources();
-        }
-        stockpile->Debug();
-        for(auto& factory : factories)
-        {
-            factory.Produce();
-        }
-        for(auto& factory : factories)
-        {
-            factory.DeliverResources();
-        }
-        stockpile->Debug();
-        printf("==========[Day: %lu]==========\n", ii);
+        g_world->Simulate();
     }
 }
 
-void test_serialization()
+void world_init()
 {
+    // create a game world with some test provinces
+    g_world = std::make_shared<World>();
+    auto australia = std::make_shared<Country>(0, "Australia");
+    australia->AddFactory();
+    australia->AddFactory();
+    australia->AddFactory();
+    auto stockpile = australia->GetStockpile();
+    stockpile->AddResource(resource_manpower, 5000000);
+    stockpile->AddResource(resource_energy, 1000);
+    stockpile->AddResource(resource_coal, 10000);
+    stockpile->AddResource(resource_iron, 2000);
+    g_world->AddCountry(australia);
+
+    std::shared_ptr<Territory> territory = std::make_shared<Territory>(0, "Victoria", 0);
+    {
+        auto &resources = territory->GetResources();
+        resources.SetResource(resource_coal, 5.0);
+        resources.SetResource(resource_manpower, 15.0);
+        g_world->AddTerritory(territory);
+    }
+    
+    territory = std::make_shared<Territory>(1, "New South Wales", 0);
+    {
+        auto &resources = territory->GetResources();
+        resources.SetResource(resource_iron, 1.0);
+        resources.SetResource(resource_manpower, 5.0);
+        g_world->AddTerritory(territory);
+    }
+    
+
     // Roughly 10 tons of coal will create 81MWh of power
     Recipe energy("energy from coal");
     energy.AddInput(RecipeSlot (resource_coal, 10));

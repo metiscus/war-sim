@@ -6,9 +6,12 @@ default: warsim
 
 warsim_SRC=\
 	main.cpp\
+	country.cpp\
 	factory.cpp\
 	recipe.cpp\
 	stockpile.cpp\
+	territory.cpp\
+	world.cpp\
 	
 
 warsim_OBJ=$(warsim_SRC:.cpp=.o)
