@@ -13,7 +13,7 @@ Stockpile::Stockpile()
 
 bool Stockpile::ContainsResource(ResourceId id, int64_t qty) const
 {
-    assert(id>resource_first && resource_first<resource_count);
+    assert(id>=resource_first && resource_first<resource_count);
     return (resources_[id] >= qty);
 }
 
@@ -29,13 +29,13 @@ bool Stockpile::ContainsResources(const ResourceCount& count) const
 
 void Stockpile::AddResource(ResourceId id, int64_t qty)
 {
-    assert(id>resource_first && resource_first<resource_count);
+    assert(id>=resource_first && resource_first<resource_count);
     resources_[id] += qty;
 }
 
 void Stockpile::GetResource(ResourceId id, int64_t qty)
 {
-    assert(id>resource_first && resource_first<resource_count);
+    assert(id>=resource_first && resource_first<resource_count);
     resources_[id] -= qty;
 }
 
@@ -50,7 +50,7 @@ void Stockpile::GetResources(const ResourceCount& count)
 
 int64_t Stockpile::GetResourceQuantity(ResourceId id) const
 {
-    assert(id>resource_first && resource_first<resource_count);
+    assert(id>=resource_first && resource_first<resource_count);
     return resources_[id];
 }
 
@@ -61,7 +61,7 @@ void Stockpile::Debug() const
     printf("[Stockpile (%p)]\n", this);
     for(uint64_t id=resource_first; id<resource_count; ++id)
     {
-        printf("\t[Resource Id=%lu Qty=%ld]\n", id, resources_[id]);
+        printf("\t[Resource %s: Qty=%ld]\n", ResourceNames[id], resources_[id]);
     }
 #endif
 }

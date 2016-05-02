@@ -1,6 +1,19 @@
 #include "recipe.h"
 #include <cassert>
 
+const char* ResourceNames [] =
+{
+    "unobtanium",
+    "manpower",
+    "energy",
+    "coal",
+    "iron",
+    "steel",
+    "coke",
+    "education"
+};
+
+
 RecipeSlot::RecipeSlot()
     : resource_(resource_invalid)
     , quantity_(0)
@@ -27,9 +40,21 @@ int64_t RecipeSlot::GetQuantity() const
     return quantity_;
 }
 
+bool RecipeSlot::GetIsConsumed() const
+{
+    return is_consumed_;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
-Recipe::Recipe(const std::string& name)
+uint64_t Recipe::NextId()
+{
+    static uint64_t id = 0;
+    return ++id;
+}
+
+Recipe::Recipe(const std::string& name, uint64_t id)
     : name_(name)
+    , id_(id)
 {
     
 }
@@ -37,6 +62,10 @@ Recipe::Recipe(const std::string& name)
 void Recipe::AddInput(const RecipeSlot& input)
 {
     inputs_.push_back(input);
+    if(!input.GetIsConsumed())
+    {
+        outputs_.push_back(input);
+    }
 }
 
 void Recipe::AddOutput(const RecipeSlot& output)
@@ -47,11 +76,25 @@ void Recipe::AddOutput(const RecipeSlot& output)
 void Recipe::SetInputs(const SlotList& inputs)
 {
     inputs_ = inputs;
+    for(auto input : inputs)
+    {
+        if(!input.GetIsConsumed())
+        {
+            outputs_.push_back(input);
+        }
+    }
 }
 
 void Recipe::SetOutputs(const SlotList& outputs)
 {
     outputs_ = outputs;
+    for(auto input : inputs_)
+    {
+        if(!input.GetIsConsumed())
+        {
+            outputs_.push_back(input);
+        }
+    }
 }
 
 const Recipe::SlotList& Recipe::GetInputs() const
@@ -72,4 +115,9 @@ const std::string& Recipe::GetName() const
 bool Recipe::IsValid() const
 {
     return inputs_.size() > 0 && outputs_.size() > 0;
+}
+
+uint64_t Recipe::GetId() const
+{
+    return id_;
 }

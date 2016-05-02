@@ -35,6 +35,7 @@ public:
     
     ResourceId GetResourceId() const;
     int64_t GetQuantity() const;
+    bool GetIsConsumed() const;
 };
 
 class Recipe
@@ -48,6 +49,7 @@ private:
     SlotList inputs_;
     SlotList outputs_;
     std::string name_;
+    uint64_t id_;
 
     template<class Archive>
     void serialize(Archive& archive, const unsigned int version)
@@ -59,7 +61,9 @@ private:
     }
 
 public:
-    Recipe(const std::string& name = "invalid recipe");
+    static uint64_t NextId();
+
+    Recipe(const std::string& name = "invalid recipe", uint64_t id = NextId());
     ~Recipe() = default;
     void AddInput(const RecipeSlot& input);
     void AddOutput(const RecipeSlot& output);
@@ -69,4 +73,5 @@ public:
     const SlotList& GetOutputs() const;
     const std::string& GetName() const;
     bool IsValid() const;
+    uint64_t GetId() const;
 };

@@ -13,9 +13,13 @@ enum ResourceId
     resource_coal,
     resource_iron,
     resource_steel,
+    resource_coke,
+    resource_education,
     
     resource_count
 };
+
+extern const char* ResourceNames [];
 
 class ResourceCount
 {

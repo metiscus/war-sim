@@ -4,6 +4,7 @@
 #include "stockpile.h"
 
 Factory::Factory()
+    : have_resources_(false)
 {
     
 }
@@ -18,8 +19,10 @@ void Factory::SetRecipe(const Recipe& recipe)
     recipe_ = recipe;
 }
 
-void Factory::Simulate()
+void Factory::GatherResources()
 {
+    have_resources_ = false;
+
     if(stockpile_ && recipe_.IsValid())
     {
         // Build a list of required materials
@@ -35,16 +38,33 @@ void Factory::Simulate()
         {
             // Produce the good(s) by getting all inputs
             stockpile_->GetResources(input_resources);
-            
-            // Then delivering all outputs
-            const Recipe::SlotList& output_slot_list = recipe_.GetOutputs();
-            for(auto output_slot : output_slot_list)
-            {
-                if(output_slot.GetQuantity() > 0)
-                {
-                    stockpile_->AddResource(output_slot.GetResourceId(), output_slot.GetQuantity());
-                }
-            }
+            have_resources_ = true;
         }
     }        
+}
+
+void Factory::Produce()
+{
+#if DEBUG
+    if(have_resources_ && recipe_.IsValid())
+    {
+        printf("[Factory Produces %s]\n", recipe_.GetName().c_str());
+    }
+#endif
+}
+
+void Factory::DeliverResources()
+{
+    if(have_resources_ && stockpile_ && recipe_.IsValid())
+    {
+        // Deliver all outputs
+        const Recipe::SlotList& output_slot_list = recipe_.GetOutputs();
+        for(auto output_slot : output_slot_list)
+        {
+            if(output_slot.GetQuantity() > 0)
+            {
+                stockpile_->AddResource(output_slot.GetResourceId(), output_slot.GetQuantity());
+            }
+        }
+    }
 }
