@@ -1,0 +1,35 @@
+#include "stockpile.h"
+#include <cassert>
+#include "resource_id.h"
+
+Stockpile::Stockpile()
+{
+    for(uint64_t id=resource_first; id<resource_count; ++id)
+    {
+        resources_[id] = 0;
+    }
+}
+
+bool Stockpile::ContainsResource(ResourceId id, int64_t qty) const
+{
+    assert(id>resource_first && resource_first<resource_count);
+    return (resources_[id] >= qty);
+}
+
+void Stockpile::AddResource(ResourceId id, int64_t qty)
+{
+    assert(id>resource_first && resource_first<resource_count);
+    resources_[id] += qty;
+}
+
+void Stockpile::GetResource(ResourceId id, int64_t qty)
+{
+    assert(id>resource_first && resource_first<resource_count);
+    resources_[id] -= qty;
+}
+
+int64_t Stockpile::GetResourceQuantity(ResourceId id) const
+{
+    assert(id>resource_first && resource_first<resource_count);
+    return resources_[id];
+}
