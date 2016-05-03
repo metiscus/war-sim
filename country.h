@@ -54,8 +54,8 @@ public:
     Factory& GetFactory(uint32_t idx);
     const Factory& GetFactory(uint32_t idx) const;
     
-    void AddTerritory(uint32_t territory);
-    void RemoveTerritory(uint32_t territory);
+    void AddTerritory(World* world, uint32_t territory_id);
+    void RemoveTerritory(World* world, uint32_t territory_id);
     const std::set<uint32_t>& GetTerritories() const;
 
     void GatherResources(World* world);

@@ -73,7 +73,7 @@ void world_init()
         auto &resources = territory->GetResources();
         resources.SetResource(resource_coal, 8.0);
         g_world->AddTerritory(territory);
-        australia->AddTerritory(territory->GetId());
+        australia->AddTerritory(g_world.get(), territory->GetId());
     }
     
     territory = std::make_shared<Territory>(1, "New South Wales", 0);
@@ -82,9 +82,9 @@ void world_init()
         resources.SetResource(resource_iron, 1.0);
         resources.SetResource(resource_crude, 1.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 1000.0);
+        resources.SetResource(resource_foodstuffs, 800.0);
         g_world->AddTerritory(territory);
-        australia->AddTerritory(territory->GetId());
+        australia->AddTerritory(g_world.get(), territory->GetId());
     }
 
     territory = std::make_shared<Territory>(2, "Queensland", 0);
@@ -92,9 +92,9 @@ void world_init()
         auto &resources = territory->GetResources();
         resources.SetResource(resource_energy, 20.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 1000.0);
+        resources.SetResource(resource_foodstuffs, 800.0);
         g_world->AddTerritory(territory);
-        australia->AddTerritory(territory->GetId());
+        australia->AddTerritory(g_world.get(), territory->GetId());
     }
     
     territory = std::make_shared<Territory>(3, "Northern Territory", 0);
@@ -102,9 +102,9 @@ void world_init()
         auto &resources = territory->GetResources();
         resources.SetResource(resource_crude, 1.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 1000.0);
+        resources.SetResource(resource_foodstuffs, 800.0);
         g_world->AddTerritory(territory);
-        australia->AddTerritory(territory->GetId());
+        australia->AddTerritory(g_world.get(), territory->GetId());
     }
     
     territory = std::make_shared<Territory>(4, "Western Australia", 0);
@@ -112,9 +112,9 @@ void world_init()
         auto &resources = territory->GetResources();
         resources.SetResource(resource_rares, 1.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 1000.0);
+        resources.SetResource(resource_foodstuffs, 800.0);
         g_world->AddTerritory(territory);
-        australia->AddTerritory(territory->GetId());
+        australia->AddTerritory(g_world.get(), territory->GetId());
     }
     
     territory = std::make_shared<Territory>(5, "Southern Australia", 0);
@@ -123,8 +123,8 @@ void world_init()
         resources.SetResource(resource_iron, 1.0);
         resources.SetResource(resource_energy, 5.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 1000.0);
+        resources.SetResource(resource_foodstuffs, 800.0);
         g_world->AddTerritory(territory);
-        australia->AddTerritory(territory->GetId());
+        australia->AddTerritory(g_world.get(), territory->GetId());
     }
 }

@@ -54,14 +54,34 @@ const Factory& Country::GetFactory(uint32_t idx) const
     return factories_[idx];
 }
 
-void Country::AddTerritory(uint32_t territory)
+void Country::AddTerritory(World* world, uint32_t territory_id)
 {
-    territories_.insert(territory);
+    territories_.insert(territory_id);
+    
+    std::shared_ptr<Territory> territory = world->GetTerritory(territory_id);
+    auto resources = territory->GetResources();
+    for(uint32_t ii=resource_first; ii<resource_count; ++ii)
+    {
+        if(!resources.GetResourceIsProduced((ResourceId)ii))
+        {
+            stockpile_->AddResource((ResourceId)ii, resources.GetResource((ResourceId)ii));
+        }
+    }
 }
 
-void Country::RemoveTerritory(uint32_t territory)
+void Country::RemoveTerritory(World* world, uint32_t territory_id)
 {
-    territories_.erase(territory);
+    std::shared_ptr<Territory> territory = world->GetTerritory(territory_id);
+    auto resources = territory->GetResources();
+    for(uint32_t ii=resource_first; ii<resource_count; ++ii)
+    {
+        if(!resources.GetResourceIsProduced((ResourceId)ii))
+        {
+            stockpile_->GetResource((ResourceId)ii, resources.GetResource((ResourceId)ii));
+        }
+    }
+
+    territories_.erase(territory_id);
 }
 
 const std::set<uint32_t>& Country::GetTerritories() const
@@ -71,6 +91,7 @@ const std::set<uint32_t>& Country::GetTerritories() const
 
 RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
 {
+#define DEBUG_FIND_RECIPE 1
 #if DEBUG && DEBUG_FIND_RECIPE
 #define LOG(msg, ...)                                           \
     printf("%c[1;33m[Country::FindRecipeForResource] : ", 27);  \
@@ -177,9 +198,17 @@ void Country::GatherResources(World* world)
     //factories_[3].SetRecipe(FindRecipeForResource(world, resource_machines));
     for(uint32_t ii=3; ii<factories_.size(); ++ii)
     {
-        factories_[ii].SetRecipe(FindRecipeForResource(world, resource_machines));
+        if(stockpile_->GetResourceQuantity(resource_manpower) * 3 > stockpile_->GetResourceQuantity(resource_foodstuffs))
+        {
+            factories_[ii].SetRecipe(FindRecipeForResource(world, resource_foodstuffs));
+        }
+        else
+        {
+            factories_[ii].SetRecipe(FindRecipeForResource(world, resource_machines));
+        }
     }
-    
+
+#define DEBUG_FACTORY 0
 #if DEBUG
     printf("[Country: %s]\n", name_.c_str());
     stockpile_->Debug();
