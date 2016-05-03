@@ -154,28 +154,10 @@ void Country::GatherResources(World* world)
     }
     
     //TODO: plan what the factories should produce and set up for that
-    
-#if 0
-    //HACK: this is just for testing
-    auto energy_recipes = world->GetRecipesForResource(resource_energy);
-    auto coke_recipes   = world->GetRecipesForResource(resource_coke);
-    auto steel_recipes  = world->GetRecipesForResource(resource_steel);
-    for(uint32_t ii=0; ii<factories_.size(); ++ii)
-    {
-        switch (ii%3)
-        {
-            case 0: factories_[ii].SetRecipe(energy_recipes[0]); break;
-            case 1: factories_[ii].SetRecipe(coke_recipes[0]); break;
-            case 2: factories_[ii].SetRecipe(steel_recipes[0]); break;
-        }
-    }
-#else
     factories_[0].SetRecipe(FindRecipeForResource(world, resource_energy));
     factories_[1].SetRecipe(FindRecipeForResource(world, resource_fuel));
     factories_[2].SetRecipe(FindRecipeForResource(world, resource_steel));
     factories_[3].SetRecipe(FindRecipeForResource(world, resource_machines));
-    
-#endif
     
 #if DEBUG
     printf("[Country: %s]\n", name_.c_str());
