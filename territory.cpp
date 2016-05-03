@@ -4,23 +4,30 @@ TerritoryResources::TerritoryResources()
 {
     for(auto &resource: resources_)
     {
-        resource = 0.f;
+        resource.quantity    = 0.f;
+        resource.is_produced = false;
     }
 }
 
-void TerritoryResources::SetResource(ResourceId id, float qty)
+void TerritoryResources::SetResource(ResourceId id, float qty, bool is_produced)
 {
-    resources_[id] = qty;
+    resources_[id].quantity    = qty;
+    resources_[id].is_produced = is_produced;
 }
 
 float TerritoryResources::GetResource(ResourceId id) const
 {
-    return resources_[id];
+    return resources_[id].quantity;
 }
 
 void TerritoryResources::ChangeResource(ResourceId id, float qty)
 {
-    resources_[id] += qty;
+    resources_[id].quantity += qty;
+}
+
+bool TerritoryResources::GetResourceIsProduced(ResourceId id) const
+{
+    return resources_[id].is_produced;
 }
 
 ///////////////////////////////////////////////////////////////////////////////

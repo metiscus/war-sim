@@ -29,6 +29,7 @@ private:
     RecipePtr recipe_;
     bool have_resources_;
     FactorySpecialization specialization_;
+    float modifier_;
     
 public:
     Factory();
@@ -40,7 +41,7 @@ public:
     ResourceCount ComputeResourceShortfall(RecipePtr recipe) const;
 
     void GatherResources();
-    void Produce();
+    void Produce(float modifier = 1.0f);
     void DeliverResources();
     
     void Debug() const;

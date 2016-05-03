@@ -168,6 +168,7 @@ void World::Simulate()
     // do stuff 
     for(auto country : countries_)
     {
+        country.second->SimulateDomestic(this);
         country.second->GatherResources(this);
     }
     

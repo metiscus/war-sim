@@ -14,8 +14,24 @@ class TerritoryResources
 {
     friend class boost::serialization::access;
 private:
-    std::array<float, resource_count> resources_;
+    struct ResourceInfo
+    {
+        friend class boost::serialization::access;
+        
+        float quantity;
+        bool  is_produced;
+        
+        template<class Archive>
+        void serialize(Archive& archive, const unsigned int version)
+        {
+            (void)version;
+            archive & (quantity);
+            archive & (is_produced);
+        }
+    };
 
+    std::array<ResourceInfo, resource_count> resources_;
+    
     template<class Archive>
     void serialize(Archive& archive, const unsigned int version)
     {
@@ -25,9 +41,10 @@ private:
     
 public:
     TerritoryResources();
-    void SetResource(ResourceId id, float qty);
+    void SetResource(ResourceId id, float qty, bool is_produced = true);
     void ChangeResource(ResourceId id, float qty);
     float GetResource(ResourceId id) const;
+    bool GetResourceIsProduced(ResourceId id) const;
 
 };
 

@@ -8,6 +8,7 @@
 Country::Country(Id id, const std::string& name)
     : name_(name)
     , id_(id)
+    , dissent_(0.0f)
 {
     stockpile_ = std::make_shared<Stockpile>();
 }
@@ -70,7 +71,7 @@ const std::set<uint32_t>& Country::GetTerritories() const
 
 RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
 {
-#if DEBUG
+#if DEBUG && DEBUG_FIND_RECIPE
 #define LOG(msg, ...)                                           \
     printf("%c[1;33m[Country::FindRecipeForResource] : ", 27);  \
     printf(msg, __VA_ARGS__);                                   \
@@ -155,7 +156,10 @@ void Country::GatherResources(World* world)
         TerritoryResources resources = territory->GetResources();
         for(uint32_t res_id = resource_first; res_id<resource_count; ++res_id)
         {
-            stockpile_->AddResource((ResourceId)res_id, (int64_t)resources.GetResource((ResourceId)res_id));
+            if(resources.GetResourceIsProduced((ResourceId)res_id))
+            {
+                stockpile_->AddResource((ResourceId)res_id, (int64_t)resources.GetResource((ResourceId)res_id));
+            }
         }
     }
     
@@ -179,10 +183,12 @@ void Country::GatherResources(World* world)
 #if DEBUG
     printf("[Country: %s]\n", name_.c_str());
     stockpile_->Debug();
+#if DEBUG_FACTORY
     for(auto &factory: factories_)
     {
         factory.Debug();
     }
+#endif
 #endif
 }
 
@@ -197,7 +203,36 @@ void Country::ProduceResources(World* world)
     // do stuff here
     for(auto &factory: factories_)
     {
-        factory.Produce();
+        factory.Produce(1.0f - dissent_);
     }
     
+}
+
+void Country::SimulateDomestic(World* world)
+{
+    // Each manpower that is in the pool will need 1 foodstuff per day to survive
+    // when a foodstuf deficit exists, the population may decrease and dissent may increase
+    uint32_t total_manpower = stockpile_->GetResourceQuantity(resource_manpower);
+    uint32_t total_foodstuffs = stockpile_->GetResourceQuantity(resource_foodstuffs);
+    if(total_foodstuffs < total_manpower)
+    {
+        dissent_ += 0.01f;
+        
+        if(total_foodstuffs < 0.9f * total_manpower)
+        {
+            dissent_ += 0.015f;
+        }
+        
+        if(total_foodstuffs < 0.8f * total_manpower)
+        {
+            stockpile_->GetResource(resource_manpower, 0.01f * total_manpower);
+            dissent_ += 0.055f;
+        }
+    }
+    
+    dissent_ = std::min(dissent_, 1.0f);
+#if DEBUG
+    printf("[Country::SimulateDomestic Dissent: %f]\n", dissent_);
+#endif    
+    stockpile_->GetResource(resource_foodstuffs, std::min(total_manpower, total_foodstuffs));
 }

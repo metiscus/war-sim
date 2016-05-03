@@ -5,6 +5,8 @@ const char* ResourceNames [] =
 {
     "unobtanium",
     "manpower",
+    "farmland",
+    "food",
     "energy",
     "coal",
     "rares",

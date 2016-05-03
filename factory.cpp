@@ -55,6 +55,7 @@ void FactorySpecialization::Debug() const
 ///////////////////////////////////////////////////////////////////////////////
 Factory::Factory()
     : have_resources_(false)
+    , modifier_(1.0)
 {
     
 }
@@ -93,8 +94,10 @@ void Factory::GatherResources()
     }        
 }
 
-void Factory::Produce()
+void Factory::Produce(float modifier)
 {
+    modifier_ = modifier;
+
     if(have_resources_ && recipe_ && recipe_->IsValid())
     {
 #if DEBUG
@@ -121,7 +124,7 @@ void Factory::DeliverResources()
                 if(output_slot.GetIsConsumed())
                 {
                     // compute output bonus from specialization
-                    uint32_t base_output = output_slot.GetQuantity();
+                    float base_output = modifier_ * output_slot.GetQuantity();
                     float max_bonus_output = (float)base_output / 10.0f;
                     uint32_t output = base_output + max_bonus_output * specialization_.GetSpecialization(output_slot.GetResourceId());
                     stockpile_->AddResource(output_slot.GetResourceId(), output);

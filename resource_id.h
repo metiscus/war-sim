@@ -9,6 +9,8 @@ enum ResourceId
     resource_invalid,
     resource_first,
     resource_manpower = resource_first,
+    resource_farmland,
+    resource_foodstuffs,
     resource_energy,
     resource_coal,
     resource_rares,

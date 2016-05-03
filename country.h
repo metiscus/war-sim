@@ -24,6 +24,7 @@ private:
     std::set<uint32_t> territories_;
     std::string name_;
     Id id_;
+    float dissent_;
 
     template<class Archive>
     void serialize(Archive& archive, const unsigned int version)
@@ -59,5 +60,5 @@ public:
 
     void GatherResources(World* world);
     void ProduceResources(World* world);
-    
+    void SimulateDomestic(World* world);
 };

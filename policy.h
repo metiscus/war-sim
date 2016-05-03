@@ -16,15 +16,20 @@ public:
     void ChangeValue(const float& value);
 };
 
+enum PolicyType
+{
+    policy_first = 0,
+    policy_war_economy = policy_first,
+    
+    
+    
+    policy_count
+};
+
 class Policy
 {
     //!\brief war_economy controls the resource prioritization of weapons production
-    PolicySetting war_economy;
-    PolicySetting army_infantry_focus;
-    PolicySetting army_artillery_focus;
-    PolicySetting army_armor_focus;
-    PolicySetting navy_escort_focus;
-    PolicySetting navy_capital_focus;
+    //std::map<PolicyType, PolicySetting> policies_;
 
 private:
     
