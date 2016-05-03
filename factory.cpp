@@ -10,7 +10,7 @@ FactorySpecialization::FactorySpecialization()
 {
     for(auto& slot : specialization_)
     {
-        slot = 0.f;
+        slot = 0.0f;
     }
 }
 
@@ -37,7 +37,7 @@ void FactorySpecialization::Simulate()
     //TODO: tie this in to something else
     for(auto& slot : specialization_)
     {
-        slot *= 0.999;
+        slot *= 0.9995;
     }
 }
 
@@ -118,11 +118,18 @@ void Factory::DeliverResources()
             {
                 specialization_.RecordProduction(recipe_);
                 
-                // compute output bonus from specialization
-                uint32_t base_output = output_slot.GetQuantity();
-                uint32_t max_bonus_output = base_output / 10;
-                uint32_t output = base_output + max_bonus_output * specialization_.GetSpecialization(output_slot.GetResourceId());
-                stockpile_->AddResource(output_slot.GetResourceId(), output);
+                if(output_slot.GetIsConsumed())
+                {
+                    // compute output bonus from specialization
+                    uint32_t base_output = output_slot.GetQuantity();
+                    float max_bonus_output = (float)base_output / 10.0f;
+                    uint32_t output = base_output + max_bonus_output * specialization_.GetSpecialization(output_slot.GetResourceId());
+                    stockpile_->AddResource(output_slot.GetResourceId(), output);
+                }
+                else
+                {
+                    stockpile_->AddResource(output_slot.GetResourceId(), output_slot.GetQuantity());
+                }
             }
         }
     }
