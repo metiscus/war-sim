@@ -26,6 +26,7 @@ World::World()
     auto steel = std::make_shared<Recipe>("steel from coke, iron, and electricity");
     steel->AddInput(RecipeSlot (resource_manpower, 5, false));
     steel->AddInput(RecipeSlot (resource_energy, 100));
+    steel->AddInput(RecipeSlot (resource_rares, 1));
     steel->AddInput(RecipeSlot (resource_coke, 1));
     steel->AddInput(RecipeSlot (resource_iron, 10));
     steel->AddOutput(RecipeSlot (resource_steel, 8));

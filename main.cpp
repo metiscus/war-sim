@@ -56,6 +56,7 @@ void world_init()
     stockpile->AddResource(resource_iron, 2000);
     stockpile->AddResource(resource_crude, 200);
     stockpile->AddResource(resource_fuel, 50);
+    stockpile->AddResource(resource_rares, 5);
     stockpile->AddResource(resource_lubricants, 5);
     stockpile->AddResource(resource_machines, 50);
     g_world->AddCountry(australia);
@@ -64,7 +65,6 @@ void world_init()
     {
         auto &resources = territory->GetResources();
         resources.SetResource(resource_coal, 8.0);
-        //resources.SetResource(resource_manpower, 15.0);
         g_world->AddTerritory(territory);
         australia->AddTerritory(territory->GetId());
     }
@@ -74,15 +74,40 @@ void world_init()
         auto &resources = territory->GetResources();
         resources.SetResource(resource_iron, 1.0);
         resources.SetResource(resource_crude, 1.0);
-        //resources.SetResource(resource_manpower, 5.0);
         g_world->AddTerritory(territory);
         australia->AddTerritory(territory->GetId());
     }
 
-// Idea for economy planning    
-//    std::multimap<ResourceId, Recipe> recipes;
-//    recipes.insert(std::make_pair(resource_energy, energy));
-//    recipes.insert(std::make_pair(resource_coke, coke));
-//    recipes.insert(std::make_pair(resource_steel, steel));
-
+    territory = std::make_shared<Territory>(2, "Queensland", 0);
+    {
+        auto &resources = territory->GetResources();
+        resources.SetResource(resource_energy, 20.0);
+        g_world->AddTerritory(territory);
+        australia->AddTerritory(territory->GetId());
+    }
+    
+    territory = std::make_shared<Territory>(3, "Northern Territory", 0);
+    {
+        auto &resources = territory->GetResources();
+        resources.SetResource(resource_crude, 1.0);
+        g_world->AddTerritory(territory);
+        australia->AddTerritory(territory->GetId());
+    }
+    
+    territory = std::make_shared<Territory>(4, "Western Australia", 0);
+    {
+        auto &resources = territory->GetResources();
+        resources.SetResource(resource_rares, 1.0);
+        g_world->AddTerritory(territory);
+        australia->AddTerritory(territory->GetId());
+    }
+    
+    territory = std::make_shared<Territory>(5, "Southern Australia", 0);
+    {
+        auto &resources = territory->GetResources();
+        resources.SetResource(resource_iron, 1.0);
+        resources.SetResource(resource_energy, 5.0);
+        g_world->AddTerritory(territory);
+        australia->AddTerritory(territory->GetId());
+    }
 }

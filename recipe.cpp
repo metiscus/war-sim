@@ -7,6 +7,7 @@ const char* ResourceNames [] =
     "manpower",
     "energy",
     "coal",
+    "rares",
     "crude oil",
     "iron",
     "tools",

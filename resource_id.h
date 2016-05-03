@@ -11,6 +11,7 @@ enum ResourceId
     resource_manpower = resource_first,
     resource_energy,
     resource_coal,
+    resource_rares,
     resource_crude,
     resource_iron,
     resource_tools,
