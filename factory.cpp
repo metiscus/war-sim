@@ -1,8 +1,58 @@
 #include "factory.h"
 
+#include <algorithm>
+#include <cstdint>
 #include "recipe.h"
 #include "stockpile.h"
 
+
+FactorySpecialization::FactorySpecialization()
+{
+    for(auto& slot : specialization_)
+    {
+        slot = 0.f;
+    }
+}
+
+float FactorySpecialization::GetSpecialization(ResourceId id)
+{
+    return specialization_[id];
+}
+
+void FactorySpecialization::RecordProduction(RecipePtr ptr)
+{
+    for(auto output : ptr->GetOutputs())
+    {
+        if(output.GetIsConsumed())
+        {
+            specialization_[output.GetResourceId()] += output.GetQuantity() / 10000.0f;
+            
+            specialization_[output.GetResourceId()] = std::min(1.0f, specialization_[output.GetResourceId()]);
+        }
+    }
+}
+
+void FactorySpecialization::Simulate()
+{
+    //TODO: tie this in to something else
+    for(auto& slot : specialization_)
+    {
+        slot *= 0.999;
+    }
+}
+
+void FactorySpecialization::Debug() const
+{
+#ifdef DEBUG
+    printf("\t[Factory Specialization]\n");
+    for(uint32_t ii=resource_first; ii<resource_count; ++ii)
+    {
+        printf("\t\t[Resource: %s Specialization: %f]\n", ResourceNames[ii], specialization_[ii]);
+    }
+#endif
+}
+
+///////////////////////////////////////////////////////////////////////////////
 Factory::Factory()
     : have_resources_(false)
 {
@@ -45,12 +95,15 @@ void Factory::GatherResources()
 
 void Factory::Produce()
 {
-#if DEBUG
     if(have_resources_ && recipe_ && recipe_->IsValid())
     {
+#if DEBUG
+
         printf("[Factory Produces %s]\n", recipe_->GetName().c_str());
-    }
 #endif
+    }
+    
+    specialization_.Simulate();
 }
 
 void Factory::DeliverResources()
@@ -63,7 +116,13 @@ void Factory::DeliverResources()
         {
             if(output_slot.GetQuantity() > 0)
             {
-                stockpile_->AddResource(output_slot.GetResourceId(), output_slot.GetQuantity());
+                specialization_.RecordProduction(recipe_);
+                
+                // compute output bonus from specialization
+                uint32_t base_output = output_slot.GetQuantity();
+                uint32_t max_bonus_output = base_output / 10;
+                uint32_t output = base_output + max_bonus_output * specialization_.GetSpecialization(output_slot.GetResourceId());
+                stockpile_->AddResource(output_slot.GetResourceId(), output);
             }
         }
     }
@@ -112,4 +171,9 @@ ResourceCount Factory::ComputeResourceShortfall(RecipePtr recipe) const
     }
 
     return missing_resources;
+}
+
+void Factory::Debug() const
+{
+    specialization_.Debug();
 }

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include "resource_id.h"
 #include "recipe.h"
 #include <map>
@@ -7,12 +8,27 @@
 
 class Stockpile;
 
+class FactorySpecialization
+{
+private:
+    std::array<float, resource_count> specialization_;
+
+public:
+    FactorySpecialization();
+
+    float GetSpecialization(ResourceId id);
+    void RecordProduction(RecipePtr ptr);
+    void Simulate();
+    void Debug() const;
+};
+
 class Factory
 {
 private:
     std::shared_ptr<Stockpile> stockpile_;
     RecipePtr recipe_;
     bool have_resources_;
+    FactorySpecialization specialization_;
     
 public:
     Factory();
@@ -26,4 +42,6 @@ public:
     void GatherResources();
     void Produce();
     void DeliverResources();
+    
+    void Debug() const;
 };

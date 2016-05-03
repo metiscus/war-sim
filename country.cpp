@@ -162,6 +162,10 @@ void Country::GatherResources(World* world)
 #if DEBUG
     printf("[Country: %s]\n", name_.c_str());
     stockpile_->Debug();
+    for(auto &factory: factories_)
+    {
+        factory.Debug();
+    }
 #endif
 }
 
