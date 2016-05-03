@@ -56,7 +56,7 @@ void world_init()
     australia->AddFactory();
     australia->AddFactory();
     auto stockpile = australia->GetStockpile();
-    stockpile->AddResource(resource_manpower, 5000);
+    //stockpile->AddResource(resource_manpower, 5000);
     stockpile->AddResource(resource_foodstuffs, 50000);
     stockpile->AddResource(resource_energy, 1000);
     stockpile->AddResource(resource_coal, 10000);
@@ -72,6 +72,9 @@ void world_init()
     {
         auto &resources = territory->GetResources();
         resources.SetResource(resource_coal, 8.0);
+        resources.SetResource(resource_farmland, 10.0, false);
+        resources.SetResource(resource_manpower, 440, false);
+        resources.SetResource(resource_foodstuffs, 400.0);
         g_world->AddTerritory(territory);
         australia->AddTerritory(g_world.get(), territory->GetId());
     }
@@ -82,7 +85,8 @@ void world_init()
         resources.SetResource(resource_iron, 1.0);
         resources.SetResource(resource_crude, 1.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 800.0);
+        resources.SetResource(resource_foodstuffs, 470.0);
+        resources.SetResource(resource_manpower, 480, false);
         g_world->AddTerritory(territory);
         australia->AddTerritory(g_world.get(), territory->GetId());
     }
@@ -92,7 +96,8 @@ void world_init()
         auto &resources = territory->GetResources();
         resources.SetResource(resource_energy, 20.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 800.0);
+        resources.SetResource(resource_foodstuffs, 250.0);
+        resources.SetResource(resource_manpower, 220, false);
         g_world->AddTerritory(territory);
         australia->AddTerritory(g_world.get(), territory->GetId());
     }
@@ -102,7 +107,8 @@ void world_init()
         auto &resources = territory->GetResources();
         resources.SetResource(resource_crude, 1.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 800.0);
+        resources.SetResource(resource_foodstuffs, 13.0);
+        resources.SetResource(resource_manpower, 14, false);
         g_world->AddTerritory(territory);
         australia->AddTerritory(g_world.get(), territory->GetId());
     }
@@ -112,7 +118,8 @@ void world_init()
         auto &resources = territory->GetResources();
         resources.SetResource(resource_rares, 1.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 800.0);
+        resources.SetResource(resource_foodstuffs, 200.0);
+        resources.SetResource(resource_manpower, 220, false);
         g_world->AddTerritory(territory);
         australia->AddTerritory(g_world.get(), territory->GetId());
     }
@@ -123,7 +130,8 @@ void world_init()
         resources.SetResource(resource_iron, 1.0);
         resources.SetResource(resource_energy, 5.0);
         resources.SetResource(resource_farmland, 10.0, false);
-        resources.SetResource(resource_foodstuffs, 800.0);
+        resources.SetResource(resource_foodstuffs, 140.0);
+        resources.SetResource(resource_manpower, 130, false);
         g_world->AddTerritory(territory);
         australia->AddTerritory(g_world.get(), territory->GetId());
     }
