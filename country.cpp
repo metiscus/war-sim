@@ -92,18 +92,30 @@ RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
         return target_recipe;
     }
 
+    RecipePtr candidate_recipe;
+    uint32_t output_amount = 0;
     for(uint32_t ii=0; ii<target_recipes.size(); ++ii)
     {
         if(factories_[0].CanProduceRecipe(target_recipes[ii]))
         {
             LOG("Found a recipe '%s' to produce %s.", target_recipes[ii]->GetName().c_str(), ResourceNames[id]);
-            return target_recipes[ii];
+            uint64_t recipe_output = target_recipes[ii]->ComputeOutputQty(id);
+            if(output_amount < recipe_output)
+            {
+                output_amount = recipe_output;
+                candidate_recipe = target_recipes[ii];
+            }
         }
         else 
         {
             LOG("Recipe '%s' to produce %s has a shortfall.", target_recipes[ii]->GetName().c_str(), ResourceNames[id]);
             shortfalls.push_back(factories_[0].ComputeResourceShortfall(target_recipes[ii]));
         }
+    }
+    
+    if(candidate_recipe)
+    {
+        return candidate_recipe;
     }
     
     // we were not able to find a recipe to produce the item directly, so find the
@@ -155,10 +167,14 @@ void Country::GatherResources(World* world)
     
     //TODO: plan what the factories should produce and set up for that
     factories_[0].SetRecipe(FindRecipeForResource(world, resource_energy));
-    factories_[1].SetRecipe(FindRecipeForResource(world, resource_fuel));
+    factories_[1].SetRecipe(FindRecipeForResource(world, resource_crude));
     factories_[2].SetRecipe(FindRecipeForResource(world, resource_steel));
     //factories_[2].SetRecipe(FindRecipeForResource(world, resource_machines));
-    factories_[3].SetRecipe(FindRecipeForResource(world, resource_machines));
+    //factories_[3].SetRecipe(FindRecipeForResource(world, resource_machines));
+    for(uint32_t ii=3; ii<factories_.size(); ++ii)
+    {
+        factories_[ii].SetRecipe(FindRecipeForResource(world, resource_machines));
+    }
     
 #if DEBUG
     printf("[Country: %s]\n", name_.c_str());

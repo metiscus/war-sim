@@ -78,4 +78,5 @@ public:
     const std::string& GetName() const;
     bool IsValid() const;
     uint64_t GetId() const;
+    uint64_t ComputeOutputQty(ResourceId id) const;
 };

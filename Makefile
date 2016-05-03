@@ -1,5 +1,5 @@
 CXX=g++
-CXXFLAGS=-g -O0 -Wall -Wextra -MD -std=c++11 -lboost_serialization
+CXXFLAGS=-g -O3 -Wall -Wextra -MD -std=c++11 -lboost_serialization
 CXXFLAGS+=-DDEBUG
 
 default: warsim

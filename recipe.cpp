@@ -129,3 +129,17 @@ uint64_t Recipe::GetId() const
 {
     return id_;
 }
+
+uint64_t Recipe::ComputeOutputQty(ResourceId id) const
+{
+    uint64_t output_qty = 0;
+    for(auto output : outputs_)
+    {
+        if(output.GetResourceId() == id)
+        {
+            output_qty += output.GetQuantity();
+        }
+    }
+    
+    return output_qty;
+}

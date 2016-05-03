@@ -31,12 +31,18 @@ int main(int argc, char** argv)
     return 0;
 }
 
+std::shared_ptr<Country> australia;
 void test_production()
 {   
     printf("==========[Starting]==========\n");
     for(uint32_t ii=0; ii<500; ++ii)
     {
         g_world->Simulate();
+        
+        if(ii == 250)
+        {
+            australia->AddFactory();
+        }
     }
 }
 
@@ -44,7 +50,7 @@ void world_init()
 {
     // create a game world with some test provinces
     g_world = std::make_shared<World>();
-    auto australia = std::make_shared<Country>(0, "Australia");
+    australia = std::make_shared<Country>(0, "Australia");
     australia->AddFactory();
     australia->AddFactory();
     australia->AddFactory();

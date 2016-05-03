@@ -55,12 +55,12 @@ World::World()
     AddRecipe(lubricants_fuel);
     
     auto bearings1 = std::make_shared<Recipe>("bearings from steel, lubricants, machines and energy");
-    bearings1->AddInput(RecipeSlot (resource_manpower, 18, false));
-    bearings1->AddInput(RecipeSlot (resource_steel, 2));
-    bearings1->AddInput(RecipeSlot (resource_lubricants, 1));
-    bearings1->AddInput(RecipeSlot (resource_energy, 18));
+    bearings1->AddInput(RecipeSlot (resource_manpower, 20, false));
+    bearings1->AddInput(RecipeSlot (resource_steel, 4));
+    bearings1->AddInput(RecipeSlot (resource_lubricants, 2));
+    bearings1->AddInput(RecipeSlot (resource_energy, 25));
     bearings1->AddInput(RecipeSlot (resource_machines, 10, false));
-    bearings1->AddOutput(RecipeSlot (resource_bearings, 1));
+    bearings1->AddOutput(RecipeSlot (resource_bearings, 2));
     AddRecipe(bearings1);
     
     auto bearings2 = std::make_shared<Recipe>("bearings from steel, lubricants, tools and energy");
@@ -78,8 +78,19 @@ World::World()
     machines->AddInput(RecipeSlot (resource_lubricants, 1));
     machines->AddInput(RecipeSlot (resource_bearings, 1));
     machines->AddInput(RecipeSlot (resource_tools, 5, false));
+    machines->AddInput(RecipeSlot (resource_energy, 20));
     machines->AddOutput(RecipeSlot (resource_machines, 1));
     AddRecipe(machines);
+    
+    auto machines2 = std::make_shared<Recipe>("machines from steel, bearings, machines, lubricants and energy");
+    machines2->AddInput(RecipeSlot (resource_manpower, 20, false));
+    machines2->AddInput(RecipeSlot (resource_steel, 40));
+    machines2->AddInput(RecipeSlot (resource_lubricants, 2));
+    machines2->AddInput(RecipeSlot (resource_bearings, 2));
+    machines2->AddInput(RecipeSlot (resource_machines, 5, false));
+    machines2->AddInput(RecipeSlot (resource_energy, 45));
+    machines2->AddOutput(RecipeSlot (resource_machines, 2));
+    AddRecipe(machines2);
 }
 
 void World::AddTerritory(std::shared_ptr<Territory> territory)
