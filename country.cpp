@@ -192,7 +192,7 @@ void Country::GatherResources(World* world)
     
     //TODO: plan what the factories should produce and set up for that
     factories_[0].SetRecipe(FindRecipeForResource(world, resource_energy));
-    factories_[1].SetRecipe(FindRecipeForResource(world, resource_crude));
+    factories_[1].SetRecipe(FindRecipeForResource(world, resource_lubricants));
     factories_[2].SetRecipe(FindRecipeForResource(world, resource_steel));
     //factories_[2].SetRecipe(FindRecipeForResource(world, resource_machines));
     //factories_[3].SetRecipe(FindRecipeForResource(world, resource_machines));

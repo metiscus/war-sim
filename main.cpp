@@ -83,7 +83,7 @@ void world_init()
     {
         auto &resources = territory->GetResources();
         resources.SetResource(resource_iron, 1.0);
-        resources.SetResource(resource_crude, 1.0);
+        resources.SetResource(resource_crude, 4.0);
         resources.SetResource(resource_farmland, 10.0, false);
         resources.SetResource(resource_foodstuffs, 470.0);
         resources.SetResource(resource_manpower, 480, false);
@@ -105,7 +105,7 @@ void world_init()
     territory = std::make_shared<Territory>(3, "Northern Territory", 0);
     {
         auto &resources = territory->GetResources();
-        resources.SetResource(resource_crude, 1.0);
+        resources.SetResource(resource_crude, 2.0);
         resources.SetResource(resource_farmland, 10.0, false);
         resources.SetResource(resource_foodstuffs, 13.0);
         resources.SetResource(resource_manpower, 14, false);
