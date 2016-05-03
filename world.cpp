@@ -1,6 +1,8 @@
 #include "world.h"
+#include <cstdio>
 
 World::World()
+    : total_resources_(0)
 {
     //HACK: for now we just hard code a few recipes in here  
     //TODO: ideally the system would select the one that is "best"
@@ -104,9 +106,42 @@ void World::AddTerritory(std::shared_ptr<Territory> territory)
     if(itr != territories_.end())
     {
         territories_.erase(itr);
-
     }
     territories_.insert(std::make_pair(territory->GetId(), territory));
+    
+    TerritoryResources resources = territory->GetResources();
+    for(uint32_t res_id = resource_first; res_id<resource_count; ++res_id)
+    {
+        if(resources.GetResourceIsProduced((ResourceId)res_id))
+        {
+            total_resources_ += (uint64_t)resources.GetResource((ResourceId)res_id);
+            global_static_resources_[(ResourceId)res_id] += (uint64_t)resources.GetResource((ResourceId)res_id);
+        }
+    }
+    
+    for(uint32_t res_id = resource_first; res_id<resource_count; ++res_id)
+    {
+        if(global_static_resources_[(ResourceId)res_id] == 0)
+        {
+            global_static_resource_scarcity_[(ResourceId)res_id] = -1.0f;
+        }
+        else
+        {
+            global_static_resource_scarcity_[(ResourceId)res_id] = (double)global_static_resources_[(ResourceId)res_id] / (double)total_resources_;
+        }
+    }
+    
+#if DEBUG
+    printf("[World Static Resources]\n");
+    for(uint32_t res_id = resource_first; res_id<resource_count; ++res_id)
+    {
+        printf("\t[Resource: %s %lu Scarcity: %f]\n", 
+               ResourceNames[res_id], 
+               global_static_resources_[(ResourceId)res_id],
+               global_static_resource_scarcity_[(ResourceId)res_id]
+        );
+    }
+#endif
 }
 
 void World::AddCountry(std::shared_ptr<Country> country)
