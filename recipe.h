@@ -8,6 +8,8 @@
 #include "resource_id.h"
 #include <string>
 #include <vector>
+#include <memory>
+#include <map>
 
 class RecipeSlot
 {
@@ -38,6 +40,8 @@ public:
     bool GetIsConsumed() const;
 };
 
+class Recipe;
+typedef std::shared_ptr<Recipe> RecipePtr;
 class Recipe
 {
     friend class boost::serialization::access;
@@ -50,7 +54,7 @@ private:
     SlotList outputs_;
     std::string name_;
     uint64_t id_;
-
+    
     template<class Archive>
     void serialize(Archive& archive, const unsigned int version)
     {

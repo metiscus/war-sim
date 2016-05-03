@@ -88,33 +88,19 @@ void Country::GatherResources(World* world)
     }
     
     //TODO: plan what the factories should produce and set up for that
-    //HACK: for now we just hard code a few recipes in here
-    std::vector<Recipe*> recipes;
-
-    Recipe energy("energy from coal");
-    energy.AddInput(RecipeSlot (resource_coal, 10));
-    energy.AddInput(RecipeSlot (resource_manpower, 1, false));
-    energy.AddOutput(RecipeSlot (resource_energy, 81));   
-    recipes.push_back(&energy);
     
-    Recipe coke("coke from energy and coal");
-    coke.AddInput(RecipeSlot (resource_coal, 10));
-    coke.AddInput(RecipeSlot (resource_energy, 1));
-    coke.AddInput(RecipeSlot (resource_manpower, 1, false));
-    coke.AddOutput(RecipeSlot (resource_coke, 1));
-    recipes.push_back(&coke);
-    
-    Recipe steel("steel from coke, iron, and electricity");
-    steel.AddInput(RecipeSlot (resource_manpower, 5, false));
-    steel.AddInput(RecipeSlot (resource_energy, 100));
-    steel.AddInput(RecipeSlot (resource_coke, 1));
-    steel.AddInput(RecipeSlot (resource_iron, 10));
-    steel.AddOutput(RecipeSlot (resource_steel, 8));
-    recipes.push_back(&steel);
-
+    //HACK: this is just for testing
+    auto energy_recipes = world->GetRecipesForResource(resource_energy);
+    auto coke_recipes   = world->GetRecipesForResource(resource_coke);
+    auto steel_recipes  = world->GetRecipesForResource(resource_steel);
     for(uint32_t ii=0; ii<factories_.size(); ++ii)
     {
-        factories_[ii].SetRecipe(*recipes[(ii % (recipes.size() + 1))]);
+        switch (ii%3)
+        {
+            case 0: factories_[ii].SetRecipe(energy_recipes[0]); break;
+            case 1: factories_[ii].SetRecipe(coke_recipes[0]); break;
+            case 2: factories_[ii].SetRecipe(steel_recipes[0]); break;
+        }
     }
     
 #if DEBUG

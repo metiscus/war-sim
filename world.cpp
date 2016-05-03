@@ -2,7 +2,27 @@
 
 World::World()
 {
+    //HACK: for now we just hard code a few recipes in here
+    auto energy = std::make_shared<Recipe>("energy from coal");
+    energy->AddInput(RecipeSlot (resource_coal, 10));
+    energy->AddInput(RecipeSlot (resource_manpower, 1, false));
+    energy->AddOutput(RecipeSlot (resource_energy, 81));   
+    AddRecipe(energy);
     
+    auto coke = std::make_shared<Recipe>("coke from energy and coal");
+    coke->AddInput(RecipeSlot (resource_coal, 10));
+    coke->AddInput(RecipeSlot (resource_energy, 1));
+    coke->AddInput(RecipeSlot (resource_manpower, 1, false));
+    coke->AddOutput(RecipeSlot (resource_coke, 1));
+    AddRecipe(coke);
+    
+    auto steel = std::make_shared<Recipe>("steel from coke, iron, and electricity");
+    steel->AddInput(RecipeSlot (resource_manpower, 5, false));
+    steel->AddInput(RecipeSlot (resource_energy, 100));
+    steel->AddInput(RecipeSlot (resource_coke, 1));
+    steel->AddInput(RecipeSlot (resource_iron, 10));
+    steel->AddOutput(RecipeSlot (resource_steel, 8));
+    AddRecipe(steel);
 }
 
 void World::AddTerritory(std::shared_ptr<Territory> territory)
@@ -61,4 +81,30 @@ void World::Simulate()
     {
         country.second->ProduceResources(this);
     }
+}
+
+void World::AddRecipe(RecipePtr ptr)
+{
+    recipes_.push_back(ptr);
+    auto outputs = ptr->GetOutputs();
+    for(RecipeSlot output : outputs)
+    {
+        if(output.GetResourceId() != resource_manpower)
+        {
+            recipe_map_.insert(std::make_pair(output.GetResourceId(), ptr));
+        }
+    }
+}
+
+std::vector<RecipePtr> World::GetRecipesForResource(ResourceId id)
+{
+    auto upper = recipe_map_.upper_bound(id);
+    auto lower = recipe_map_.lower_bound(id);
+    std::vector<RecipePtr> ret;
+    while(lower != upper)
+    {
+        ret.push_back(lower->second);
+        ++lower;
+    }
+    return ret;
 }

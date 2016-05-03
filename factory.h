@@ -10,7 +10,7 @@ class Factory
 {
 private:
     std::shared_ptr<Stockpile> stockpile_;
-    Recipe recipe_;
+    RecipePtr recipe_;
     bool have_resources_;
     
 public:
@@ -18,7 +18,7 @@ public:
     ~Factory() = default;
     
     void SetStockpile(std::shared_ptr<Stockpile> stockpile);
-    void SetRecipe(const Recipe& recipe);
+    void SetRecipe(RecipePtr recipe);
 
     void GatherResources();
     void Produce();
