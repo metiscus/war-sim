@@ -3,7 +3,6 @@
 World::World()
 {
     //HACK: for now we just hard code a few recipes in here  
-    //TODO: right now order matters. The first installed recipe for a given output will be preferentially chosen
     //TODO: ideally the system would select the one that is "best"
     auto food = std::make_shared<Recipe>("food from farmland and manpower");
     food->AddInput(RecipeSlot (resource_farmland, 10, false));
