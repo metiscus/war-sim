@@ -36,6 +36,9 @@ private:
         archive & (id_);
     }    
     
+    
+    RecipePtr FindRecipeForResource(World* world, ResourceId id);
+
 public:
     Country(Id id, const std::string& name);
     
@@ -53,7 +56,7 @@ public:
     void AddTerritory(uint32_t territory);
     void RemoveTerritory(uint32_t territory);
     const std::set<uint32_t>& GetTerritories() const;
-    
+
     void GatherResources(World* world);
     void ProduceResources(World* world);
     

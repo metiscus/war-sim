@@ -34,7 +34,7 @@ int main(int argc, char** argv)
 void test_production()
 {   
     printf("==========[Starting]==========\n");
-    for(uint32_t ii=0; ii<10; ++ii)
+    for(uint32_t ii=0; ii<500; ++ii)
     {
         g_world->Simulate();
     }
@@ -48,11 +48,16 @@ void world_init()
     australia->AddFactory();
     australia->AddFactory();
     australia->AddFactory();
+    australia->AddFactory();
     auto stockpile = australia->GetStockpile();
     stockpile->AddResource(resource_manpower, 5000000);
     stockpile->AddResource(resource_energy, 1000);
     stockpile->AddResource(resource_coal, 10000);
     stockpile->AddResource(resource_iron, 2000);
+    stockpile->AddResource(resource_crude, 200);
+    stockpile->AddResource(resource_fuel, 50);
+    stockpile->AddResource(resource_lubricants, 5);
+    stockpile->AddResource(resource_machines, 50);
     g_world->AddCountry(australia);
 
     std::shared_ptr<Territory> territory = std::make_shared<Territory>(0, "Victoria", 0);
@@ -68,6 +73,7 @@ void world_init()
     {
         auto &resources = territory->GetResources();
         resources.SetResource(resource_iron, 1.0);
+        resources.SetResource(resource_crude, 1.0);
         //resources.SetResource(resource_manpower, 5.0);
         g_world->AddTerritory(territory);
         australia->AddTerritory(territory->GetId());

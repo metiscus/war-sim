@@ -7,12 +7,19 @@ const char* ResourceNames [] =
     "manpower",
     "energy",
     "coal",
+    "crude oil",
     "iron",
+    "tools",
     "steel",
     "coke",
-    "education"
+    "lubricants",
+    "fuel",
+    "machines",
+    "bearings"
 };
 
+static_assert(sizeof(ResourceNames) / sizeof(void*) == resource_count,
+              "Possible mismatch in resource names and resource enumerations");
 
 RecipeSlot::RecipeSlot()
     : resource_(resource_invalid)

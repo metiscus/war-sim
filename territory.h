@@ -26,6 +26,7 @@ private:
 public:
     TerritoryResources();
     void SetResource(ResourceId id, float qty);
+    void ChangeResource(ResourceId id, float qty);
     float GetResource(ResourceId id) const;
 
 };

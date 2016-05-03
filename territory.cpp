@@ -18,8 +18,10 @@ float TerritoryResources::GetResource(ResourceId id) const
     return resources_[id];
 }
 
-
-
+void TerritoryResources::ChangeResource(ResourceId id, float qty)
+{
+    resources_[id] += qty;
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 Territory::Territory(uint64_t id, const std::string& name, Country::Id owner)

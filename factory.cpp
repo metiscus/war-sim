@@ -68,3 +68,48 @@ void Factory::DeliverResources()
         }
     }
 }
+
+bool Factory::CanProduceRecipe(RecipePtr recipe) const
+{
+    assert(recipe);
+    if(!recipe)
+    {
+        return false;
+    }
+
+    // Build a list of required materials
+    const Recipe::SlotList& input_slot_list = recipe->GetInputs();
+    ResourceCount input_resources;
+    for(auto input_slot : input_slot_list)
+    {
+        input_resources[input_slot.GetResourceId()] += input_slot.GetQuantity();
+    }
+
+    return stockpile_->ContainsResources(input_resources);
+}
+
+ResourceCount Factory::ComputeResourceShortfall(RecipePtr recipe) const
+{
+    assert(recipe);
+    
+    if(!recipe)
+    {
+        ResourceCount missing_resources;
+        missing_resources[0] = 1;
+        return missing_resources;
+    }
+
+    // Build a list of missing materials
+    const Recipe::SlotList& input_slot_list = recipe->GetInputs();
+    ResourceCount missing_resources;
+    for(auto input_slot : input_slot_list)
+    {
+        uint32_t on_hand_qty = stockpile_->GetResourceQuantity(input_slot.GetResourceId());
+        if(on_hand_qty < input_slot.GetQuantity())
+        {
+            missing_resources[input_slot.GetResourceId()] = input_slot.GetQuantity() - on_hand_qty;
+        }
+    }
+
+    return missing_resources;
+}

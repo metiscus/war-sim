@@ -8,6 +8,7 @@ warsim_SRC=\
 	main.cpp\
 	country.cpp\
 	factory.cpp\
+	policy.cpp\
 	recipe.cpp\
 	stockpile.cpp\
 	territory.cpp\
