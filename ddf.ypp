@@ -1,0 +1,89 @@
+%debug
+%require "3.0"
+
+%{
+#define YYDEBUG 1
+#include <cstdio>
+#include <cstring>
+#include <cstdint>
+#include <cstdlib>
+#include <string>
+
+int in_block = 0;
+
+void yyerror(const char *s)
+{
+    fprintf(stderr, "error: %s\n", s);
+}
+
+extern "C"
+{
+    extern int yylex();
+}
+
+%}
+
+%defines
+
+%token TOK_IDENTIFIER
+%token TOK_INTEGER
+%token TOK_REAL
+%token TOK_STRING
+%token TOK_BLOCK_OPEN
+%token TOK_BLOCK_CLOSE
+%token TOK_COLON
+%token TOK_SEMICOLON
+%token TOK_EQUAL
+
+%union
+{
+    double real;
+    int64_t integer;
+    char *string; 
+}
+
+
+%type <real> TOK_REAL
+%type <integer> TOK_INTEGER
+%type <string> TOK_STRING TOK_IDENTIFIER
+
+%%
+
+block : %empty
+    | start_block field_list end_block  {}
+    | subclass_statement TOK_BLOCK_OPEN field_list end_block {}
+    ;
+
+field
+    : TOK_IDENTIFIER TOK_COLON TOK_INTEGER { printf("%s :  %lu\n", $1, $3); }
+    | TOK_IDENTIFIER TOK_COLON TOK_REAL    { printf("%s :  %lf\n", $1, $3); }
+    | TOK_IDENTIFIER TOK_COLON TOK_STRING  { printf("%s :  %s\n", $1, $3); }
+    ;
+    
+field_list
+    :
+    | field
+    | field_list field
+    ;
+   
+subclass_statement
+    :
+    | TOK_IDENTIFIER TOK_EQUAL TOK_IDENTIFIER
+    ;
+   
+start_block
+    : 
+    | TOK_IDENTIFIER TOK_BLOCK_OPEN
+    ;
+    
+end_block: %empty
+    | TOK_BLOCK_CLOSE TOK_SEMICOLON
+    ;
+    
+
+%%
+int main()
+{
+    yydebug = 1;
+    yyparse();
+}

@@ -1,0 +1,37 @@
+%{
+#include <stdio.h>
+#include <string.h>
+#include "ddf.tab.hpp"
+
+%}
+
+%option noyywrap
+
+DIGIT           [0-9]
+ALPHA           [a-zA-Z]
+ALPHANUM        [a-zA-Z0-9]
+OPENBRACE       "{"
+CLOSEBRACE      "}"
+SEMICOLON       ";"
+COLON           ":"
+EQUAL           "="
+
+INTEGER         [\+-]?{DIGIT}+
+STRING          \"(\\.|[^"])*\"
+
+%%
+{ALPHA}+{ALPHANUM}*                     { yylval.string = strdup(yytext); return TOK_IDENTIFIER; }
+{INTEGER}                               { yylval.integer = strtoll(yytext, 0, 10); return TOK_INTEGER; }
+{STRING}                                { yylval.string = strdup(yytext); return TOK_STRING; }
+[\+-]?{DIGIT}+\.{DIGIT}+(e{DIGIT}+)?    { yylval.real = strtod(yytext, 0); return TOK_REAL; }
+
+
+{OPENBRACE}                             { return TOK_BLOCK_OPEN; }
+{CLOSEBRACE}                            { return TOK_BLOCK_CLOSE; }
+{SEMICOLON}                             { return TOK_SEMICOLON; }
+{COLON}                                 { return TOK_COLON; }
+{EQUAL}                                 { return TOK_EQUAL; }
+
+.                                       { }
+
+%%
