@@ -1,5 +1,6 @@
 %debug
 %require "3.0"
+%start objects
 
 %{
 #define YYDEBUG 1
@@ -49,41 +50,33 @@ extern "C"
 
 %%
 
-block : %empty
-    | start_block field_list end_block  {}
-    | subclass_statement TOK_BLOCK_OPEN field_list end_block {}
+objects:    %empty
+    |       blocks
     ;
 
-field
-    : TOK_IDENTIFIER TOK_COLON TOK_INTEGER { printf("%s :  %lu\n", $1, $3); }
-    | TOK_IDENTIFIER TOK_COLON TOK_REAL    { printf("%s :  %lf\n", $1, $3); }
-    | TOK_IDENTIFIER TOK_COLON TOK_STRING  { printf("%s :  %s\n", $1, $3); }
+blocks:     block
+    |       blocks block
+    ;    
+    
+block:      TOK_IDENTIFIER TOK_BLOCK_OPEN TOK_BLOCK_CLOSE
+    |       TOK_IDENTIFIER TOK_BLOCK_OPEN pairs TOK_BLOCK_CLOSE
+    ;
+  
+pair:   TOK_IDENTIFIER TOK_COLON value { printf("%s : ", $1); }
     ;
     
-field_list
-    :
-    | field
-    | field_list field
+pairs:  pair
+    |   pairs pair
     ;
-   
-subclass_statement
-    :
-    | TOK_IDENTIFIER TOK_EQUAL TOK_IDENTIFIER
+
+value:      TOK_INTEGER     { printf("%ld\n", $1); }
+    |       TOK_REAL        { printf("%lf\n", $1); }
+    |       TOK_STRING      { printf("%s\n", $1); }
     ;
-   
-start_block
-    : 
-    | TOK_IDENTIFIER TOK_BLOCK_OPEN
-    ;
-    
-end_block: %empty
-    | TOK_BLOCK_CLOSE TOK_SEMICOLON
-    ;
-    
 
 %%
 int main()
 {
-    yydebug = 1;
+    yydebug = 0;
     yyparse();
 }
