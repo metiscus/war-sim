@@ -41,6 +41,7 @@ extern "C"
     double real;
     int64_t integer;
     char *string; 
+    struct ast* ast;
 }
 
 
