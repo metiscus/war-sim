@@ -65,28 +65,20 @@ bool Resource::ReadInstance(rapidxml::xml_node<>* node)
 
 bool Resource::WriteInstance(rapidxml::xml_node<>* node)
 {
+    bool success = true;
     using namespace rapidxml;
     if(node)
     {
-        xml_document<> *doc = node->document();
-        if(!doc)
-        {
-            return false;
-        }
-        
-        auto new_node = doc->allocate_node(node_element, "resource");
-        
-        AppendIntegerAttribute(new_node, "id", id_);
-        AppendStringAttribute(new_node, "name", name_);
-        AppendStringAttribute(new_node, "short_name", short_name_);
-        AppendRealAttribute(new_node, "base_value", base_value_);
-        node->append_node(new_node);
-        return true;
+        auto new_node = CreateChildNode(node, "resource");
+        success = success && AppendIntegerAttribute(new_node, "id", id_);
+        success = success && AppendStringAttribute(new_node, "name", name_);
+        success = success && AppendStringAttribute(new_node, "short_name", short_name_);
+        success = success && AppendRealAttribute(new_node, "base_value", base_value_);
     }
     else
     {
-        return false;
+        success = false;
     }
 
-    return false;
+    return success;
 }

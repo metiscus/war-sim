@@ -2,21 +2,28 @@
 
 #include "rapidxml.hpp"
 #include <cstdint>
+#include <functional>
 #include <string>
 
 class ISerializer
 {
 public:
     virtual ~ISerializer() = default;
-    virtual bool ReadInstance(rapidxml::xml_node<>* node)  = 0;
-    virtual bool WriteInstance(rapidxml::xml_node<>* node) = 0;
+    
+    typedef rapidxml::xml_node<> Node;
+    
+    virtual bool ReadInstance(Node* node)  = 0;
+    virtual bool WriteInstance(Node* node) = 0;
     
 protected:
-    rapidxml::xml_attribute<>* AppendIntegerAttribute (rapidxml::xml_node<>* node, const std::string& name, int64_t value);
-    rapidxml::xml_attribute<>* AppendRealAttribute    (rapidxml::xml_node<>* node, const std::string& name, double value);
-    rapidxml::xml_attribute<>* AppendStringAttribute  (rapidxml::xml_node<>* node, const std::string& name, const std::string& value);
+    Node* FindChildNode(Node* node, const std::string& name);
+    void ForAllChildren(Node* node, std::function<void(ISerializer::Node*)> functor);
+    Node* CreateChildNode(Node* node, const std::string& name);
+    bool AppendIntegerAttribute (Node* node, const std::string& name, int64_t value);
+    bool AppendRealAttribute    (Node* node, const std::string& name, double value);
+    bool AppendStringAttribute  (Node* node, const std::string& name, const std::string& value);
     
-    int64_t ExtractIntegerAttribute(rapidxml::xml_node<>* node, const std::string& name);
-    double ExtractRealAttribute(rapidxml::xml_node<>* node, const std::string& name);
-    std::string ExtractStringAttribute(rapidxml::xml_node<>* node, const std::string& name);
+    int64_t ExtractIntegerAttribute(Node* node, const std::string& name);
+    double ExtractRealAttribute(Node* node, const std::string& name);
+    std::string ExtractStringAttribute(Node* node, const std::string& name);
 };

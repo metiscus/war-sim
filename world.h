@@ -10,9 +10,10 @@
 #include "resource.h"
 #include "country.h"
 #include "territory.h"
+#include "serializer.h"
 
 
-class World
+class World : public ISerializer
 {
     friend class boost::serialization::access;
 private:
@@ -40,5 +41,8 @@ public:
     std::vector<RecipePtr> GetRecipesForResource(ResourceId id);
     
     void Simulate();
+    
+    virtual bool ReadInstance(ISerializer::Node* node);
+    virtual bool WriteInstance(ISerializer::Node* node);
     
 };

@@ -217,3 +217,34 @@ void World::Simulate()
         country.second->ProduceResources(this);
     }
 }
+
+bool World::ReadInstance(ISerializer::Node* node)
+{
+    auto resources = FindChildNode(node, "resources");
+    if(resources)
+    {
+        ForAllChildren(resources, [this] (ISerializer::Node* node) {
+            Resource r;
+            r.ReadInstance(node);
+            resources_.insert(std::make_pair(r.GetId(), r));
+        });
+    }
+    return true;
+}
+
+bool World::WriteInstance(ISerializer::Node* node)
+{
+    auto world_node = CreateChildNode(node, "world");
+    if(world_node)
+    {
+        auto resources = CreateChildNode(world_node, "resources");
+        if(resources)
+        {
+            for(auto itr: resources_)
+            {
+                itr.second.WriteInstance(resources);
+            }
+        }
+    }
+    return true;
+}
