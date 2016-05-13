@@ -7,6 +7,7 @@
 #include <memory>
 
 #include "recipe.h"
+#include "resource.h"
 #include "country.h"
 #include "territory.h"
 
@@ -15,6 +16,8 @@ class World
 {
     friend class boost::serialization::access;
 private:
+    
+    std::map<uint64_t, Resource> resources_;
     
     std::map<uint32_t, std::shared_ptr<Territory> > territories_;
     std::map<uint32_t, std::shared_ptr<Country> > countries_;

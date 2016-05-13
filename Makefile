@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-g -O0 -Wall -Wextra -MD
 CXX=g++
-CXXFLAGS=$(CFLAGS) -std=c++11 -lboost_serialization
+CXXFLAGS=$(CFLAGS) -std=c++11 -lboost_serialization -Irapidxml-1.13
 CXXFLAGS+=-DDEBUG
 
 default: warsim parser
@@ -12,6 +12,8 @@ warsim_SRC=\
 	factory.cpp\
 	policy.cpp\
 	recipe.cpp\
+	resource.cpp\
+	serializer.cpp\
 	stockpile.cpp\
 	territory.cpp\
 	world.cpp\
