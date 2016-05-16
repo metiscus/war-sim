@@ -1,36 +1,5 @@
 #include "territory.h"
 
-TerritoryResources::TerritoryResources()
-{
-    for(auto &resource: resources_)
-    {
-        resource.quantity    = 0.f;
-        resource.is_produced = false;
-    }
-}
-
-void TerritoryResources::SetResource(ResourceId id, float qty, bool is_produced)
-{
-    resources_[id].quantity    = qty;
-    resources_[id].is_produced = is_produced;
-}
-
-float TerritoryResources::GetResource(ResourceId id) const
-{
-    return resources_[id].quantity;
-}
-
-void TerritoryResources::ChangeResource(ResourceId id, float qty)
-{
-    resources_[id].quantity += qty;
-}
-
-bool TerritoryResources::GetResourceIsProduced(ResourceId id) const
-{
-    return resources_[id].is_produced;
-}
-
-///////////////////////////////////////////////////////////////////////////////
 Territory::Territory(uint64_t id, const std::string& name, Country::Id owner)
     : name_(name)
     , id_(id)
@@ -70,17 +39,33 @@ Country::Id Territory::GetCore() const
     return core_;
 }
 
-const TerritoryResources& Territory::GetResources() const
+void Territory::SetResource(ResourceId id, float qty, bool is_produced)
 {
-    return resources_;
+    resources_[id].quantity    = qty;
+    resources_[id].is_produced = is_produced;
 }
 
-TerritoryResources& Territory::GetResources()
+float Territory::GetResource(ResourceId id) const
 {
-    return resources_;
+    return resources_[id].quantity;
 }
 
-void Territory::SetResources(const TerritoryResources& resources)
+void Territory::ChangeResource(ResourceId id, float qty)
 {
-    resources_ = resources;
+    resources_[id].quantity += qty;
+}
+
+bool Territory::GetResourceIsProduced(ResourceId id) const
+{
+    return resources_[id].is_produced;
+}
+
+Territory::ResourceIteratorType Territory::ResourcesBegin() const
+{
+    return resources_.begin();
+}
+
+Territory::ResourceIteratorType Territory::ResourcesEnd() const
+{
+    return resources_.end();
 }

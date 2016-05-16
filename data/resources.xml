@@ -1,0 +1,17 @@
+<resources>
+    <resource id="0" name="Manpower" short_name="manpower" base_value="0"/>
+    <resource id="1" name="Farmland" short_name="farmland" base_value="0"/>
+    <resource id="2" name="Food Stuffs" short_name="foodstuffs" base_value="0"/>
+    <resource id="3" name="Energy" short_name="energy" base_value="1.0"/>
+    <resource id="4" name="Coal" short_name="coal" base_value="1.0"/>
+    <resource id="5" name="Rares" short_name="rares" base_value="5.0"/>
+    <resource id="6" name="Crude Oil" short_name="crude" base_value="2"/>
+    <resource id="7" name="Iron" short_name="iron" base_value="1.5"/>
+    <resource id="8" name="Tools" short_name="tools" base_value="5"/>
+    <resource id="9" name="Steel" short_name="steel" base_value="5"/>
+    <resource id="10" name="Coke" short_name="coke" base_value="4"/>
+    <resource id="11" name="Lubricants" short_name="lubricants" base_value="7"/>
+    <resource id="12" name="Fuel" short_name="fuel" base_value="5"/>
+    <resource id="13" name="Machines" short_name="machines" base_value="5"/>
+    <resource id="14" name="Bearings" short_name="bearings" base_value="6"/>
+</resources>

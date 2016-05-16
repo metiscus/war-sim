@@ -1,11 +1,8 @@
 #pragma once
 
-#include <boost/serialization/vector.hpp>
-#include <boost/archive/text_iarchive.hpp> 
-#include <boost/archive/text_oarchive.hpp> 
 #include <fstream>
 #include <iostream>
-#include "resource_id.h"
+#include "resource.h"
 #include <string>
 #include <vector>
 #include <memory>
@@ -13,22 +10,10 @@
 
 class RecipeSlot
 {
-    friend class boost::serialization::access;
 private:
     ResourceId resource_;
     int64_t quantity_;
     bool is_consumed_;
-
-    template<class Archive>
-    void serialize(Archive& archive, const unsigned int version)
-    {
-        (void)version;
-        int64_t resource = resource_;
-        archive & (resource);
-        resource_ = (ResourceId)resource;
-        archive & (quantity_);
-        archive & (is_consumed_);
-    }
 
 public:
     RecipeSlot();
@@ -44,8 +29,6 @@ class Recipe;
 typedef std::shared_ptr<Recipe> RecipePtr;
 class Recipe
 {
-    friend class boost::serialization::access;
-
 public:
     typedef std::vector<RecipeSlot> SlotList;
 

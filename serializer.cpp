@@ -30,7 +30,7 @@ ISerializer::Node* ISerializer::CreateChildNode(ISerializer::Node* node, const s
             return nullptr;
         }
         
-        auto new_node = doc->allocate_node(node_element, name.c_str());
+        auto new_node = doc->allocate_node(node_element, doc->allocate_string(name.c_str(), name.length()));
         node->append_node(new_node);
         
         return new_node;
@@ -47,7 +47,10 @@ bool ISerializer::AppendIntegerAttribute(ISerializer::Node* node, const std::__c
     
     std::stringstream ss;
     ss<<value;
-    node->append_attribute(doc->allocate_attribute(name.c_str(), ss.str().c_str()));
+    auto attribute = doc->allocate_attribute(
+        doc->allocate_string(name.c_str(), name.length()), 
+        doc->allocate_string(ss.str().c_str(), 0));
+    node->append_attribute(attribute);
     return true;
 }
 
@@ -60,7 +63,11 @@ bool ISerializer::AppendRealAttribute(ISerializer::Node* node, const std::__cxx1
     
     std::stringstream ss;
     ss<<value;
-    node->append_attribute(doc->allocate_attribute(name.c_str(), ss.str().c_str()));
+    auto attribute = doc->allocate_attribute(
+        doc->allocate_string(name.c_str(), name.length()), 
+        doc->allocate_string(ss.str().c_str(), 0));
+
+    node->append_attribute(attribute);
     return true;
 }
 
@@ -71,7 +78,10 @@ bool ISerializer::AppendStringAttribute(ISerializer::Node* node, const std::stri
     rapidxml::xml_document<> *doc = node->document();
     if(!doc) return false;
 
-    node->append_attribute(doc->allocate_attribute(name.c_str(), value.c_str()));
+    auto attribute = doc->allocate_attribute(
+        doc->allocate_string(name.c_str(), name.length()), 
+        doc->allocate_string(value.c_str(), value.length()));
+    node->append_attribute(attribute);
     return true;
 }
 

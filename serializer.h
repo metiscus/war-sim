@@ -1,6 +1,7 @@
 #pragma once
 
 #include "rapidxml.hpp"
+#include "rapidxml_print.hpp"
 #include <cstdint>
 #include <functional>
 #include <string>

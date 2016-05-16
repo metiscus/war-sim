@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <string>
 
+#if 0
 enum ResourceId
 {
     resource_invalid,
@@ -26,6 +27,7 @@ enum ResourceId
 
     resource_count
 };
+
 
 extern const char* ResourceNames [];
 
@@ -79,3 +81,4 @@ public:
         return type;
     }
 };
+#endif

@@ -5,23 +5,19 @@
 
 Stockpile::Stockpile()
 {
-    for(uint64_t id=resource_first; id<resource_count; ++id)
-    {
-        resources_[id] = 0;
-    }
+    ;
 }
 
 bool Stockpile::ContainsResource(ResourceId id, int64_t qty) const
 {
-    assert(id>=resource_first && resource_first<resource_count);
     return (resources_[id] >= qty);
 }
 
-bool Stockpile::ContainsResources(const ResourceCount& count) const
+bool Stockpile::ContainsResources(const ResourceCount<uint64_t>& count) const
 {
-    for(uint64_t id=resource_first; id<resource_count; ++id)
+    for(auto resource : count)
     {
-        if(resources_[id] < count[id]) return false;
+        if(resources_[resource.first] < resource.second) return false;
     }
 
     return true;
@@ -29,28 +25,25 @@ bool Stockpile::ContainsResources(const ResourceCount& count) const
 
 void Stockpile::AddResource(ResourceId id, int64_t qty)
 {
-    assert(id>=resource_first && resource_first<resource_count);
     resources_[id] += qty;
 }
 
 void Stockpile::GetResource(ResourceId id, int64_t qty)
 {
-    assert(id>=resource_first && resource_first<resource_count);
     resources_[id] -= qty;
 }
 
-void Stockpile::GetResources(const ResourceCount& count)
+void Stockpile::GetResources(const ResourceCount<uint64_t>& count)
 {
     assert(ContainsResources(count));
-    for(uint64_t id=resource_first; id<resource_count; ++id)
+    for(auto& resource : count)
     {
-        resources_[id] -= count[id];
+        resources_[resource.first] -= resource.second;
     }
 }
 
 int64_t Stockpile::GetResourceQuantity(ResourceId id) const
 {
-    assert(id>=resource_first && resource_first<resource_count);
     return resources_[id];
 }
 
@@ -59,9 +52,9 @@ void Stockpile::Debug() const
 {
 #if DEBUG
     printf("[Stockpile (%p)]\n", this);
-    for(uint64_t id=resource_first; id<resource_count; ++id)
+    for(auto resource : resources_)
     {
-        printf("\t[Resource %s: Qty=%ld]\n", ResourceNames[id], resources_[id]);
+        printf("\t[Resource %s: Qty=%ld]\n", Resource::GetResourceName(resource.first).c_str(), resources_[resource.first]);
     }
 #endif
 }

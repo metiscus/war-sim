@@ -8,10 +8,6 @@
 
 FactorySpecialization::FactorySpecialization()
 {
-    for(auto& slot : specialization_)
-    {
-        slot = 0.0f;
-    }
 }
 
 float FactorySpecialization::GetSpecialization(ResourceId id)
@@ -37,18 +33,20 @@ void FactorySpecialization::Simulate()
     //TODO: tie this in to something else
     for(auto& slot : specialization_)
     {
-        slot *= 0.9995;
+        slot.second *= 0.9995;
     }
 }
 
 void FactorySpecialization::Debug() const
 {
+#if 0
 #ifdef DEBUG
     printf("\t[Factory Specialization]\n");
     for(uint32_t ii=resource_first; ii<resource_count; ++ii)
     {
         printf("\t\t[Resource: %s Specialization: %f]\n", ResourceNames[ii], specialization_[ii]);
     }
+#endif
 #endif
 }
 
@@ -78,7 +76,7 @@ void Factory::GatherResources()
     {
         // Build a list of required materials
         const Recipe::SlotList& input_slot_list = recipe_->GetInputs();
-        ResourceCount input_resources;
+        ResourceCount<uint64_t> input_resources;
         for(auto input_slot : input_slot_list)
         {
             input_resources[input_slot.GetResourceId()] += input_slot.GetQuantity();
@@ -148,7 +146,7 @@ bool Factory::CanProduceRecipe(RecipePtr recipe) const
 
     // Build a list of required materials
     const Recipe::SlotList& input_slot_list = recipe->GetInputs();
-    ResourceCount input_resources;
+    ResourceCount<uint64_t> input_resources;
     for(auto input_slot : input_slot_list)
     {
         input_resources[input_slot.GetResourceId()] += input_slot.GetQuantity();
@@ -157,20 +155,20 @@ bool Factory::CanProduceRecipe(RecipePtr recipe) const
     return stockpile_->ContainsResources(input_resources);
 }
 
-ResourceCount Factory::ComputeResourceShortfall(RecipePtr recipe) const
+ResourceCount<uint64_t> Factory::ComputeResourceShortfall(RecipePtr recipe) const
 {
     assert(recipe);
     
     if(!recipe)
     {
-        ResourceCount missing_resources;
+        ResourceCount<uint64_t> missing_resources;
         missing_resources[0] = 1;
         return missing_resources;
     }
 
     // Build a list of missing materials
     const Recipe::SlotList& input_slot_list = recipe->GetInputs();
-    ResourceCount missing_resources;
+    ResourceCount<uint64_t> missing_resources;
     for(auto input_slot : input_slot_list)
     {
         uint32_t on_hand_qty = stockpile_->GetResourceQuantity(input_slot.GetResourceId());

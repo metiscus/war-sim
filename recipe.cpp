@@ -1,31 +1,8 @@
 #include "recipe.h"
 #include <cassert>
 
-const char* ResourceNames [] =
-{
-    "unobtanium",
-    "manpower",
-    "farmland",
-    "food",
-    "energy",
-    "coal",
-    "rares",
-    "crude oil",
-    "iron",
-    "tools",
-    "steel",
-    "coke",
-    "lubricants",
-    "fuel",
-    "machines",
-    "bearings"
-};
-
-static_assert(sizeof(ResourceNames) / sizeof(void*) == resource_count,
-              "Possible mismatch in resource names and resource enumerations");
-
 RecipeSlot::RecipeSlot()
-    : resource_(resource_invalid)
+    : resource_(0)
     , quantity_(0)
     , is_consumed_(false)
 {
