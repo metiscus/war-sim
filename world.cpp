@@ -1,11 +1,27 @@
 #include "world.h"
 #include <cstdio>
+#include "rapidxml_utils.hpp"
 
 World::World()
     : total_resources_(0)
 {
     Resource::LoadResourceFile("data/resources.xml");
+
+    rapidxml::file<> f("data/recipes.xml");
+    rapidxml::xml_document<> d;
+    d.parse<0>(f.data());
     
+    auto node = d.first_node("recipe");
+    while(node != nullptr)
+    {
+        auto recipe = std::make_shared<Recipe>();
+        if(recipe->ReadInstance(node))
+        {
+            AddRecipe(recipe);
+        }
+        node = node->next_sibling();
+    }
+#if 0    
     static const ResourceId farmland_id   = Resource::GetResourceByShortName("farmland");
     static const ResourceId energy_id     = Resource::GetResourceByShortName("energy");
     static const ResourceId lubricants_id = Resource::GetResourceByShortName("lubricants");
@@ -116,6 +132,23 @@ World::World()
     machines2->AddInput(RecipeSlot (energy_id, 45));
     machines2->AddOutput(RecipeSlot (machines_id, 2));
     AddRecipe(machines2);
+    
+    rapidxml::xml_document<> doc;
+    auto node = doc.allocate_node(rapidxml::node_element, "xml");
+    doc.insert_node(nullptr, node);
+    
+    for(auto& recipe : recipes_)
+    {
+        recipe->WriteInstance(node);
+    }
+    
+    std::string xml_as_string;
+    rapidxml::print(std::back_inserter(xml_as_string), doc);
+    
+    std::ofstream out("recipes.xml");
+    out<<xml_as_string;
+    out.close();
+#endif
 }
 
 void World::AddTerritory(std::shared_ptr<Territory> territory)

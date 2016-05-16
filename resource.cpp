@@ -111,18 +111,18 @@ bool Resource::LoadResourceFile(const std::string& name)
     }
 }
 
-std::string Resource::GetResourceName(ResourceId id)
+std::string Resource::GetResourceShortName(ResourceId id)
 {
     assert(s_resources_.count(id) > 0);
     
     auto itr = s_resources_.find(id);
     if(itr == s_resources_.end())
     {
-        return "(invalid resource)";
+        return "invalid";
     }
     else
     {
-        return itr->second.GetName();
+        return itr->second.GetShortName();
     }
 }
 

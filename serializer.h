@@ -27,4 +27,5 @@ protected:
     int64_t ExtractIntegerAttribute(Node* node, const std::string& name);
     double ExtractRealAttribute(Node* node, const std::string& name);
     std::string ExtractStringAttribute(Node* node, const std::string& name);
+
 };

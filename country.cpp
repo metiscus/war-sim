@@ -101,7 +101,7 @@ RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
 #define LOG(msg, ...)
 #endif
 
-    LOG("Asked to produce %s", Resource::GetResourceName(id).c_str());
+    LOG("Asked to produce %s", Resource::GetResourceShortName(id).c_str());
     // We want to produce some good and we have X factories
     auto target_recipes = world->GetRecipesForResource(id);   
     RecipePtr target_recipe;
@@ -110,7 +110,7 @@ RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
     if(target_recipes.size() == 0)
     {
         printf("We have been asked to produce '%s' but there is not a way to produce that.\n",
-               Resource::GetResourceName(id).c_str());
+               Resource::GetResourceShortName(id).c_str());
         return target_recipe;
     }
 
@@ -121,7 +121,7 @@ RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
     {
         if(factories_[0].CanProduceRecipe(target_recipes[ii]))
         {
-            LOG("Found a recipe '%s' to produce %s.", target_recipes[ii]->GetName().c_str(), Resource::GetResourceName(id).c_str());
+            LOG("Found a recipe '%s' to produce %s.", target_recipes[ii]->GetName().c_str(), Resource::GetResourceShortName(id).c_str());
             uint64_t recipe_output = target_recipes[ii]->ComputeOutputQty(id);
             if(output_amount < recipe_output)
             {
@@ -131,7 +131,7 @@ RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
         }
         else 
         {
-            LOG("Recipe '%s' to produce %s has a shortfall.", target_recipes[ii]->GetName().c_str(), Resource::GetResourceName(id).c_str());
+            LOG("Recipe '%s' to produce %s has a shortfall.", target_recipes[ii]->GetName().c_str(), Resource::GetResourceShortName(id).c_str());
             shortfalls.push_back(factories_[0].ComputeResourceShortfall(target_recipes[ii]));
         }
     }

@@ -37,7 +37,7 @@ public:
     bool WriteInstance(rapidxml::xml_node<>* node);
     
     static bool        LoadResourceFile(const std::string& name);
-    static std::string GetResourceName(ResourceId id);
+    static std::string GetResourceShortName(ResourceId id);
     static ResourceId  GetResourceByShortName(const std::string& name);
     static double      GetResourceBaseValue(ResourceId id);
 };

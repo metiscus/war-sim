@@ -1,0 +1,149 @@
+<xml>
+	<recipe id="1" name="food from farmland and manpower">
+		<outputs>
+			<slot quantity="10" resource="farmland" is_consumed="0"/>
+			<slot quantity="200" resource="manpower" is_consumed="0"/>
+			<slot quantity="1000" resource="foodstuffs" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="10" resource="farmland" is_consumed="0"/>
+			<slot quantity="200" resource="manpower" is_consumed="0"/>
+		</inputs>
+	</recipe>
+	<recipe id="2" name="energy from coal">
+		<outputs>
+			<slot quantity="1" resource="manpower" is_consumed="0"/>
+			<slot quantity="81" resource="energy" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="10" resource="coal" is_consumed="1"/>
+			<slot quantity="1" resource="manpower" is_consumed="0"/>
+		</inputs>
+	</recipe>
+	<recipe id="3" name="energy from fuel">
+		<outputs>
+			<slot quantity="20" resource="manpower" is_consumed="0"/>
+			<slot quantity="1000" resource="energy" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="10" resource="fuel" is_consumed="1"/>
+			<slot quantity="20" resource="manpower" is_consumed="0"/>
+		</inputs>
+	</recipe>
+	<recipe id="4" name="crude oil from coal and energy">
+		<outputs>
+			<slot quantity="10" resource="manpower" is_consumed="0"/>
+			<slot quantity="1" resource="crude" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="10" resource="coal" is_consumed="1"/>
+			<slot quantity="10" resource="manpower" is_consumed="0"/>
+			<slot quantity="50" resource="energy" is_consumed="1"/>
+		</inputs>
+	</recipe>
+	<recipe id="5" name="coke from energy and coal">
+		<outputs>
+			<slot quantity="1" resource="manpower" is_consumed="0"/>
+			<slot quantity="1" resource="coke" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="10" resource="coal" is_consumed="1"/>
+			<slot quantity="1" resource="energy" is_consumed="1"/>
+			<slot quantity="1" resource="manpower" is_consumed="0"/>
+		</inputs>
+	</recipe>
+	<recipe id="6" name="steel from coke, iron, and energy">
+		<outputs>
+			<slot quantity="5" resource="manpower" is_consumed="0"/>
+			<slot quantity="8" resource="steel" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="5" resource="manpower" is_consumed="0"/>
+			<slot quantity="100" resource="energy" is_consumed="1"/>
+			<slot quantity="1" resource="rares" is_consumed="1"/>
+			<slot quantity="1" resource="coke" is_consumed="1"/>
+			<slot quantity="10" resource="iron" is_consumed="1"/>
+		</inputs>
+	</recipe>
+	<recipe id="7" name="tools from iron, and energy">
+		<outputs>
+			<slot quantity="10" resource="manpower" is_consumed="0"/>
+			<slot quantity="5" resource="tools" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="10" resource="manpower" is_consumed="0"/>
+			<slot quantity="10" resource="iron" is_consumed="1"/>
+		</inputs>
+	</recipe>
+	<recipe id="8" name="lubricants and fuel from oil and energy">
+		<outputs>
+			<slot quantity="10" resource="manpower" is_consumed="0"/>
+			<slot quantity="1" resource="lubricants" is_consumed="1"/>
+			<slot quantity="8" resource="fuel" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="10" resource="manpower" is_consumed="0"/>
+			<slot quantity="10" resource="crude" is_consumed="1"/>
+			<slot quantity="5" resource="energy" is_consumed="1"/>
+		</inputs>
+	</recipe>
+	<recipe id="9" name="bearings from steel, lubricants, machines and energy">
+		<outputs>
+			<slot quantity="20" resource="manpower" is_consumed="0"/>
+			<slot quantity="10" resource="machines" is_consumed="0"/>
+			<slot quantity="2" resource="bearings" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="20" resource="manpower" is_consumed="0"/>
+			<slot quantity="4" resource="steel" is_consumed="1"/>
+			<slot quantity="2" resource="lubricants" is_consumed="1"/>
+			<slot quantity="25" resource="energy" is_consumed="1"/>
+			<slot quantity="10" resource="machines" is_consumed="0"/>
+		</inputs>
+	</recipe>
+	<recipe id="10" name="bearings from steel, lubricants, tools and energy">
+		<outputs>
+			<slot quantity="36" resource="manpower" is_consumed="0"/>
+			<slot quantity="26" resource="tools" is_consumed="0"/>
+			<slot quantity="1" resource="bearings" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="36" resource="manpower" is_consumed="0"/>
+			<slot quantity="3" resource="steel" is_consumed="1"/>
+			<slot quantity="1" resource="lubricants" is_consumed="1"/>
+			<slot quantity="20" resource="energy" is_consumed="1"/>
+			<slot quantity="26" resource="tools" is_consumed="0"/>
+		</inputs>
+	</recipe>
+	<recipe id="11" name="machines from steel, bearings, tools, lubricants and energy">
+		<outputs>
+			<slot quantity="20" resource="manpower" is_consumed="0"/>
+			<slot quantity="5" resource="tools" is_consumed="0"/>
+			<slot quantity="1" resource="machines" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="20" resource="manpower" is_consumed="0"/>
+			<slot quantity="20" resource="steel" is_consumed="1"/>
+			<slot quantity="1" resource="lubricants" is_consumed="1"/>
+			<slot quantity="1" resource="bearings" is_consumed="1"/>
+			<slot quantity="5" resource="tools" is_consumed="0"/>
+			<slot quantity="20" resource="energy" is_consumed="1"/>
+		</inputs>
+	</recipe>
+	<recipe id="12" name="machines from steel, bearings, machines, lubricants and energy">
+		<outputs>
+			<slot quantity="20" resource="manpower" is_consumed="0"/>
+			<slot quantity="5" resource="machines" is_consumed="0"/>
+			<slot quantity="2" resource="machines" is_consumed="1"/>
+		</outputs>
+		<inputs>
+			<slot quantity="20" resource="manpower" is_consumed="0"/>
+			<slot quantity="40" resource="steel" is_consumed="1"/>
+			<slot quantity="2" resource="lubricants" is_consumed="1"/>
+			<slot quantity="2" resource="bearings" is_consumed="1"/>
+			<slot quantity="5" resource="machines" is_consumed="0"/>
+			<slot quantity="45" resource="energy" is_consumed="1"/>
+		</inputs>
+	</recipe>
+</xml>
+

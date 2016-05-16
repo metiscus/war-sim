@@ -1,5 +1,8 @@
 #include "recipe.h"
+#include "resource.h"
 #include <cassert>
+#include <sstream>
+#include <cstdio>
 
 RecipeSlot::RecipeSlot()
     : resource_(0)
@@ -32,6 +35,48 @@ bool RecipeSlot::GetIsConsumed() const
     return is_consumed_;
 }
 
+bool RecipeSlot::ReadInstance(Node* node)
+{
+    assert(node);
+    if(node)
+    {
+        std::string resource_name = ExtractStringAttribute(node, "resource");
+        std::stringstream ss;
+        ss<<resource_name;
+        ss>>resource_;
+        if(!ss.good())
+        {
+            Resource::GetResourceByShortName(resource_name);
+        }
+        
+        resource_    = 
+        quantity_    = ExtractIntegerAttribute(node, "quantity");
+        is_consumed_ = ExtractIntegerAttribute(node, "is_consumed") == 1;
+        return true;
+    }
+    return false;
+}
+
+bool RecipeSlot::WriteInstance(Node* node)
+{
+    assert(node);
+    bool success = true;
+    using namespace rapidxml;
+    if(node)
+    {
+        auto new_node = CreateChildNode(node, "slot");
+        success = success && AppendIntegerAttribute(new_node, "quantity", quantity_);
+        success = success && AppendStringAttribute(new_node, "resource", Resource::GetResourceShortName(resource_));
+        success = success && AppendIntegerAttribute(new_node, "is_consumed", is_consumed_ ? 1 : 0);
+    }
+    else
+    {
+        success = false;
+    }
+
+    return success;
+}
+    
 ///////////////////////////////////////////////////////////////////////////////
 uint64_t Recipe::NextId()
 {
@@ -40,7 +85,8 @@ uint64_t Recipe::NextId()
 }
 
 Recipe::Recipe(const std::string& name, uint64_t id)
-    : name_(name)
+    : ISerializer()
+    , name_(name)
     , id_(id)
 {
     
@@ -121,4 +167,78 @@ uint64_t Recipe::ComputeOutputQty(ResourceId id) const
     }
     
     return output_qty;
+}
+
+bool Recipe::ReadInstance(Node* node)
+{
+    assert(node);
+    if(node)
+    {
+        id_    = ExtractIntegerAttribute(node, "id");
+        name_  = ExtractStringAttribute(node, "name");
+        
+        Node *inputs = FindChildNode(node, "inputs");
+        if(inputs) inputs = inputs->first_node();
+
+        while(inputs != nullptr)
+        {
+            RecipeSlot slot;
+            if(slot.ReadInstance(inputs))
+            {
+                inputs_.emplace_back(slot);
+            }
+            inputs = inputs->next_sibling();
+        }
+        
+        Node *outputs = FindChildNode(node, "outputs");
+        if(outputs) outputs = outputs->first_node();
+
+        while(outputs != nullptr)
+        {
+            RecipeSlot slot;
+            if(slot.ReadInstance(outputs))
+            {
+                outputs_.emplace_back(slot);
+            }
+            outputs = outputs->next_sibling();
+        }
+        return true;
+    }
+    return false;
+}
+
+bool Recipe::WriteInstance(Node* node)
+{
+    assert(node);
+    bool success = true;
+    using namespace rapidxml;
+    if(node)
+    {
+        auto new_node = CreateChildNode(node, "recipe");
+        success = success && AppendIntegerAttribute(new_node, "id", id_);
+        success = success && AppendStringAttribute(new_node, "name", name_);
+        auto outputs = CreateChildNode(new_node, "outputs");
+        if(outputs)
+        {
+            for(auto slot : outputs_)
+            {
+                slot.WriteInstance(outputs);
+            }
+        }
+        
+        auto inputs = CreateChildNode(new_node, "inputs");
+        if(inputs)
+        {
+            for(auto slot : inputs_)
+            {
+                slot.WriteInstance(inputs);
+            }
+        }
+    }
+    else
+    {
+        success = false;
+    }
+
+    return success;
 }

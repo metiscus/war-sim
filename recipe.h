@@ -3,12 +3,13 @@
 #include <fstream>
 #include <iostream>
 #include "resource.h"
+#include "serializer.h"
 #include <string>
 #include <vector>
 #include <memory>
 #include <map>
 
-class RecipeSlot
+class RecipeSlot : public ISerializer
 {
 private:
     ResourceId resource_;
@@ -23,11 +24,14 @@ public:
     ResourceId GetResourceId() const;
     int64_t GetQuantity() const;
     bool GetIsConsumed() const;
+    
+    virtual bool ReadInstance(Node* node);
+    virtual bool WriteInstance(Node* node);
 };
 
 class Recipe;
 typedef std::shared_ptr<Recipe> RecipePtr;
-class Recipe
+class Recipe : public ISerializer
 {
 public:
     typedef std::vector<RecipeSlot> SlotList;
@@ -37,21 +41,12 @@ private:
     SlotList outputs_;
     std::string name_;
     uint64_t id_;
-    
-    template<class Archive>
-    void serialize(Archive& archive, const unsigned int version)
-    {
-        (void)version;
-        archive & (inputs_);
-        archive & (outputs_);
-        archive & (name_);
-    }
 
 public:
     static uint64_t NextId();
 
     Recipe(const std::string& name = "invalid recipe", uint64_t id = NextId());
-    ~Recipe() = default;
+    virtual ~Recipe() = default;
     void AddInput(const RecipeSlot& input);
     void AddOutput(const RecipeSlot& output);
     void SetInputs(const SlotList& inputs);
@@ -62,4 +57,7 @@ public:
     bool IsValid() const;
     uint64_t GetId() const;
     uint64_t ComputeOutputQty(ResourceId id) const;
+    
+    virtual bool ReadInstance(Node* node);
+    virtual bool WriteInstance(Node* node);
 };

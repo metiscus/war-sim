@@ -19,7 +19,7 @@ void ISerializer::ForAllChildren(Node* node, std::function<void(ISerializer::Nod
     }
 }
 
-ISerializer::Node* ISerializer::CreateChildNode(ISerializer::Node* node, const std::__cxx11::string& name)
+ISerializer::Node* ISerializer::CreateChildNode(ISerializer::Node* node, const std::string& name)
 {
     using namespace rapidxml;
     if(node)
@@ -30,7 +30,7 @@ ISerializer::Node* ISerializer::CreateChildNode(ISerializer::Node* node, const s
             return nullptr;
         }
         
-        auto new_node = doc->allocate_node(node_element, doc->allocate_string(name.c_str(), name.length()));
+        auto new_node = doc->allocate_node(node_element, doc->allocate_string(name.c_str(), 0));
         node->append_node(new_node);
         
         return new_node;
@@ -38,7 +38,7 @@ ISerializer::Node* ISerializer::CreateChildNode(ISerializer::Node* node, const s
     return nullptr;
 }
 
-bool ISerializer::AppendIntegerAttribute(ISerializer::Node* node, const std::__cxx11::string& name, int64_t value)
+bool ISerializer::AppendIntegerAttribute(ISerializer::Node* node, const std::string& name, int64_t value)
 {
     if(!node) return false;
     
@@ -48,13 +48,13 @@ bool ISerializer::AppendIntegerAttribute(ISerializer::Node* node, const std::__c
     std::stringstream ss;
     ss<<value;
     auto attribute = doc->allocate_attribute(
-        doc->allocate_string(name.c_str(), name.length()), 
+        doc->allocate_string(name.c_str(), 0), 
         doc->allocate_string(ss.str().c_str(), 0));
     node->append_attribute(attribute);
     return true;
 }
 
-bool ISerializer::AppendRealAttribute(ISerializer::Node* node, const std::__cxx11::string& name, double value)
+bool ISerializer::AppendRealAttribute(ISerializer::Node* node, const std::string& name, double value)
 {
     if(!node) return false;
     
@@ -64,7 +64,7 @@ bool ISerializer::AppendRealAttribute(ISerializer::Node* node, const std::__cxx1
     std::stringstream ss;
     ss<<value;
     auto attribute = doc->allocate_attribute(
-        doc->allocate_string(name.c_str(), name.length()), 
+        doc->allocate_string(name.c_str(), 0), 
         doc->allocate_string(ss.str().c_str(), 0));
 
     node->append_attribute(attribute);
@@ -79,8 +79,8 @@ bool ISerializer::AppendStringAttribute(ISerializer::Node* node, const std::stri
     if(!doc) return false;
 
     auto attribute = doc->allocate_attribute(
-        doc->allocate_string(name.c_str(), name.length()), 
-        doc->allocate_string(value.c_str(), value.length()));
+        doc->allocate_string(name.c_str(), 0), 
+        doc->allocate_string(value.c_str(), 0));
     node->append_attribute(attribute);
     return true;
 }
@@ -90,7 +90,7 @@ int64_t ISerializer::ExtractIntegerAttribute(ISerializer::Node* node, const std:
     int64_t ret = 0;
     if(node)
     {
-        rapidxml::xml_attribute<> *attribute = node->first_attribute(name.c_str(), name.length(), false);
+        rapidxml::xml_attribute<> *attribute = node->first_attribute(name.c_str(), 0, false);
         if(attribute && attribute->value())
         {
             std::stringstream ss;
@@ -107,7 +107,7 @@ double ISerializer::ExtractRealAttribute(ISerializer::Node* node, const std::str
     double ret = 0;
     if(node)
     {
-        rapidxml::xml_attribute<> *attribute = node->first_attribute(name.c_str(), name.length(), false);
+        rapidxml::xml_attribute<> *attribute = node->first_attribute(name.c_str(), 0, false);
         if(attribute && attribute->value())
         {
             std::stringstream ss;
@@ -124,7 +124,7 @@ std::string ISerializer::ExtractStringAttribute(ISerializer::Node* node, const s
     std::string ret;
     if(node)
     {
-        rapidxml::xml_attribute<> *attribute = node->first_attribute(name.c_str(), name.length(), false);
+        rapidxml::xml_attribute<> *attribute = node->first_attribute(name.c_str(), 0, false);
         if(attribute && attribute->value())
         {
             ret = attribute->value();

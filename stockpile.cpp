@@ -54,7 +54,7 @@ void Stockpile::Debug() const
     printf("[Stockpile (%p)]\n", this);
     for(auto resource : resources_)
     {
-        printf("\t[Resource %s: Qty=%ld]\n", Resource::GetResourceName(resource.first).c_str(), resources_[resource.first]);
+        printf("\t[Resource %s: Qty=%ld]\n", Resource::GetResourceShortName(resource.first).c_str(), resources_[resource.first]);
     }
 #endif
 }
