@@ -293,6 +293,15 @@ bool World::WriteInstance(ISerializer::Node* node)
                 itr.second.WriteInstance(resources);
             }
         }
+        
+        auto recipes = CreateChildNode(world_node, "recipes");
+        if(recipes)
+        {
+            for(auto itr: recipes_)
+            {
+                itr->WriteInstance(recipes);
+            }
+        }
     }
     return true;
 }

@@ -51,7 +51,6 @@ void world_init()
 {
     // create a game world with some test provinces
     g_world = std::make_shared<World>();
-
     
     static const ResourceId farmland_id   = Resource::GetResourceByShortName("farmland");
     static const ResourceId energy_id     = Resource::GetResourceByShortName("energy");
@@ -65,8 +64,6 @@ void world_init()
     static const ResourceId crude_id      = Resource::GetResourceByShortName("crude");
     static const ResourceId rares_id      = Resource::GetResourceByShortName("rares");
     static const ResourceId fuel_id       = Resource::GetResourceByShortName("fuel");
-    
-
     
     australia = std::make_shared<Country>(0, "Australia");
     australia->AddFactory();
