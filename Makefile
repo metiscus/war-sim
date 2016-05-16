@@ -4,7 +4,7 @@ CXX=g++
 CXXFLAGS=$(CFLAGS) -std=c++11 -lboost_serialization -Irapidxml-1.13
 CXXFLAGS+=-DDEBUG
 
-default: warsim parser
+default: warsim
 
 warsim_SRC=\
 	main.cpp\
@@ -32,6 +32,6 @@ parser: ddf.lpp ddf.ypp
 	$(CXX) $(CXXFLAGS) -o parser lex.yy.o ddf.tab.cpp
 clean:
 	-rm -f *.o *.d warsim
-	-rm -f ddf.tab.c ddf.tab.h parser
+	-rm -f ddf.tab.c ddf.tab.h parser ddf.tab.cpp ddf.tab.hpp
 
 -include *.d
