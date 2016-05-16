@@ -11,7 +11,8 @@ World::World()
     rapidxml::xml_document<> d;
     d.parse<0>(f.data());
     
-    auto node = d.first_node("recipe");
+    auto node = d.first_node();
+    if(node) node = node->first_node();
     while(node != nullptr)
     {
         auto recipe = std::make_shared<Recipe>();

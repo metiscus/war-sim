@@ -41,15 +41,7 @@ bool RecipeSlot::ReadInstance(Node* node)
     if(node)
     {
         std::string resource_name = ExtractStringAttribute(node, "resource");
-        std::stringstream ss;
-        ss<<resource_name;
-        ss>>resource_;
-        if(!ss.good())
-        {
-            Resource::GetResourceByShortName(resource_name);
-        }
-        
-        resource_    = 
+        resource_  =  Resource::GetResourceByShortName(resource_name);
         quantity_    = ExtractIntegerAttribute(node, "quantity");
         is_consumed_ = ExtractIntegerAttribute(node, "is_consumed") == 1;
         return true;
