@@ -1,8 +1,5 @@
 #pragma once
 
-#include <boost/archive/text_iarchive.hpp> 
-#include <boost/archive/text_oarchive.hpp> 
-
 #include "factory.h"
 #include <memory>
 #include <string>
@@ -14,7 +11,6 @@ class World;
 
 class Country
 {
-    friend class boost::serialization::access;
 public:
     typedef uint64_t Id;
     
@@ -24,20 +20,7 @@ private:
     std::set<uint32_t> territories_;
     std::string name_;
     Id id_;
-    float dissent_;
-
-    template<class Archive>
-    void serialize(Archive& archive, const unsigned int version)
-    {
-        (void)version;
-        archive & (stockpile_);
-        archive & (factories_);
-        archive & (territories_);
-        archive & (name_);
-        archive & (id_);
-    }    
-    
-    
+    float dissent_;    
     RecipePtr FindRecipeForResource(World* world, ResourceId id);
 
 public:

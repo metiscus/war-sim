@@ -1,7 +1,7 @@
 CC=gcc
 CFLAGS=-g -O0 -Wall -Wextra -MD
 CXX=g++
-CXXFLAGS=$(CFLAGS) -std=c++11 -lboost_serialization -Irapidxml-1.13
+CXXFLAGS=$(CFLAGS) -std=c++11 -Irapidxml-1.13
 CXXFLAGS+=-DDEBUG
 
 default: warsim

@@ -1,8 +1,5 @@
 #pragma once
 
-#include <boost/archive/text_iarchive.hpp> 
-#include <boost/archive/text_oarchive.hpp> 
-
 #include <map>
 #include <memory>
 
@@ -15,7 +12,6 @@
 
 class World : public ISerializer
 {
-    friend class boost::serialization::access;
 private:
     
     std::map<uint64_t, Resource> resources_;
