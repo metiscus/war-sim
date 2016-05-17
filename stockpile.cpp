@@ -1,7 +1,6 @@
 #include "stockpile.h"
 #include <cassert>
 #include <cstdio>
-#include "resource_id.h"
 
 Stockpile::Stockpile()
 {

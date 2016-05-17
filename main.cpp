@@ -4,7 +4,6 @@
 #include <map>
 #include "factory.h"
 #include "resource.h"
-#include "resource_id.h"
 #include "recipe.h"
 #include "stockpile.h"
 #include "country.h"

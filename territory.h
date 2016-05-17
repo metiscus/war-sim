@@ -6,8 +6,6 @@
 #include <string>
 #include "serializer.h"
 
-#include "resource_id.h"
-
 class Territory : public ISerializer
 {
 private:
