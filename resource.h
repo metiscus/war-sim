@@ -21,10 +21,8 @@ private:
     static std::map<std::string, ResourceId> s_resources_names_;
     
     friend class World;
-    
-public:
-    Resource();
-    
+
+protected:
     void SetName(const std::string& name);
     void SetShortName(const std::string& name);
     void SetId(ResourceId id);
@@ -34,10 +32,13 @@ public:
     const std::string& GetShortName() const;
     const ResourceId& GetId() const;
     const double& GetBaseValue() const;
-    
+
     bool ReadInstance(rapidxml::xml_node<>* node);
     bool WriteInstance(rapidxml::xml_node<>* node);
     
+public:
+    Resource();
+
     static bool        LoadResourceFile(const std::string& name);
     static std::string GetResourceShortName(ResourceId id);
     static ResourceId  GetResourceByShortName(const std::string& name);
