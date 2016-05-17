@@ -67,7 +67,7 @@ bool Stockpile::ReadInstance(Node* node)
         node = node->first_node("resource");
         while(node)
         {
-            ResourceId id = ExtractIntegerAttribute(node, "id");
+            ResourceId id = Resource::GetResourceByShortName(ExtractStringAttribute(node, "id"));
             uint64_t qty = ExtractIntegerAttribute(node, "qty");
             resources_[id] = qty;
             
@@ -87,7 +87,7 @@ bool Stockpile::WriteInstance(Node* node)
         for(auto resource : resources_)
         {
             auto res_node = CreateChildNode(my_node, "resource");
-            AppendIntegerAttribute(res_node, "id", resource.first);
+            AppendStringAttribute(res_node, "id", Resource::GetResourceShortName(resource.first));
             AppendIntegerAttribute(res_node, "qty", resource.second);
         }
         return true;

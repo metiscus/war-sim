@@ -16,6 +16,8 @@ public:
     
     virtual bool ReadInstance(Node* node)  = 0;
     virtual bool WriteInstance(Node* node) = 0;
+
+    static bool WriteToFile(const std::string& filename, ISerializer* node);
     
 protected:
     Node* FindChildNode(Node* node, const std::string& name);
@@ -28,5 +30,4 @@ protected:
     int64_t ExtractIntegerAttribute(Node* node, const std::string& name);
     double ExtractRealAttribute(Node* node, const std::string& name);
     std::string ExtractStringAttribute(Node* node, const std::string& name);
-
 };

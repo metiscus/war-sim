@@ -20,6 +20,8 @@ private:
     static std::map<ResourceId, Resource> s_resources_;
     static std::map<std::string, ResourceId> s_resources_names_;
     
+    friend class World;
+    
 public:
     Resource();
     

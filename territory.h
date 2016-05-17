@@ -1,13 +1,14 @@
 #pragma once
 
 #include <array>
+#include "country.h"
 #include <cstdint>
 #include <string>
-#include "country.h"
+#include "serializer.h"
 
 #include "resource_id.h"
 
-class Territory
+class Territory : public ISerializer
 {
 private:
     std::string name_;
@@ -15,10 +16,14 @@ private:
     Country::Id owner_;
     Country::Id core_;
     
-    struct ResourceInfo
+    struct ResourceInfo : public ISerializer
     {
+        uint64_t id;
         float quantity;
         bool  is_produced;
+        
+        virtual bool ReadInstance(ISerializer::Node* node);
+        virtual bool WriteInstance(ISerializer::Node* node);
     };
     
     ResourceContainer<ResourceInfo> resources_;    
@@ -43,4 +48,7 @@ public:
     typedef ResourceContainer<ResourceInfo>::ConstIteratorType ResourceIteratorType;
     ResourceIteratorType ResourcesBegin() const;
     ResourceIteratorType ResourcesEnd() const;
+    
+    virtual bool ReadInstance(ISerializer::Node* node);
+    virtual bool WriteInstance(ISerializer::Node* node);
 };

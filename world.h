@@ -2,6 +2,7 @@
 
 #include <map>
 #include <memory>
+#include <string>
 
 #include "recipe.h"
 #include "resource.h"
@@ -9,6 +10,9 @@
 #include "territory.h"
 #include "serializer.h"
 
+class World;
+
+typedef std::unique_ptr<World> WorldPtr;
 
 class World : public ISerializer
 {
@@ -21,10 +25,11 @@ private:
 
     std::vector<RecipePtr> recipes_;
     std::multimap<ResourceId, RecipePtr> recipe_map_;
-    uint64_t total_resources_;
 
-public:
     World();
+public:
+    static WorldPtr CreateDefaultWorld();
+    static WorldPtr LoadSavedWorld(const std::string& name);
 
     void AddTerritory(std::shared_ptr<Territory> territory);
     void AddCountry(std::shared_ptr<Country> country);

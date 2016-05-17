@@ -57,8 +57,8 @@ bool RecipeSlot::WriteInstance(Node* node)
     if(node)
     {
         auto new_node = CreateChildNode(node, "slot");
-        success = success && AppendIntegerAttribute(new_node, "quantity", quantity_);
         success = success && AppendStringAttribute(new_node, "resource", Resource::GetResourceShortName(resource_));
+        success = success && AppendIntegerAttribute(new_node, "quantity", quantity_);
         success = success && AppendIntegerAttribute(new_node, "is_consumed", is_consumed_ ? 1 : 0);
     }
     else

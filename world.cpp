@@ -3,10 +3,18 @@
 #include "rapidxml_utils.hpp"
 
 World::World()
-    : total_resources_(0)
 {
-    Resource::LoadResourceFile("data/resources.xml");
+}
 
+WorldPtr World::CreateDefaultWorld()
+{
+    WorldPtr ret(new World());
+    
+    // Load default resources
+    Resource::LoadResourceFile("data/resources.xml");
+    ret->resources_ = Resource::s_resources_;
+
+    // Load default recipes
     rapidxml::file<> f("data/recipes.xml");
     rapidxml::xml_document<> d;
     d.parse<0>(f.data());
@@ -18,10 +26,26 @@ World::World()
         auto recipe = std::make_shared<Recipe>();
         if(recipe->ReadInstance(node))
         {
-            AddRecipe(recipe);
+            ret->AddRecipe(recipe);
         }
         node = node->next_sibling();
     }
+    
+    return ret;
+}
+
+WorldPtr World::LoadSavedWorld(const std::string& name)
+{
+    WorldPtr ret(new World());
+
+    rapidxml::file<> f(name.c_str());
+    rapidxml::xml_document<> d;
+    d.parse<0>(f.data());
+    Node *node = d.first_node();
+    if(node) node = node->first_node();
+    ret->ReadInstance(node);
+    
+    return ret;
 }
 
 void World::AddTerritory(std::shared_ptr<Territory> territory)
@@ -142,6 +166,22 @@ bool World::WriteInstance(ISerializer::Node* node)
             for(auto itr: recipes_)
             {
                 itr->WriteInstance(recipes);
+            }
+        }
+        
+        auto countries = CreateChildNode(world_node, "countries");
+        {            
+            for(auto itr: countries_)
+            {
+                itr.second->WriteInstance(countries);
+            }
+        }
+        
+        auto territories = CreateChildNode(world_node, "territories");
+        {
+            for(auto itr: territories_)
+            {
+                itr.second->WriteInstance(territories);
             }
         }
     }

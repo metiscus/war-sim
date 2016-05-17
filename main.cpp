@@ -48,7 +48,7 @@ void test_production()
 void world_init()
 {
     // create a game world with some test provinces
-    g_world = std::make_shared<World>();
+    g_world = World::CreateDefaultWorld();
     
     static const ResourceId farmland_id   = Resource::GetResourceByShortName("farmland");
     static const ResourceId energy_id     = Resource::GetResourceByShortName("energy");
@@ -132,5 +132,8 @@ void world_init()
     territory->SetResource(manpower_id, 130, false);
     g_world->AddTerritory(territory);
     australia->AddTerritory(g_world.get(), territory->GetId());
+    
+    
+    ISerializer::WriteToFile("world.xml", g_world.get());
 
 }

@@ -1,6 +1,35 @@
 #include "serializer.h"
 #include <cstdint>
+#include <fstream>
+#include "rapidxml_print.hpp"
+#include <string>
 #include <sstream>
+
+bool ISerializer::WriteToFile(const std::string& filename, ISerializer* node)
+{
+    rapidxml::xml_document<> doc;
+    auto root = doc.allocate_node(rapidxml::node_element, "xml");
+    if(root)
+    {
+        doc.append_node(root);
+        node->WriteInstance(root);
+    }
+    else
+    {
+        return false;
+    }
+    
+    std::ofstream out(filename.c_str());
+    if(out.is_open())
+    {
+        std::string xml_as_string;
+        rapidxml::print(std::back_inserter(xml_as_string), doc);
+        out<<xml_as_string;
+        out.close();
+        return true;
+    }
+    return false;
+}
 
 ISerializer::Node* ISerializer::FindChildNode(Node* node, const std::string& name)
 {
