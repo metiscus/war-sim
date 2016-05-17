@@ -109,6 +109,8 @@ bool Resource::LoadResourceFile(const std::string& name)
             node = node->next_sibling();
         }
     }
+
+    return true;
 }
 
 std::string Resource::GetResourceShortName(ResourceId id)
