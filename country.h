@@ -2,14 +2,16 @@
 
 #include "factory.h"
 #include <memory>
+#include "serializer.h"
+#include <set>
 #include <string>
 #include <vector>
-#include <set>
+
 
 class Stockpile;
 class World;
 
-class Country
+class Country : public ISerializer
 {
 public:
     typedef uint64_t Id;
@@ -31,10 +33,11 @@ public:
     
     inline uint32_t GetId() const { return id_; }
     
-    void AddFactory();
-    void RemoveFactory();
-    uint32_t GetFactoryCount() const;
-    Factory& GetFactory(uint32_t idx);
+    //TODO: Factories should be present in the territories
+    void           AddFactory();
+    void           RemoveFactory();
+    uint32_t       GetFactoryCount() const;
+    Factory&       GetFactory(uint32_t idx);
     const Factory& GetFactory(uint32_t idx) const;
     
     void AddTerritory(World* world, uint32_t territory_id);
@@ -44,4 +47,7 @@ public:
     void GatherResources(World* world);
     void ProduceResources(World* world);
     void SimulateDomestic(World* world);
+    
+    bool ReadInstance(Node* node);
+    bool WriteInstance(Node* node);
 };

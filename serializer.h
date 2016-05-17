@@ -2,6 +2,7 @@
 
 #include "rapidxml.hpp"
 #include "rapidxml_print.hpp"
+#include <cassert>
 #include <cstdint>
 #include <functional>
 #include <string>

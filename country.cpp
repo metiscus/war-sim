@@ -264,3 +264,40 @@ void Country::SimulateDomestic(World* world)
 #endif    
     stockpile_->GetResource(foodstuffs_id, std::min(total_manpower, total_foodstuffs));
 }
+
+bool Country::ReadInstance(Node* node)
+{
+    assert(node);
+    
+    if(node)
+    {
+        name_ = ExtractStringAttribute(node, "name");
+        id_ = ExtractIntegerAttribute(node, "id");
+        dissent_ = ExtractRealAttribute(node, "dissent");
+        
+        auto stockpile = FindChildNode(node, "stockpile");
+        if(stockpile)
+        {
+            stockpile_->ReadInstance(stockpile);
+        }
+        return true;
+    }
+    return false;
+}
+
+bool Country::WriteInstance(Node* node)
+{
+    assert(node);
+    
+    if(node)
+    {
+        node = CreateChildNode(node, "country");
+        AppendStringAttribute(node, "name", name_);
+        AppendIntegerAttribute(node, "id", id_);
+        AppendRealAttribute(node, "dissent", dissent_);
+        stockpile_->WriteInstance(node);
+        return true;
+    }
+    
+    return false;
+}

@@ -21,8 +21,6 @@ private:
 
     std::vector<RecipePtr> recipes_;
     std::multimap<ResourceId, RecipePtr> recipe_map_;
-    std::map<ResourceId, uint64_t> global_static_resources_;
-    std::map<ResourceId, float> global_static_resource_scarcity_;
     uint64_t total_resources_;
 
 public:

@@ -1,10 +1,10 @@
 #pragma once
 
-#include "resource.h"
 #include <cstdint>
-#include <array>
+#include "resource.h"
+#include "serializer.h"
 
-class Stockpile
+class Stockpile : public ISerializer
 {
 private:
     ResourceCount<int64_t> resources_;
@@ -19,4 +19,7 @@ public:
     int64_t GetResourceQuantity(ResourceId id) const;
   
     void Debug() const;
+    
+    virtual bool ReadInstance(Node* node);
+    virtual bool WriteInstance(Node* node);
 };

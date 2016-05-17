@@ -58,3 +58,39 @@ void Stockpile::Debug() const
     }
 #endif
 }
+
+bool Stockpile::ReadInstance(Node* node)
+{
+    assert(node);
+    if(node)
+    {
+        node = node->first_node("resource");
+        while(node)
+        {
+            ResourceId id = ExtractIntegerAttribute(node, "id");
+            uint64_t qty = ExtractIntegerAttribute(node, "qty");
+            resources_[id] = qty;
+            
+            node = node->next_sibling();
+        }
+        return true;
+    }
+    return false;
+}
+
+bool Stockpile::WriteInstance(Node* node)
+{
+    assert(node);
+    auto my_node = CreateChildNode(node, "stockpile");
+    if(my_node)
+    {
+        for(auto resource : resources_)
+        {
+            auto res_node = CreateChildNode(my_node, "resource");
+            AppendIntegerAttribute(res_node, "id", resource.first);
+            AppendIntegerAttribute(res_node, "qty", resource.second);
+        }
+        return true;
+    }
+    return false;
+}
