@@ -37,6 +37,7 @@ WorldPtr World::CreateDefaultWorld()
 WorldPtr World::LoadSavedWorld(const std::string& name)
 {
     WorldPtr ret(new World());
+    Resource::LoadResourceFile("data/resources.xml");
 
     rapidxml::file<> f(name.c_str());
     rapidxml::xml_document<> d;
@@ -143,6 +144,43 @@ bool World::ReadInstance(ISerializer::Node* node)
             resources_.insert(std::make_pair(r.GetId(), r));
         });
     }
+    
+    auto recipes = FindChildNode(node, "recipes");
+    if(recipes)
+    {
+        ForAllChildren(recipes, [this] (ISerializer::Node* node) {
+            RecipePtr ptr = std::make_shared<Recipe>();
+            if(ptr->ReadInstance(node))
+            {
+                AddRecipe(ptr);
+            }
+        });
+    }
+    
+    auto countries = FindChildNode(node, "countries");
+    if(countries)
+    {
+        ForAllChildren(countries, [this] (ISerializer::Node* node) {
+            auto ptr = std::make_shared<Country>();
+            if(ptr->ReadInstance(node))
+            {
+                AddCountry(ptr);
+            }
+        });
+    }
+    
+    auto territories = FindChildNode(node, "territories");
+    if(territories)
+    {
+        ForAllChildren(territories, [this] (ISerializer::Node* node) {
+            auto ptr = std::make_shared<Territory>();
+            if(ptr->ReadInstance(node))
+            {
+                AddTerritory(ptr);
+            }
+        });
+    }    
+
     return true;
 }
 

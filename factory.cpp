@@ -55,7 +55,6 @@ Factory::Factory()
     : have_resources_(false)
     , modifier_(1.0)
 {
-    
 }
 
 void Factory::SetStockpile(std::shared_ptr<Stockpile> stockpile)

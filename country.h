@@ -26,6 +26,7 @@ private:
     RecipePtr FindRecipeForResource(World* world, ResourceId id);
 
 public:
+    Country();
     Country(Id id, const std::string& name);
     
     const std::string& GetName() const;

@@ -145,5 +145,16 @@
 			<slot quantity="45" resource="energy" is_consumed="1"/>
 		</inputs>
 	</recipe>
+    <recipe id="13" name="synthetic crude from lumber and energy">
+        <outputs>
+            <slot quantity="40" resource="manpower" is_consumed="0"/>
+            <slot quantity="10" resource="crude" is_consumed="1"/>
+        </outputs>
+        <inputs>
+            <slot quantity="40" resource="manpower" is_consumed="0"/>
+            <slot quantity="80" resource="lumber" is_consumed="1"/>
+            <slot quantity="80" resource="energy" is_consumed="1"/>
+        </inputs>
+    </recipe>
 </xml>
 

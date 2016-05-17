@@ -40,14 +40,17 @@ void test_production()
         
         if(ii == 250)
         {
-            australia->AddFactory();
+  //          australia->AddFactory();
         }
     }
+    
+    ISerializer::WriteToFile("world2.xml", g_world.get());
 }
 
 void world_init()
 {
     // create a game world with some test provinces
+#if 0
     g_world = World::CreateDefaultWorld();
     
     static const ResourceId farmland_id   = Resource::GetResourceByShortName("farmland");
@@ -135,5 +138,7 @@ void world_init()
     
     
     ISerializer::WriteToFile("world.xml", g_world.get());
+#endif
+    g_world = World::LoadSavedWorld("data/world.xml");
 
 }

@@ -29,6 +29,7 @@ private:
     ResourceContainer<ResourceInfo> resources_;    
 
 public:
+    Territory();
     Territory(uint64_t id, const std::string& name, Country::Id owner);
     
     uint64_t GetId() const;

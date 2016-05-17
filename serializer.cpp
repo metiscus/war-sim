@@ -44,7 +44,7 @@ void ISerializer::ForAllChildren(Node* node, std::function<void(ISerializer::Nod
     while(ptr != nullptr)
     {
         functor(ptr);
-        ptr = node->next_sibling();
+        ptr = ptr->next_sibling();
     }
 }
 

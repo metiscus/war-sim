@@ -1,10 +1,19 @@
 #include "country.h"
 #include <algorithm>
 #include <cassert>
+#include <sstream>
 #include "stockpile.h"
 #include "territory.h"
 #include "world.h"
 
+
+Country::Country()
+    : name_("invalid")
+    , id_(0)
+    , dissent_(0.0f)
+{
+    stockpile_ = std::make_shared<Stockpile>();
+}
 
 Country::Country(Id id, const std::string& name)
     : name_(name)
@@ -169,6 +178,7 @@ void Country::GatherResources(World* world)
         {
             if(territory->GetResourceIsProduced(itr->first))
             {
+                //printf("Stockpiling resource: %s\n", Resource::GetResourceShortName(itr->first).c_str());
                 stockpile_->AddResource(itr->first, territory->GetResource(itr->first));
             }
         }
@@ -193,7 +203,7 @@ void Country::GatherResources(World* world)
     factories_[2].SetRecipe(FindRecipeForResource(world, steel_id));
     //factories_[2].SetRecipe(FindRecipeForResource(world, resource_machines));
     //factories_[3].SetRecipe(FindRecipeForResource(world, resource_machines));
-    for(uint32_t ii=3; ii<factories_.size(); ++ii)
+    for(uint32_t ii=2; ii<factories_.size(); ++ii)
     {
         if(stockpile_->GetResourceQuantity(manpower_id) * 3 > stockpile_->GetResourceQuantity(foodstuffs_id))
         {
@@ -280,6 +290,24 @@ bool Country::ReadInstance(Node* node)
         {
             stockpile_->ReadInstance(stockpile);
         }
+        
+        uint64_t factories = ExtractIntegerAttribute(node, "factories");
+        factories_.resize(factories);
+        for(auto& factory:factories_)
+        {
+            factory.SetStockpile(stockpile_);
+        }
+
+        Node* territories = FindChildNode(node, "territories");
+        std::stringstream ss;
+        ss << ExtractStringAttribute(territories, "controlled");
+        uint64_t territory = 0;
+        while(ss>>territory)
+        {
+            //printf("Country controls %lu\n",territory);
+            territories_.insert(territory);
+        }
+        
         return true;
     }
     return false;
@@ -295,7 +323,18 @@ bool Country::WriteInstance(Node* node)
         AppendStringAttribute(node, "name", name_);
         AppendIntegerAttribute(node, "id", id_);
         AppendRealAttribute(node, "dissent", dissent_);
+        AppendIntegerAttribute(node, "factories", factories_.size());
         stockpile_->WriteInstance(node);
+        
+        Node* territories = CreateChildNode(node, "territories");
+        std::stringstream ss;
+        for(auto territory : territories_)
+        {
+            ss<<" "<<territory;
+        }
+
+        AppendStringAttribute(territories, "controlled", ss.str().c_str());
+    
         return true;
     }
     

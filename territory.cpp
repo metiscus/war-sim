@@ -28,6 +28,14 @@ bool Territory::ResourceInfo::WriteInstance(ISerializer::Node* node)
     return false;
 }
 
+Territory::Territory()
+    : name_("invalid")
+    , id_(0)
+    , owner_(0)
+    , core_(0)
+{
+}
+
 Territory::Territory(uint64_t id, const std::string& name, Country::Id owner)
     : name_(name)
     , id_(id)
@@ -102,7 +110,34 @@ Territory::ResourceIteratorType Territory::ResourcesEnd() const
 bool Territory::ReadInstance(ISerializer::Node* node)
 {
     assert(node);
-    
+    if(node)
+    {
+        id_ = ExtractIntegerAttribute(node, "id");
+        owner_ = ExtractIntegerAttribute(node, "owner");
+        core_ = ExtractIntegerAttribute(node, "core");
+        name_ = ExtractStringAttribute(node, "name");
+        
+        Node *resources = FindChildNode(node, "resources");
+        if(resources)
+        {
+            ForAllChildren(resources, [this] (ISerializer::Node* node) {
+                ResourceInfo info;
+                if(info.ReadInstance(node))
+                {
+#if 0
+                    printf("Resource: %s Qty: %f IsProduced: %s\n", 
+                           Resource::GetResourceShortName(info.id).c_str(), 
+                           info.quantity,
+                           info.is_produced ? "true" : "false"
+                    );
+#endif
+                    resources_[info.id] = info;
+                }
+            });
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Territory::WriteInstance(ISerializer::Node* node)
