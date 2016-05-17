@@ -54,16 +54,12 @@ int main(int argc, char** argv)
         "local t = Territory.new();\n"
         "print(t);\n"
         "print(\"2\\n\");\n"
-        "local tt = t:GetOwner();\n"
-        "print(\"3\\n\");\n"
         "t:SetOwner(1);\n"
+        "print(\"3\\n\");\n"
+        "local tt = t:GetOwner();\n"
         "print(\"4\\n\");\n"
+        "print(tt);\n"
         "print(\"5\\n\");\n"
-        "print(\"6\\n\");\n"
-        "print(\"7\\n\");\n"
-        "print(\"8\\n\");\n"
-        "print(\"9\\n\");\n"
-        
     );
     
     return 0;
