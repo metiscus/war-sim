@@ -10,8 +10,6 @@
 #include "territory.h"
 #include "world.h"
 
-#define OOLUA_NEW_POINTER_DEFAULT_IS_SHARED_TYPE 1
-#define OOLUA_USE_SHARED_PTR 1
 #include "oolua.h"
 
 void world_init();
@@ -25,9 +23,13 @@ struct ProductionDemand
     uint64_t   qty;
 };
 
+//OOLUA_PROXY(uint64_t)
+//OOLUA_PROXY_END
+
 OOLUA_PROXY(Territory)
     OOLUA_MFUNC_CONST(GetOwner)
     OOLUA_MEM_FUNC(void, SetOwner, uint64_t)
+    OOLUA_MEM_FUNC(void, SetResource, uint64_t, float, bool)
 OOLUA_PROXY_END
 
 OOLUA_EXPORT_FUNCTIONS(Territory
@@ -47,8 +49,22 @@ int main(int argc, char** argv)
     using namespace OOLUA; //NOLINT(build/namespaces)
     Script vm;
     vm.register_class<Territory>();
-    run_chunk(vm, "print(Territory.new());");
-    run_chunk(vm, "print(\"hello\");");
+    run_chunk(vm, 
+        "print(\"1\\n\");\n"
+        "local t = Territory.new();\n"
+        "print(t);\n"
+        "print(\"2\\n\");\n"
+        "local tt = t:GetOwner();\n"
+        "print(\"3\\n\");\n"
+        "t:SetOwner(1);\n"
+        "print(\"4\\n\");\n"
+        "print(\"5\\n\");\n"
+        "print(\"6\\n\");\n"
+        "print(\"7\\n\");\n"
+        "print(\"8\\n\");\n"
+        "print(\"9\\n\");\n"
+        
+    );
     
     return 0;
 }

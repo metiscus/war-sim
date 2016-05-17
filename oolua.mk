@@ -1,3 +1,5 @@
+CXXFLAGS+= -DOOLUA_NEW_POINTER_DEFAULT_IS_SHARED_TYPE=1 -DOOLUA_USE_SHARED_PTR=1
+
 oolua_SRC=\
     oolua-2.0.1/src/class_from_stack.cpp\
     oolua-2.0.1/src/oolua_push.cpp\
@@ -21,6 +23,6 @@ oolua_SRC=\
     oolua-2.0.1/src/stack_get.cpp\
 
 oolua_OBJ=$(oolua_SRC:.cpp=.o)
-    
+
 liboolua.a: $(oolua_OBJ)
 	ar -rcs liboolua.a $(oolua_OBJ)
