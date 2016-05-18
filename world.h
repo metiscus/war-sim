@@ -6,11 +6,13 @@
 
 #include "recipe.h"
 #include "resource.h"
-#include "country.h"
-#include "territory.h"
 #include "serializer.h"
 
+#include <oolua.h>
+
 class World;
+class Country;
+class Territory;
 
 typedef std::unique_ptr<World> WorldPtr;
 
@@ -45,3 +47,9 @@ public:
     virtual bool WriteInstance(ISerializer::Node* node);
     
 };
+
+OOLUA_PROXY(World)
+    OOLUA_TAGS(
+        No_public_constructors
+    )
+OOLUA_PROXY_END

@@ -1,6 +1,8 @@
 print("test.lua")
 
 function foo()
+    local country = Country.new(0, "australia")
+    print(country:GetName())
     local territory = Territory.new()
     print(territory)
     territory:SetOwner(1)

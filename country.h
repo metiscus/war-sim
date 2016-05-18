@@ -6,10 +6,11 @@
 #include <set>
 #include <string>
 #include <vector>
+#include "world.h"
 
+#include <oolua.h>
 
 class Stockpile;
-class World;
 
 class Country : public ISerializer
 {
@@ -52,3 +53,29 @@ public:
     bool ReadInstance(Node* node);
     bool WriteInstance(Node* node);
 };
+
+OOLUA_PROXY(Country)
+    OOLUA_TAGS(
+        No_default_constructor
+    )
+
+    OOLUA_CTORS(
+        OOLUA_CTOR(uint64_t, const std::string&)
+    )
+
+    OOLUA_MFUNC_CONST(GetId)    
+    OOLUA_MFUNC_CONST(GetName)
+    //OOLUA_MFUNC_CONST(GetStockpile)
+    OOLUA_MFUNC_CONST(GetFactoryCount)
+    //OOLUA_MFUNC_CONST(GetFactory)
+    //OOLUA_MFUNC_CONST(GetTerritories)
+    
+    OOLUA_MFUNC(AddFactory)
+    OOLUA_MFUNC(RemoveFactory)
+    //OOLUA_MFUNC(GetFactory)
+    //OOLUA_MEM_FUNC(void, AddTerritory, World*, uint32_t)
+    //OOLUA_MFUNC(RemoveTerritory)
+    //OOLUA_MFUNC(GatherResources)
+    //OOLUA_MFUNC(ProduceResources)
+    //OOLUA_MFUNC(SimulateDomestic)
+OOLUA_PROXY_END

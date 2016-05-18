@@ -10,6 +10,7 @@
 #include "territory.h"
 #include "world.h"
 #include "rapidxml_utils.hpp"
+#include <oolua.h>
 
 void world_init();
 void test_production();
@@ -36,6 +37,8 @@ int main(int argc, char** argv)
     using namespace OOLUA; //NOLINT(build/namespaces)
     Script vm;
     vm.register_class<Territory>();
+    vm.register_class<Country>();
+    vm.register_class<World>();
     vm.register_class<Resource>();
     vm.register_class_static<Resource>("LoadResourceFile",
         &OOLUA::Proxy_class<Resource>::LoadResourceFile);

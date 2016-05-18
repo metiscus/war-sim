@@ -5,7 +5,8 @@
 #include <cstdint>
 #include <string>
 #include "serializer.h"
-#include "oolua.h"
+#include "world.h"
+#include <oolua.h>
 
 class Territory : public ISerializer
 {
@@ -54,10 +55,19 @@ public:
 };
 
 OOLUA_PROXY(Territory)
+    OOLUA_CTORS(
+        OOLUA_CTOR(uint64_t, const std::string&, uint64_t)
+    )
+
+    OOLUA_MFUNC_CONST(GetId)    
+    OOLUA_MFUNC_CONST(GetName)
     OOLUA_MFUNC_CONST(GetOwner)
-    OOLUA_MEM_FUNC(void, SetOwner, uint64_t)
-    OOLUA_MEM_FUNC(void, SetResource, uint64_t, float, bool)
-    OOLUA_MEM_FUNC(void, ChangeResource, uint64_t, float)
+    OOLUA_MFUNC_CONST(GetCore)
     OOLUA_MFUNC_CONST(GetResource)
     OOLUA_MFUNC_CONST(GetResourceIsProduced)
+    
+    OOLUA_MEM_FUNC(void, SetOwner, uint64_t)
+    OOLUA_MEM_FUNC(void, SetCore, uint64_t)
+    OOLUA_MEM_FUNC(void, SetResource, uint64_t, float, bool)
+    OOLUA_MEM_FUNC(void, ChangeResource, uint64_t, float)
 OOLUA_PROXY_END

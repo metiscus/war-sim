@@ -2,15 +2,19 @@
 
 OOLUA_EXPORT_FUNCTIONS(Territory
     ,SetOwner
+    ,SetCore
+    ,SetResource
     ,ChangeResource
 )
 
 OOLUA_EXPORT_FUNCTIONS_CONST(Territory
+    ,GetId
+    ,GetName
     ,GetOwner
+    ,GetCore
     ,GetResource
     ,GetResourceIsProduced
 )
-
 
 bool Territory::ResourceInfo::ReadInstance(ISerializer::Node* node)
 {

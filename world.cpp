@@ -1,6 +1,10 @@
 #include "world.h"
 #include <cstdio>
 #include "rapidxml_utils.hpp"
+#include "territory.h"
+#include "country.h"
+
+OOLUA_EXPORT_NO_FUNCTIONS(World)
 
 World::World()
 {
