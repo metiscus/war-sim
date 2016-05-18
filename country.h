@@ -24,7 +24,7 @@ private:
     std::string name_;
     Id id_;
     float dissent_;    
-    RecipePtr FindRecipeForResource(World* world, ResourceId id);
+    RecipePtr FindRecipeForResource(ResourceId id);
 
 public:
     Country();
@@ -42,13 +42,13 @@ public:
     Factory&       GetFactory(uint32_t idx);
     const Factory& GetFactory(uint32_t idx) const;
     
-    void AddTerritory(World* world, uint32_t territory_id);
-    void RemoveTerritory(World* world, uint32_t territory_id);
+    void AddTerritory(uint32_t territory_id);
+    void RemoveTerritory(uint32_t territory_id);
     const std::set<uint32_t>& GetTerritories() const;
 
-    void GatherResources(World* world);
-    void ProduceResources(World* world);
-    void SimulateDomestic(World* world);
+    void GatherResources();
+    void ProduceResources();
+    void SimulateDomestic();
     
     bool ReadInstance(Node* node);
     bool WriteInstance(Node* node);
@@ -73,7 +73,7 @@ OOLUA_PROXY(Country)
     OOLUA_MFUNC(AddFactory)
     OOLUA_MFUNC(RemoveFactory)
     //OOLUA_MFUNC(GetFactory)
-    //OOLUA_MEM_FUNC(void, AddTerritory, World*, uint32_t)
+//    OOLUA_MFUNC(AddTerritory)
     //OOLUA_MFUNC(RemoveTerritory)
     //OOLUA_MFUNC(GatherResources)
     //OOLUA_MFUNC(ProduceResources)

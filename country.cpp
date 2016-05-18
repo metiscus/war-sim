@@ -74,10 +74,11 @@ const Factory& Country::GetFactory(uint32_t idx) const
     return factories_[idx];
 }
 
-void Country::AddTerritory(World* world, uint32_t territory_id)
+void Country::AddTerritory(uint32_t territory_id)
 {
     territories_.insert(territory_id);
     
+    WorldPtr world = World::GetWorldStrong();
     std::shared_ptr<Territory> territory = world->GetTerritory(territory_id);
     for(auto itr = territory->ResourcesBegin(); itr!=territory->ResourcesEnd(); ++itr)
     {
@@ -88,8 +89,9 @@ void Country::AddTerritory(World* world, uint32_t territory_id)
     }
 }
 
-void Country::RemoveTerritory(World* world, uint32_t territory_id)
+void Country::RemoveTerritory(uint32_t territory_id)
 {
+    WorldPtr world = World::GetWorldStrong();
     std::shared_ptr<Territory> territory = world->GetTerritory(territory_id);
     for(auto itr = territory->ResourcesBegin(); itr!=territory->ResourcesEnd(); ++itr)
     {
@@ -107,7 +109,7 @@ const std::set<uint32_t>& Country::GetTerritories() const
     return territories_;
 }
 
-RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
+RecipePtr Country::FindRecipeForResource(ResourceId id)
 {
 #define DEBUG_FIND_RECIPE 1
 #if DEBUG && DEBUG_FIND_RECIPE
@@ -119,6 +121,7 @@ RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
 #else
 #define LOG(msg, ...)
 #endif
+    WorldPtr world = World::GetWorldStrong();
 
     LOG("Asked to produce %s", Resource::GetResourceShortName(id).c_str());
     // We want to produce some good and we have X factories
@@ -172,14 +175,16 @@ RecipePtr Country::FindRecipeForResource(World* world, ResourceId id)
     if(shortfalls.size() > 0 && shortfalls[0][id] == 0)
     {
         // now with the least shortfall set, return a recipe to produce
-        target_recipe = FindRecipeForResource(world, shortfalls[0].ComputeLargestType());
+        target_recipe = FindRecipeForResource(shortfalls[0].ComputeLargestType());
     }
     return target_recipe;
 #undef LOG
 }
 
-void Country::GatherResources(World* world)
+void Country::GatherResources()
 {
+    WorldPtr world = World::GetWorldStrong();
+
     // get resources from our territories
     for(uint32_t territory_id : territories_)
     {
@@ -208,20 +213,20 @@ void Country::GatherResources(World* world)
     static const ResourceId machines_id   = Resource::GetResourceByShortName("machines");
     
     //TODO: plan what the factories should produce and set up for that
-    factories_[0].SetRecipe(FindRecipeForResource(world, energy_id));
-    factories_[1].SetRecipe(FindRecipeForResource(world, lubricants_id));
-    factories_[2].SetRecipe(FindRecipeForResource(world, steel_id));
-    //factories_[2].SetRecipe(FindRecipeForResource(world, resource_machines));
-    //factories_[3].SetRecipe(FindRecipeForResource(world, resource_machines));
+    factories_[0].SetRecipe(FindRecipeForResource(energy_id));
+    factories_[1].SetRecipe(FindRecipeForResource(lubricants_id));
+    factories_[2].SetRecipe(FindRecipeForResource(steel_id));
+    //factories_[2].SetRecipe(FindRecipeForResource(resource_machines));
+    //factories_[3].SetRecipe(FindRecipeForResource(resource_machines));
     for(uint32_t ii=2; ii<factories_.size(); ++ii)
     {
         if(stockpile_->GetResourceQuantity(manpower_id) * 3 > stockpile_->GetResourceQuantity(foodstuffs_id))
         {
-            factories_[ii].SetRecipe(FindRecipeForResource(world, foodstuffs_id));
+            factories_[ii].SetRecipe(FindRecipeForResource(foodstuffs_id));
         }
         else
         {
-            factories_[ii].SetRecipe(FindRecipeForResource(world, machines_id));
+            factories_[ii].SetRecipe(FindRecipeForResource(machines_id));
         }
     }
 
@@ -238,7 +243,7 @@ void Country::GatherResources(World* world)
 #endif
 }
 
-void Country::ProduceResources(World* world)
+void Country::ProduceResources()
 {
     // do stuff here
     for(auto &factory: factories_)
@@ -254,7 +259,7 @@ void Country::ProduceResources(World* world)
     
 }
 
-void Country::SimulateDomestic(World* world)
+void Country::SimulateDomestic()
 {
     static const ResourceId manpower_id   = Resource::GetResourceByShortName("manpower");
     static const ResourceId foodstuffs_id = Resource::GetResourceByShortName("foodstuffs");

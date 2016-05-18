@@ -6,17 +6,19 @@
 
 OOLUA_EXPORT_NO_FUNCTIONS(World)
 
+WorldPtr World::s_world_;
+
 World::World()
 {
 }
 
-WorldPtr World::CreateDefaultWorld()
+void World::CreateDefaultWorld()
 {
-    WorldPtr ret(new World());
+    s_world_.reset(new World());
     
     // Load default resources
     Resource::LoadResourceFile("data/resources.xml");
-    ret->resources_ = Resource::s_resources_;
+    s_world_->resources_ = Resource::s_resources_;
 
     // Load default recipes
     rapidxml::file<> f("data/recipes.xml");
@@ -30,17 +32,15 @@ WorldPtr World::CreateDefaultWorld()
         auto recipe = std::make_shared<Recipe>();
         if(recipe->ReadInstance(node))
         {
-            ret->AddRecipe(recipe);
+            s_world_->AddRecipe(recipe);
         }
         node = node->next_sibling();
     }
-    
-    return ret;
 }
 
-WorldPtr World::LoadSavedWorld(const std::string& name)
+void World::LoadSavedWorld(const std::string& name)
 {
-    WorldPtr ret(new World());
+    s_world_.reset(new World());
     Resource::LoadResourceFile("data/resources.xml");
 
     rapidxml::file<> f(name.c_str());
@@ -48,9 +48,7 @@ WorldPtr World::LoadSavedWorld(const std::string& name)
     d.parse<0>(f.data());
     Node *node = d.first_node();
     if(node) node = node->first_node();
-    ret->ReadInstance(node);
-    
-    return ret;
+    s_world_->ReadInstance(node);
 }
 
 void World::AddTerritory(std::shared_ptr<Territory> territory)
@@ -127,13 +125,13 @@ void World::Simulate()
     // do stuff 
     for(auto country : countries_)
     {
-        country.second->SimulateDomestic(this);
-        country.second->GatherResources(this);
+        country.second->SimulateDomestic();
+        country.second->GatherResources();
     }
     
     for(auto country : countries_)
     {
-        country.second->ProduceResources(this);
+        country.second->ProduceResources();
     }
 }
 
@@ -228,4 +226,15 @@ bool World::WriteInstance(ISerializer::Node* node)
         }
     }
     return true;
+}
+
+WorldWeakPtr World::GetWorld()
+{
+    WorldWeakPtr ret = s_world_;
+    return ret;
+}
+
+WorldPtr World::GetWorldStrong()
+{
+    return s_world_;
 }

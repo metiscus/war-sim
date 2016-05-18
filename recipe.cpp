@@ -4,6 +4,13 @@
 #include <sstream>
 #include <cstdio>
 
+OOLUA_EXPORT_FUNCTIONS(RecipeSlot)
+OOLUA_EXPORT_FUNCTIONS_CONST(RecipeSlot
+    ,GetResourceId
+    ,GetQuantity
+    ,GetIsConsumed
+)
+
 RecipeSlot::RecipeSlot()
     : resource_(0)
     , quantity_(0)
@@ -73,6 +80,25 @@ bool RecipeSlot::WriteInstance(Node* node)
 }
     
 ///////////////////////////////////////////////////////////////////////////////
+#if 1
+OOLUA_EXPORT_FUNCTIONS(SlotList)
+OOLUA_EXPORT_FUNCTIONS_CONST(SlotList, size)
+//OOLUA_EXPORT_FUNCTIONS_CONST(SlotList
+//    ,push_back
+//    ,pop_back
+//)
+#else
+OOLUA_EXPORT_NO_FUNCTIONS(SlotList)
+#endif
+
+OOLUA_EXPORT_FUNCTIONS(Recipe)
+OOLUA_EXPORT_FUNCTIONS_CONST(Recipe
+    ,ComputeOutputQty
+    ,GetName
+    ,GetInputs
+    ,GetOutputs
+)
+
 uint64_t Recipe::NextId()
 {
     static uint64_t id = 0;
@@ -125,12 +151,12 @@ void Recipe::SetOutputs(const SlotList& outputs)
     }
 }
 
-const Recipe::SlotList& Recipe::GetInputs() const
+const SlotList& Recipe::GetInputs() const
 {
     return inputs_;
 }
 
-const Recipe::SlotList& Recipe::GetOutputs() const
+const SlotList& Recipe::GetOutputs() const
 {
     return outputs_;
 }

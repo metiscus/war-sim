@@ -9,6 +9,8 @@
 #include <memory>
 #include <map>
 
+#include <oolua.h>
+
 class RecipeSlot : public ISerializer
 {
 private:
@@ -31,11 +33,10 @@ public:
 
 class Recipe;
 typedef std::shared_ptr<Recipe> RecipePtr;
+typedef std::vector<RecipeSlot> SlotList;
+    
 class Recipe : public ISerializer
 {
-public:
-    typedef std::vector<RecipeSlot> SlotList;
-
 private:
     SlotList inputs_;
     SlotList outputs_;
@@ -61,3 +62,50 @@ public:
     virtual bool ReadInstance(Node* node);
     virtual bool WriteInstance(Node* node);
 };
+
+#if 1
+OOLUA_PROXY(SlotList)
+    //OOLUA_MEM_FUNC(void, push_back, const RecipeSlot&)
+    //OOLUA_MFUNC(pop_back)
+    OOLUA_MFUNC_CONST(size)
+OOLUA_PROXY_END
+#else
+OOLUA_PROXY(SlotList)
+OOLUA_PROXY_END
+#endif
+
+OOLUA_PROXY(RecipeSlot)
+    OOLUA_TAGS(
+        No_public_constructors
+    )
+
+    OOLUA_CTORS(
+        OOLUA_CTOR(uint64_t, int64_t, bool)
+    )
+
+    OOLUA_MFUNC_CONST(GetResourceId)    
+    OOLUA_MFUNC_CONST(GetQuantity)
+    OOLUA_MFUNC_CONST(GetIsConsumed)
+OOLUA_PROXY_END
+
+
+
+OOLUA_PROXY(Recipe)
+    OOLUA_TAGS(
+        No_public_constructors
+    )
+
+    OOLUA_CTORS(
+        OOLUA_CTOR(const std::string&)
+    )
+
+    OOLUA_MFUNC_CONST(ComputeOutputQty)    
+    OOLUA_MFUNC_CONST(GetName)
+    OOLUA_MFUNC_CONST(GetInputs)
+    OOLUA_MFUNC_CONST(GetOutputs)
+    
+//    OOLUA_MEM_FUNC(void, SetOwner, uint64_t)
+//    OOLUA_MEM_FUNC(void, SetCore, uint64_t)
+//    OOLUA_MEM_FUNC(void, SetResource, uint64_t, float, bool)
+//    OOLUA_MEM_FUNC(void, ChangeResource, uint64_t, float)
+OOLUA_PROXY_END

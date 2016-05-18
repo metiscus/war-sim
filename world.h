@@ -14,12 +14,13 @@ class World;
 class Country;
 class Territory;
 
-typedef std::unique_ptr<World> WorldPtr;
+typedef std::weak_ptr<World> WorldWeakPtr;
+typedef std::shared_ptr<World> WorldPtr;
 
 class World : public ISerializer
 {
 private:
-    
+    static WorldPtr s_world_;
     std::map<uint64_t, Resource> resources_;
     
     std::map<uint32_t, std::shared_ptr<Territory> > territories_;
@@ -30,8 +31,8 @@ private:
 
     World();
 public:
-    static WorldPtr CreateDefaultWorld();
-    static WorldPtr LoadSavedWorld(const std::string& name);
+    static void CreateDefaultWorld();
+    static void LoadSavedWorld(const std::string& name);
 
     void AddTerritory(std::shared_ptr<Territory> territory);
     void AddCountry(std::shared_ptr<Country> country);
@@ -46,6 +47,9 @@ public:
     virtual bool ReadInstance(ISerializer::Node* node);
     virtual bool WriteInstance(ISerializer::Node* node);
     
+    
+    static WorldWeakPtr GetWorld();
+    static WorldPtr     GetWorldStrong();
 };
 
 OOLUA_PROXY(World)

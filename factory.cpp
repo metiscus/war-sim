@@ -74,7 +74,7 @@ void Factory::GatherResources()
     if(stockpile_ && recipe_ && recipe_->IsValid())
     {
         // Build a list of required materials
-        const Recipe::SlotList& input_slot_list = recipe_->GetInputs();
+        const SlotList& input_slot_list = recipe_->GetInputs();
         ResourceCount<uint64_t> input_resources;
         for(auto input_slot : input_slot_list)
         {
@@ -111,7 +111,7 @@ void Factory::DeliverResources()
     if(have_resources_ && stockpile_ && recipe_ && recipe_->IsValid())
     {
         // Deliver all outputs
-        const Recipe::SlotList& output_slot_list = recipe_->GetOutputs();
+        const SlotList& output_slot_list = recipe_->GetOutputs();
         for(auto output_slot : output_slot_list)
         {
             if(output_slot.GetQuantity() > 0)
@@ -144,7 +144,7 @@ bool Factory::CanProduceRecipe(RecipePtr recipe) const
     }
 
     // Build a list of required materials
-    const Recipe::SlotList& input_slot_list = recipe->GetInputs();
+    const SlotList& input_slot_list = recipe->GetInputs();
     ResourceCount<uint64_t> input_resources;
     for(auto input_slot : input_slot_list)
     {
@@ -166,7 +166,7 @@ ResourceCount<uint64_t> Factory::ComputeResourceShortfall(RecipePtr recipe) cons
     }
 
     // Build a list of missing materials
-    const Recipe::SlotList& input_slot_list = recipe->GetInputs();
+    const SlotList& input_slot_list = recipe->GetInputs();
     ResourceCount<uint64_t> missing_resources;
     for(auto input_slot : input_slot_list)
     {

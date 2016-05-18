@@ -54,7 +54,7 @@ public:
     virtual bool WriteInstance(ISerializer::Node* node);
 };
 
-OOLUA_PROXY(Territory)
+OOLUA_PROXY(Territory)    
     OOLUA_CTORS(
         OOLUA_CTOR(uint64_t, const std::string&, uint64_t)
     )
