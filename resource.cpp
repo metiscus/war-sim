@@ -7,6 +7,8 @@ uint64_t Resource::s_resource_count_ = 0;
 std::map<ResourceId, Resource> Resource::s_resources_;
 std::map<std::string, ResourceId> Resource::s_resources_names_;
 
+OOLUA_EXPORT_NO_FUNCTIONS(Resource)
+
 Resource::Resource()
     : name_("unnamed resource")
     , short_name_("unnamed_resource")

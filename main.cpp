@@ -9,8 +9,7 @@
 #include "country.h"
 #include "territory.h"
 #include "world.h"
-
-#include "oolua.h"
+#include "rapidxml_utils.hpp"
 
 void world_init();
 void test_production();
@@ -26,41 +25,31 @@ struct ProductionDemand
 //OOLUA_PROXY(uint64_t)
 //OOLUA_PROXY_END
 
-OOLUA_PROXY(Territory)
-    OOLUA_MFUNC_CONST(GetOwner)
-    OOLUA_MEM_FUNC(void, SetOwner, uint64_t)
-    OOLUA_MEM_FUNC(void, SetResource, uint64_t, float, bool)
-OOLUA_PROXY_END
-
-OOLUA_EXPORT_FUNCTIONS(Territory
-    ,SetOwner
-)
-
-OOLUA_EXPORT_FUNCTIONS_CONST(Territory
-    ,GetOwner
-)
-
 
 int main(int argc, char** argv)
 {
     world_init();
     test_production();
 
+    rapidxml::file<> f("test.lua");
+    
     using namespace OOLUA; //NOLINT(build/namespaces)
     Script vm;
     vm.register_class<Territory>();
-    run_chunk(vm, 
-        "print(\"1\\n\");\n"
-        "local t = Territory.new();\n"
-        "print(t);\n"
-        "print(\"2\\n\");\n"
-        "t:SetOwner(1);\n"
-        "print(\"3\\n\");\n"
-        "local tt = t:GetOwner();\n"
-        "print(\"4\\n\");\n"
-        "print(tt);\n"
-        "print(\"5\\n\");\n"
-    );
+    vm.register_class<Resource>();
+    vm.register_class_static<Resource>("LoadResourceFile",
+        &OOLUA::Proxy_class<Resource>::LoadResourceFile);
+    vm.register_class_static<Resource>("GetResourceShortName",
+        &OOLUA::Proxy_class<Resource>::GetResourceShortName);
+    vm.register_class_static<Resource>("GetResourceByShortName",
+        &OOLUA::Proxy_class<Resource>::GetResourceByShortName);
+    vm.register_class_static<Resource>("GetResourceBaseValue",
+        &OOLUA::Proxy_class<Resource>::GetResourceBaseValue);
+    if(!run_chunk(vm, f.data()))
+    {
+        printf("LUA Error: '%s'\n", OOLUA::get_last_error(vm).c_str());
+    }
+    
     
     return 0;
 }

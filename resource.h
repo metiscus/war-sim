@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 
+#include <oolua.h>
 #include "serializer.h"
 
 typedef uint64_t ResourceId;
@@ -44,6 +45,14 @@ public:
     static ResourceId  GetResourceByShortName(const std::string& name);
     static double      GetResourceBaseValue(ResourceId id);
 };
+
+OOLUA_PROXY(Resource)
+    OOLUA_TAGS(No_public_constructors)
+    OOLUA_SFUNC(LoadResourceFile)
+    OOLUA_SFUNC(GetResourceShortName)
+    OOLUA_SFUNC(GetResourceByShortName)
+    OOLUA_SFUNC(GetResourceBaseValue)
+OOLUA_PROXY_END
 
 template<typename Contained>
 class ResourceContainer

@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <string>
 #include "serializer.h"
+#include "oolua.h"
 
 class Territory : public ISerializer
 {
@@ -51,3 +52,12 @@ public:
     virtual bool ReadInstance(ISerializer::Node* node);
     virtual bool WriteInstance(ISerializer::Node* node);
 };
+
+OOLUA_PROXY(Territory)
+    OOLUA_MFUNC_CONST(GetOwner)
+    OOLUA_MEM_FUNC(void, SetOwner, uint64_t)
+    OOLUA_MEM_FUNC(void, SetResource, uint64_t, float, bool)
+    OOLUA_MEM_FUNC(void, ChangeResource, uint64_t, float)
+    OOLUA_MFUNC_CONST(GetResource)
+    OOLUA_MFUNC_CONST(GetResourceIsProduced)
+OOLUA_PROXY_END

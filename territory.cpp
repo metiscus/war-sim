@@ -1,5 +1,16 @@
 #include "territory.h"
 
+OOLUA_EXPORT_FUNCTIONS(Territory
+    ,SetOwner
+    ,ChangeResource
+)
+
+OOLUA_EXPORT_FUNCTIONS_CONST(Territory
+    ,GetOwner
+    ,GetResource
+    ,GetResourceIsProduced
+)
+
 
 bool Territory::ResourceInfo::ReadInstance(ISerializer::Node* node)
 {
@@ -34,6 +45,7 @@ Territory::Territory()
     , owner_(0)
     , core_(0)
 {
+    fprintf(stderr,"%p territory constructor!\n", this);
 }
 
 Territory::Territory(uint64_t id, const std::string& name, Country::Id owner)
@@ -42,7 +54,6 @@ Territory::Territory(uint64_t id, const std::string& name, Country::Id owner)
     , owner_(owner)
     , core_(owner)
 {
-    
 }
 
 uint64_t Territory::GetId() const
