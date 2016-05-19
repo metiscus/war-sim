@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <string>
 #include <map>
+#include <set>
 
 #include <oolua.h>
 #include "serializer.h"
@@ -20,6 +21,7 @@ private:
     static uint64_t s_resource_count_;
     static std::map<ResourceId, Resource> s_resources_;
     static std::map<std::string, ResourceId> s_resources_names_;
+    static std::set<ResourceId> s_resource_ids_;
     
     friend class World;
 
@@ -44,6 +46,8 @@ public:
     static std::string GetResourceShortName(ResourceId id);
     static ResourceId  GetResourceByShortName(const std::string& name);
     static double      GetResourceBaseValue(ResourceId id);
+    static ResourceId  GetFirstResourceId();
+    static ResourceId  GetNextResourceId(ResourceId id);
 };
 
 OOLUA_PROXY(Resource)

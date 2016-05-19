@@ -2,6 +2,17 @@
 #include <cassert>
 #include <cstdio>
 
+OOLUA_EXPORT_FUNCTIONS(Stockpile
+    ,GetResource
+    ,AddResource
+)
+
+OOLUA_EXPORT_FUNCTIONS_CONST(Stockpile
+    ,ContainsResource
+    ,GetResourceQuantity
+    ,Debug
+)
+
 Stockpile::Stockpile()
 {
     ;

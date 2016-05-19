@@ -11,6 +11,7 @@ function OnSimulateImp()
     local country = world:GetCountry(0)
     
     print(country:GetName() .. " has " .. country:GetFactoryCount() .. " factories.")
+    country:GetStockpile():Debug()
     
     local territory = world:GetTerritory(1)
     print(territory)

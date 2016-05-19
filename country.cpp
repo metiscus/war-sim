@@ -12,6 +12,7 @@ OOLUA_EXPORT_FUNCTIONS(Country
     //,GetFactory
     ,AddTerritory
     ,RemoveTerritory
+    ,GetStockpile
 )
 
 OOLUA_EXPORT_FUNCTIONS_CONST(Country

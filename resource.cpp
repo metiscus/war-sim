@@ -6,6 +6,7 @@
 uint64_t Resource::s_resource_count_ = 0;
 std::map<ResourceId, Resource> Resource::s_resources_;
 std::map<std::string, ResourceId> Resource::s_resources_names_;
+std::set<ResourceId> Resource::s_resource_ids_;
 
 OOLUA_EXPORT_NO_FUNCTIONS(Resource)
 
@@ -31,6 +32,7 @@ void Resource::SetShortName(const std::string& name)
 void Resource::SetId(ResourceId id)
 {
     id_ = id;
+    s_resource_ids_.insert(id);
 }
 
 void Resource::SetBaseValue(double value)
@@ -157,5 +159,23 @@ double Resource::GetResourceBaseValue(ResourceId id)
     else
     {
         return itr->second.GetBaseValue();
+    }
+}
+
+ResourceId  Resource::GetFirstResourceId()
+{
+    return *s_resource_ids_.begin();
+}
+
+ResourceId  Resource::GetNextResourceId(ResourceId id)
+{
+    auto itr = s_resource_ids_.find(id);
+    if(itr == s_resource_ids_.end())
+    {
+        return id;
+    }
+    else
+    {
+        return *(++itr);
     }
 }

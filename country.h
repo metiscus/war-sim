@@ -6,10 +6,11 @@
 #include <set>
 #include <string>
 #include <vector>
+#include "stockpile.h"
 
 #include <oolua.h>
 
-class Stockpile;
+
 class World;
 
 class Country : public ISerializer
@@ -65,7 +66,7 @@ OOLUA_PROXY(Country)
 
     OOLUA_MFUNC_CONST(GetId)    
     OOLUA_MFUNC_CONST(GetName)
-    //OOLUA_MFUNC_CONST(GetStockpile)
+    OOLUA_MFUNC(GetStockpile)
     OOLUA_MFUNC_CONST(GetFactoryCount)
     //OOLUA_MFUNC_CONST(GetFactory)
     //OOLUA_MFUNC_CONST(GetTerritories)

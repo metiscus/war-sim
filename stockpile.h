@@ -4,6 +4,8 @@
 #include "resource.h"
 #include "serializer.h"
 
+#include <oolua.h>
+
 class Stockpile : public ISerializer
 {
 private:
@@ -23,3 +25,15 @@ public:
     virtual bool ReadInstance(Node* node);
     virtual bool WriteInstance(Node* node);
 };
+
+OOLUA_PROXY(Stockpile)
+    OOLUA_TAGS(
+        No_default_constructor
+    )
+    
+    OOLUA_MFUNC_CONST(ContainsResource)
+    OOLUA_MFUNC(AddResource)
+    OOLUA_MFUNC(GetResource)
+    OOLUA_MFUNC_CONST(GetResourceQuantity)
+    OOLUA_MFUNC_CONST(Debug)
+OOLUA_PROXY_END

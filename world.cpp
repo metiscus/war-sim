@@ -4,6 +4,7 @@
 #include "rapidxml_utils.hpp"
 #include "territory.h"
 #include "country.h"
+#include "stockpile.h"
 
 //OOLUA_EXPORT_NO_FUNCTIONS(World)
 OOLUA_EXPORT_FUNCTIONS(World
@@ -24,6 +25,7 @@ World::World()
     lua_.register_class<Recipe>();
     lua_.register_class<RecipeSlot>();
     lua_.register_class<SlotList>();
+    lua_.register_class<Stockpile>();
     lua_.register_class_static<Resource>("LoadResourceFile",
         &OOLUA::Proxy_class<Resource>::LoadResourceFile);
     lua_.register_class_static<Resource>("GetResourceShortName",
