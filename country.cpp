@@ -9,6 +9,9 @@
 OOLUA_EXPORT_FUNCTIONS(Country
     ,AddFactory
     ,RemoveFactory
+    //,GetFactory
+    ,AddTerritory
+    ,RemoveTerritory
 )
 
 OOLUA_EXPORT_FUNCTIONS_CONST(Country
@@ -38,15 +41,15 @@ const std::string& Country::GetName() const
     return name_;
 }
 
-std::shared_ptr<Stockpile> Country::GetStockpile()
+Stockpile* Country::GetStockpile()
 {
-    return stockpile_;
+    return stockpile_.get();
 }
 
 void Country::AddFactory()
 {
     Factory f;
-    f.SetStockpile(GetStockpile());
+    f.SetStockpile(stockpile_);
     factories_.push_back(f);
 }
 
@@ -62,17 +65,19 @@ uint32_t Country::GetFactoryCount() const
     return factories_.size();
 }
 
-Factory& Country::GetFactory(uint32_t idx)
+Factory* Country::GetFactory(uint32_t idx)
 {
     assert(idx < factories_.size());
-    return factories_[idx];
+    return &factories_[idx];
 }
 
-const Factory& Country::GetFactory(uint32_t idx) const
+#if 0
+const Factory* Country::GetFactory(uint32_t idx) const
 {
     assert(idx < factories_.size());
-    return factories_[idx];
+    return &factories_[idx];
 }
+#endif
 
 void Country::AddTerritory(uint32_t territory_id)
 {
