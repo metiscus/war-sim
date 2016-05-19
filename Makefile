@@ -27,17 +27,11 @@ warsim: $(warsim_OBJ) $(warsim_SRC) liboolua.a liblua5.a
 	
 include oolua.mk
 include lua5.mk
-	
-parser: ddf.lpp ddf.ypp
-	flex ddf.lpp
-	bison -W ddf.ypp
-	$(CC) $(CFLAGS) -c lex.yy.c
-	$(CXX) $(CXXFLAGS) -o parser lex.yy.o ddf.tab.cpp
+
 clean:
 	-rm -f warsim
 	-find . -name "*.o" -exec rm {} \;
 	-find . -name "*.d" -exec rm {} \;
-	-rm -f ddf.tab.c ddf.tab.h parser ddf.tab.cpp ddf.tab.hpp
 	-rm -f liblua5.a liboolua.a
 
 -include $(shell find -name "*.d")
