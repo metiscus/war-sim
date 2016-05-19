@@ -6,11 +6,11 @@
 #include <set>
 #include <string>
 #include <vector>
-#include "world.h"
 
 #include <oolua.h>
 
 class Stockpile;
+class World;
 
 class Country : public ISerializer
 {

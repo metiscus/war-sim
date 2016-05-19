@@ -19,7 +19,7 @@ int main(int argc, char** argv)
     
     World::LoadSavedWorld(world_filename);
     
-    WorldPtr world = World::GetWorldStrong();
+    auto world = World::GetWorldStrong();
     for(uint32_t i = 0; i<10; ++i)
     {
         world->Simulate();

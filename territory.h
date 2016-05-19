@@ -5,8 +5,9 @@
 #include <cstdint>
 #include <string>
 #include "serializer.h"
-#include "world.h"
 #include <oolua.h>
+
+class World;
 
 class Territory : public ISerializer
 {

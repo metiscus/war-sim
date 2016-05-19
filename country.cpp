@@ -78,8 +78,8 @@ void Country::AddTerritory(uint32_t territory_id)
 {
     territories_.insert(territory_id);
     
-    WorldPtr world = World::GetWorldStrong();
-    std::shared_ptr<Territory> territory = world->GetTerritory(territory_id);
+    auto world = World::GetWorldStrong();
+    auto territory = world->GetTerritory(territory_id);
     for(auto itr = territory->ResourcesBegin(); itr!=territory->ResourcesEnd(); ++itr)
     {
         if(!territory->GetResourceIsProduced(itr->first))
@@ -91,8 +91,8 @@ void Country::AddTerritory(uint32_t territory_id)
 
 void Country::RemoveTerritory(uint32_t territory_id)
 {
-    WorldPtr world = World::GetWorldStrong();
-    std::shared_ptr<Territory> territory = world->GetTerritory(territory_id);
+    auto world = World::GetWorldStrong();
+    auto territory = world->GetTerritory(territory_id);
     for(auto itr = territory->ResourcesBegin(); itr!=territory->ResourcesEnd(); ++itr)
     {
         if(!territory->GetResourceIsProduced(itr->first))
@@ -121,7 +121,7 @@ RecipePtr Country::FindRecipeForResource(ResourceId id)
 #else
 #define LOG(msg, ...)
 #endif
-    WorldPtr world = World::GetWorldStrong();
+    auto world = World::GetWorldStrong();
 
     LOG("Asked to produce %s", Resource::GetResourceShortName(id).c_str());
     // We want to produce some good and we have X factories
@@ -183,7 +183,7 @@ RecipePtr Country::FindRecipeForResource(ResourceId id)
 
 void Country::GatherResources()
 {
-    WorldPtr world = World::GetWorldStrong();
+    auto world = World::GetWorldStrong();
 
     // get resources from our territories
     for(uint32_t territory_id : territories_)

@@ -5,7 +5,12 @@
 #include "territory.h"
 #include "country.h"
 
-OOLUA_EXPORT_NO_FUNCTIONS(World)
+//OOLUA_EXPORT_NO_FUNCTIONS(World)
+OOLUA_EXPORT_FUNCTIONS(World
+    ,GetTerritory
+)
+
+OOLUA_EXPORT_FUNCTIONS_CONST(World)
 
 WorldPtr World::s_world_;
 
@@ -41,6 +46,9 @@ World::World()
     lua_.register_class_static<World>("SetStringProperty",
         &OOLUA::Proxy_class<World>::SetStringProperty);
 
+    lua_.register_class_static<World>("GetWorldStrong",
+        &OOLUA::Proxy_class<World>::GetWorldStrong);
+    
     property_map_["day"].SetInteger(0);
 }
 
@@ -144,7 +152,7 @@ void World::AddCountry(std::shared_ptr<Country> country)
     
 }
 
-std::shared_ptr<Territory> World::GetTerritory(uint32_t id)
+Territory* World::GetTerritory(uint32_t id)
 {
     std::shared_ptr<Territory> ret;
     auto itr = territories_.find(id);
@@ -152,7 +160,7 @@ std::shared_ptr<Territory> World::GetTerritory(uint32_t id)
     {
         ret = itr->second;
     }
-    return ret;
+    return ret.get();
 }
 
 std::shared_ptr<Country> World::GetCountry(uint32_t id)
@@ -311,7 +319,7 @@ WorldWeakPtr World::GetWorld()
     return ret;
 }
 
-WorldPtr World::GetWorldStrong()
+World* World::GetWorldStrong()
 {
-    return s_world_;
+    return s_world_.get();
 }

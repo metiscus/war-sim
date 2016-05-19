@@ -12,6 +12,7 @@
 #include "recipe.h"
 #include "resource.h"
 #include "serializer.h"
+#include "territory.h"
 
 #include <oolua.h>
 
@@ -128,7 +129,7 @@ public:
 
     void AddTerritory(std::shared_ptr<Territory> territory);
     void AddCountry(std::shared_ptr<Country> country);
-    std::shared_ptr<Territory> GetTerritory(uint32_t id);
+    Territory* GetTerritory(uint32_t id);
     std::shared_ptr<Country> GetCountry(uint32_t id);   
     
     void AddRecipe(RecipePtr ptr);
@@ -141,20 +142,22 @@ public:
     
     
     static WorldWeakPtr GetWorld();
-    static WorldPtr     GetWorldStrong();
-    static int64_t GetIntProperty(const char* name);
-    static double GetRealProperty(const char* name);
-    static std::string GetStringProperty(const char* name);
-    static void SetIntProperty(const char* name, int64_t value);
-    static void SetRealProperty(const char* name, double value);
-    static void SetStringProperty(const char* name, const char* value);
+    static World*       GetWorldStrong();
+    static int64_t      GetIntProperty(const char* name);
+    static double       GetRealProperty(const char* name);
+    static std::string  GetStringProperty(const char* name);
+    static void         SetIntProperty(const char* name, int64_t value);
+    static void         SetRealProperty(const char* name, double value);
+    static void         SetStringProperty(const char* name, const char* value);
 };
 
 OOLUA_PROXY(World)
     OOLUA_TAGS(
         No_public_constructors
     )
-    
+
+    OOLUA_MFUNC(GetTerritory)
+    OOLUA_SFUNC(GetWorldStrong)
     OOLUA_SFUNC(GetIntProperty)
     OOLUA_SFUNC(GetRealProperty)
     OOLUA_SFUNC(GetStringProperty)
