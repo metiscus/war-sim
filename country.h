@@ -31,7 +31,7 @@ public:
     Country(Id id, const std::string& name);
     
     const std::string& GetName() const;
-    std::shared_ptr<Stockpile> GetStockpile();
+    Stockpile* GetStockpile();
     
     inline uint32_t GetId() const { return id_; }
     
@@ -39,8 +39,8 @@ public:
     void           AddFactory();
     void           RemoveFactory();
     uint32_t       GetFactoryCount() const;
-    Factory&       GetFactory(uint32_t idx);
-    const Factory& GetFactory(uint32_t idx) const;
+    Factory*       GetFactory(uint32_t idx);
+    //const Factory* GetFactory(uint32_t idx) const;
     
     void AddTerritory(uint32_t territory_id);
     void RemoveTerritory(uint32_t territory_id);
@@ -73,8 +73,8 @@ OOLUA_PROXY(Country)
     OOLUA_MFUNC(AddFactory)
     OOLUA_MFUNC(RemoveFactory)
     //OOLUA_MFUNC(GetFactory)
-//    OOLUA_MFUNC(AddTerritory)
-    //OOLUA_MFUNC(RemoveTerritory)
+    OOLUA_MFUNC(AddTerritory)
+    OOLUA_MFUNC(RemoveTerritory)
     //OOLUA_MFUNC(GatherResources)
     //OOLUA_MFUNC(ProduceResources)
     //OOLUA_MFUNC(SimulateDomestic)

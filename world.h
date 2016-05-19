@@ -12,6 +12,7 @@
 #include "recipe.h"
 #include "resource.h"
 #include "serializer.h"
+#include "country.h"
 #include "territory.h"
 
 #include <oolua.h>
@@ -130,7 +131,7 @@ public:
     void AddTerritory(std::shared_ptr<Territory> territory);
     void AddCountry(std::shared_ptr<Country> country);
     Territory* GetTerritory(uint32_t id);
-    std::shared_ptr<Country> GetCountry(uint32_t id);   
+    Country* GetCountry(uint32_t id);   
     
     void AddRecipe(RecipePtr ptr);
     std::vector<RecipePtr> GetRecipesForResource(ResourceId id);
@@ -156,6 +157,7 @@ OOLUA_PROXY(World)
         No_public_constructors
     )
 
+    OOLUA_MFUNC(GetCountry)
     OOLUA_MFUNC(GetTerritory)
     OOLUA_SFUNC(GetWorldStrong)
     OOLUA_SFUNC(GetIntProperty)

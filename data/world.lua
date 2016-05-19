@@ -3,14 +3,22 @@ function setup()
     print("Running world.lua!")
 end
 
-function OnSimulate()
-    print("today is ",  World.GetIntProperty("day"))
+function OnSimulateImp()
+    print("today is " .. World.GetIntProperty("day"))
     
     local world = World.GetWorldStrong()
-    print(world)
+
+    local country = world:GetCountry(0)
+    
+    print(country:GetName() .. " has " .. country:GetFactoryCount() .. " factories.")
+    
     local territory = world:GetTerritory(1)
     print(territory)
     print(territory:GetName())
+end
+
+function OnSimulate()
+    print(pcall(OnSimulateImp))
 end
 
 print(pcall(setup))

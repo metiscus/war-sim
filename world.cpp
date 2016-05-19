@@ -8,6 +8,7 @@
 //OOLUA_EXPORT_NO_FUNCTIONS(World)
 OOLUA_EXPORT_FUNCTIONS(World
     ,GetTerritory
+    ,GetCountry
 )
 
 OOLUA_EXPORT_FUNCTIONS_CONST(World)
@@ -163,7 +164,7 @@ Territory* World::GetTerritory(uint32_t id)
     return ret.get();
 }
 
-std::shared_ptr<Country> World::GetCountry(uint32_t id)
+Country* World::GetCountry(uint32_t id)
 {
     std::shared_ptr<Country> ret;
     auto itr = countries_.find(id);
@@ -171,7 +172,7 @@ std::shared_ptr<Country> World::GetCountry(uint32_t id)
     {
         ret = itr->second;
     }
-    return ret;
+    return ret.get();
 }
 
 void World::AddRecipe(RecipePtr ptr)
