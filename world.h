@@ -1,8 +1,13 @@
 #pragma once
 
+#include <cstdlib>
+#include <cstring>
+
 #include <map>
 #include <memory>
+#include <sstream>
 #include <string>
+
 
 #include "recipe.h"
 #include "resource.h"
@@ -17,6 +22,89 @@ class Territory;
 typedef std::weak_ptr<World> WorldWeakPtr;
 typedef std::shared_ptr<World> WorldPtr;
 
+enum PropertyType
+{
+    PropertyString,
+    PropertyInteger,
+    PropertyReal
+};
+
+class Property
+{
+    PropertyType type_;
+
+    std::string string_;
+    union {
+        int64_t integer_;
+        double real_;
+    };
+public:
+    Property()
+    {
+        type_ = PropertyInteger;
+        integer_ = 0;
+    }
+
+    inline void SetString(const std::string& str)
+    {
+        type_ = PropertyString;
+        string_ = str;
+    }
+    
+    inline void SetString(const char* string)
+    {
+        type_ = PropertyString;
+        string_ = string;
+    }
+    
+    inline void SetReal(double real)
+    {
+        type_ = PropertyReal;
+        real_ = real;
+    }
+    
+    inline void SetInteger(int64_t integer)
+    {
+        type_ = PropertyInteger;
+        integer_ = integer;
+    }
+    
+    int64_t GetInteger() const
+    {
+        if(type_ == PropertyInteger) return integer_;
+        if(type_ == PropertyReal) return (int64_t)real_;
+        if(type_ == PropertyString) return strtoll(string_.c_str(), nullptr, 10);
+        return 0;
+    }
+    
+    double GetReal() const
+    {
+        if(type_ == PropertyInteger) return (double)integer_;
+        if(type_ == PropertyReal) return real_;
+        if(type_ == PropertyString) return strtod(string_.c_str(), nullptr);
+        return 0;
+    }
+    
+    std::string GetString() const
+    {
+        if(type_ == PropertyInteger) 
+        {
+            std::stringstream ss;
+            ss<<integer_;
+            return ss.str();
+        }
+        if(type_ == PropertyReal)
+        {
+            std::stringstream ss;
+            ss<<integer_;
+            return ss.str();
+        }
+        if(type_ == PropertyString) return string_;
+        return std::string("");
+    }
+        
+};
+
 class World : public ISerializer
 {
 private:
@@ -29,6 +117,10 @@ private:
     std::vector<RecipePtr> recipes_;
     std::multimap<ResourceId, RecipePtr> recipe_map_;
 
+    std::map<std::string, Property> property_map_;
+    
+    OOLUA::Script lua_;
+    
     World();
 public:
     static void CreateDefaultWorld();
@@ -50,10 +142,23 @@ public:
     
     static WorldWeakPtr GetWorld();
     static WorldPtr     GetWorldStrong();
+    static int64_t GetIntProperty(const char* name);
+    static double GetRealProperty(const char* name);
+    static std::string GetStringProperty(const char* name);
+    static void SetIntProperty(const char* name, int64_t value);
+    static void SetRealProperty(const char* name, double value);
+    static void SetStringProperty(const char* name, const char* value);
 };
 
 OOLUA_PROXY(World)
     OOLUA_TAGS(
         No_public_constructors
     )
+    
+    OOLUA_SFUNC(GetIntProperty)
+    OOLUA_SFUNC(GetRealProperty)
+    OOLUA_SFUNC(GetStringProperty)
+    OOLUA_SFUNC(SetIntProperty)
+    OOLUA_SFUNC(SetRealProperty)
+    OOLUA_SFUNC(SetStringProperty)
 OOLUA_PROXY_END

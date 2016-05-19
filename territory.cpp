@@ -49,7 +49,6 @@ Territory::Territory()
     , owner_(0)
     , core_(0)
 {
-    fprintf(stderr,"%p territory constructor!\n", this);
 }
 
 Territory::Territory(uint64_t id, const std::string& name, Country::Id owner)

@@ -1,5 +1,6 @@
 #include "world.h"
 #include <cstdio>
+#include <functional>
 #include "rapidxml_utils.hpp"
 #include "territory.h"
 #include "country.h"
@@ -10,6 +11,67 @@ WorldPtr World::s_world_;
 
 World::World()
 {
+    lua_.register_class<Territory>();
+    lua_.register_class<Country>();
+    lua_.register_class<World>();
+    lua_.register_class<Resource>();
+    lua_.register_class<Recipe>();
+    lua_.register_class<RecipeSlot>();
+    lua_.register_class<SlotList>();
+    lua_.register_class_static<Resource>("LoadResourceFile",
+        &OOLUA::Proxy_class<Resource>::LoadResourceFile);
+    lua_.register_class_static<Resource>("GetResourceShortName",
+        &OOLUA::Proxy_class<Resource>::GetResourceShortName);
+    lua_.register_class_static<Resource>("GetResourceByShortName",
+        &OOLUA::Proxy_class<Resource>::GetResourceByShortName);
+    lua_.register_class_static<Resource>("GetResourceBaseValue",
+        &OOLUA::Proxy_class<Resource>::GetResourceBaseValue);
+    
+    lua_.register_class_static<World>("GetIntProperty",
+        &OOLUA::Proxy_class<World>::GetIntProperty);
+    lua_.register_class_static<World>("GetRealProperty",
+        &OOLUA::Proxy_class<World>::GetRealProperty);
+    lua_.register_class_static<World>("GetStringProperty",
+        &OOLUA::Proxy_class<World>::GetStringProperty);
+
+    lua_.register_class_static<World>("SetIntProperty",
+        &OOLUA::Proxy_class<World>::SetIntProperty);
+    lua_.register_class_static<World>("SetRealProperty",
+        &OOLUA::Proxy_class<World>::SetRealProperty);
+    lua_.register_class_static<World>("SetStringProperty",
+        &OOLUA::Proxy_class<World>::SetStringProperty);
+
+    property_map_["day"].SetInteger(0);
+}
+
+int64_t World::GetIntProperty(const char* name)
+{
+    return s_world_->property_map_[std::string(name)].GetInteger();
+}
+
+double World::GetRealProperty(const char* name)
+{
+    return s_world_->property_map_[std::string(name)].GetReal();
+}
+
+std::string World::GetStringProperty(const char* name)
+{
+    return s_world_->property_map_[std::string(name)].GetString();
+}
+
+void World::SetIntProperty(const char* name, int64_t value)
+{
+    s_world_->property_map_[std::string(name)].SetInteger(value);
+}
+
+void World::SetRealProperty(const char* name, double value)
+{
+    s_world_->property_map_[std::string(name)].SetReal(value);
+}
+
+void World::SetStringProperty(const char* name, const char* value)
+{
+    s_world_->property_map_[std::string(name)].SetString(value);
 }
 
 void World::CreateDefaultWorld()
@@ -36,6 +98,11 @@ void World::CreateDefaultWorld()
         }
         node = node->next_sibling();
     }
+    
+    if(!s_world_->lua_.run_file("data/world.lua"))
+    {
+        printf("LUA Error: '%s'\n", OOLUA::get_last_error(s_world_->lua_).c_str());
+    }
 }
 
 void World::LoadSavedWorld(const std::string& name)
@@ -49,6 +116,11 @@ void World::LoadSavedWorld(const std::string& name)
     Node *node = d.first_node();
     if(node) node = node->first_node();
     s_world_->ReadInstance(node);
+    
+    if(!s_world_->lua_.run_file("data/world.lua"))
+    {
+        printf("LUA Error: '%s'\n", OOLUA::get_last_error(s_world_->lua_).c_str());
+    }
 }
 
 void World::AddTerritory(std::shared_ptr<Territory> territory)
@@ -122,6 +194,11 @@ std::vector<RecipePtr> World::GetRecipesForResource(ResourceId id)
 
 void World::Simulate()
 {
+    property_map_["day"].SetInteger(property_map_["day"].GetInteger() + 1); 
+    
+    OOLUA::Lua_function Caller(lua_);
+    Caller("OnSimulate");
+    
     // do stuff 
     for(auto country : countries_)
     {
