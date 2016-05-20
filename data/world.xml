@@ -1,23 +1,26 @@
 <xml>
 	<world>
-		<resources>
-			<resource id="0" name="Manpower" short_name="manpower" base_value="0"/>
-			<resource id="1" name="Farmland" short_name="farmland" base_value="0"/>
-			<resource id="2" name="Food Stuffs" short_name="foodstuffs" base_value="0"/>
-			<resource id="3" name="Energy" short_name="energy" base_value="1"/>
-			<resource id="4" name="Coal" short_name="coal" base_value="1"/>
-			<resource id="5" name="Rares" short_name="rares" base_value="5"/>
-			<resource id="6" name="Crude Oil" short_name="crude" base_value="2"/>
-			<resource id="7" name="Iron" short_name="iron" base_value="1.5"/>
-			<resource id="8" name="Tools" short_name="tools" base_value="5"/>
-			<resource id="9" name="Steel" short_name="steel" base_value="5"/>
-			<resource id="10" name="Coke" short_name="coke" base_value="4"/>
-			<resource id="11" name="Lubricants" short_name="lubricants" base_value="7"/>
-			<resource id="12" name="Fuel" short_name="fuel" base_value="5"/>
-			<resource id="13" name="Machines" short_name="machines" base_value="5"/>
-			<resource id="14" name="Bearings" short_name="bearings" base_value="6"/>
-			<resource id="15" name="Lumber" short_name="lumber" base_value="1"/>
-		</resources>
+        <resources>
+            <resource id="0" name="Manpower" short_name="manpower" base_value="0"/>
+            <resource id="1" name="Farmland" short_name="farmland" base_value="0"/>
+            <resource id="2" name="Food Stuffs" short_name="foodstuffs" base_value="0"/>
+            <resource id="3" name="Energy" short_name="energy" base_value="1"/>
+            <resource id="4" name="Coal" short_name="coal" base_value="1"/>
+            <resource id="5" name="Rares" short_name="rares" base_value="5"/>
+            <resource id="6" name="Crude Oil" short_name="crude" base_value="2"/>
+            <resource id="7" name="Iron" short_name="iron" base_value="1.5"/>
+            <resource id="8" name="Tools" short_name="tools" base_value="5"/>
+            <resource id="9" name="Steel" short_name="steel" base_value="5"/>
+            <resource id="10" name="Coke" short_name="coke" base_value="4"/>
+            <resource id="11" name="Lubricants" short_name="lubricants" base_value="7"/>
+            <resource id="12" name="Fuel" short_name="fuel" base_value="5"/>
+            <resource id="13" name="Machines" short_name="machines" base_value="5"/>
+            <resource id="14" name="Bearings" short_name="bearings" base_value="6"/>
+            <resource id="15" name="Lumber" short_name="lumber" base_value="1"/>
+            <resource id="16" name="Armor Plate" short_name="armor_plates" base_value="100"/>
+            <resource id="17" name="Heavy Engine" short_name="heavy_engines" base_value="100" />
+            <resource id="18" name="Heavy Chassis" short_name="heavy_chassis" base_value="10" />
+        </resources>
 		<recipes>
             <recipe id="1" name="food from farmland and manpower">
                 <outputs>
@@ -72,7 +75,7 @@
                     <slot quantity="1" resource="manpower" is_consumed="0"/>
                 </inputs>
             </recipe>
-            <recipe id="6" name="steel from coke, iron, and energy">
+            <recipe id="6" name="steel from coke, iron, and energy" duration="10">
                 <outputs>
                     <slot quantity="5" resource="manpower" is_consumed="0"/>
                     <slot quantity="8" resource="steel" is_consumed="1"/>
@@ -176,21 +179,66 @@
                     <slot quantity="80" resource="energy" is_consumed="1"/>
                 </inputs>
             </recipe>
+            
+           <recipe id="14" name="armor plates from steel and rares">
+                <outputs>
+                    <slot quantity="40" resource="manpower" is_consumed="0"/>
+                    <slot quantity="10" resource="machines" is_consumed="0"/>
+                    <slot quantity="2"  resource="armor_plates" is_consumed="1"/>
+                </outputs>
+                <inputs>
+                    <slot quantity="40" resource="manpower" is_consumed="0"/>
+                    <slot quantity="10" resource="machines" is_consumed="0"/>
+                    <slot quantity="100" resource="steel" is_consumed="1"/>
+                    <slot quantity="10" resource="rares" is_consumed="1"/>
+                </inputs>
+            </recipe>
+            
+           <recipe id="15" name="heavy engines from steel, lubricants, and bearings">
+                <outputs>
+                    <slot quantity="40" resource="manpower" is_consumed="0"/>
+                    <slot quantity="10" resource="machines" is_consumed="0"/>
+                    <slot quantity="2"  resource="heavy_engines" is_consumed="1"/>
+                </outputs>
+                <inputs>
+                    <slot quantity="40" resource="manpower" is_consumed="0"/>
+                    <slot quantity="10" resource="machines" is_consumed="0"/>
+                    <slot quantity="100" resource="steel" is_consumed="1"/>
+                    <slot quantity="10" resource="lubricants" is_consumed="1"/>
+                    <slot quantity="10" resource="bearings" is_consumed="1"/>
+                </inputs>
+            </recipe>
+            
+           <recipe id="15" name="heavy chassis from steel, lubricants, and bearings">
+                <outputs>
+                    <slot quantity="40" resource="manpower" is_consumed="0"/>
+                    <slot quantity="30" resource="machines" is_consumed="0"/>
+                    <slot quantity="1"  resource="heavy_chassis" is_consumed="1"/>
+                </outputs>
+                <inputs>
+                    <slot quantity="40" resource="manpower" is_consumed="0"/>
+                    <slot quantity="30" resource="machines" is_consumed="0"/>
+                    <slot quantity="100" resource="steel" is_consumed="1"/>
+                    <slot quantity="10" resource="lubricants" is_consumed="1"/>
+                    <slot quantity="5" resource="bearings" is_consumed="1"/>
+                </inputs>
+            </recipe>
+
 		</recipes>
 		<countries>
 			<country name="Australia" id="0" dissent="0" factories="5">
 				<stockpile>
-					<resource id="manpower" qty="1504"/>
-					<resource id="farmland" qty="60"/>
-					<resource id="foodstuffs" qty="50000"/>
-					<resource id="energy" qty="1000"/>
-					<resource id="coal" qty="10000"/>
-					<resource id="rares" qty="5"/>
-					<resource id="crude" qty="200"/>
-					<resource id="iron" qty="2000"/>
-					<resource id="lubricants" qty="5"/>
-					<resource id="fuel" qty="50"/>
-					<resource id="machines" qty="50"/>
+                    <resource id="manpower" qty="1504"/>
+                    <resource id="farmland" qty="60"/>
+                    <resource id="foodstuffs" qty="50000"/>
+                    <resource id="energy" qty="1000"/>
+                    <resource id="coal" qty="10000"/>
+                    <resource id="rares" qty="5"/>
+                    <resource id="crude" qty="200"/>
+                    <resource id="iron" qty="2000"/>
+                    <resource id="lubricants" qty="5"/>
+                    <resource id="fuel" qty="50"/>
+                    <resource id="machines" qty="50"/>
 				</stockpile>
                 <territories controlled=" 0 1 2 3 4 5"/>
 			</country>

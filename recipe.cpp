@@ -109,6 +109,7 @@ Recipe::Recipe(const std::string& name, uint64_t id)
     : ISerializer()
     , name_(name)
     , id_(id)
+    , duration_(1)
 {
     
 }
@@ -151,6 +152,11 @@ void Recipe::SetOutputs(const SlotList& outputs)
     }
 }
 
+void Recipe::SetDuration(const uint64_t duration)
+{
+    duration_ = duration;
+}
+
 const SlotList& Recipe::GetInputs() const
 {
     return inputs_;
@@ -164,6 +170,11 @@ const SlotList& Recipe::GetOutputs() const
 const std::string& Recipe::GetName() const
 {
     return name_;
+}
+
+uint64_t Recipe::GetDuration() const
+{
+    return duration_;
 }
 
 bool Recipe::IsValid() const
@@ -197,6 +208,7 @@ bool Recipe::ReadInstance(Node* node)
     {
         id_    = ExtractIntegerAttribute(node, "id");
         name_  = ExtractStringAttribute(node, "name");
+        duration_ = ExtractIntegerAttribute(node, "duration");
         
         Node *inputs = FindChildNode(node, "inputs");
         if(inputs) inputs = inputs->first_node();
@@ -238,6 +250,7 @@ bool Recipe::WriteInstance(Node* node)
         auto new_node = CreateChildNode(node, "recipe");
         success = success && AppendIntegerAttribute(new_node, "id", id_);
         success = success && AppendStringAttribute(new_node, "name", name_);
+        success = success && AppendIntegerAttribute(new_node, "duration", duration_);
         auto outputs = CreateChildNode(new_node, "outputs");
         if(outputs)
         {

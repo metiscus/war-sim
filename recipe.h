@@ -42,6 +42,7 @@ private:
     SlotList outputs_;
     std::string name_;
     uint64_t id_;
+    uint64_t duration_;
 
 public:
     static uint64_t NextId();
@@ -52,9 +53,11 @@ public:
     void AddOutput(const RecipeSlot& output);
     void SetInputs(const SlotList& inputs);
     void SetOutputs(const SlotList& outputs);
+    void SetDuration(const uint64_t duration);
     const SlotList& GetInputs() const;
     const SlotList& GetOutputs() const;
     const std::string& GetName() const;
+    uint64_t GetDuration() const;
     bool IsValid() const;
     uint64_t GetId() const;
     uint64_t ComputeOutputQty(ResourceId id) const;

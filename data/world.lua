@@ -13,6 +13,16 @@ function OnSimulateImp()
     print(country:GetName() .. " has " .. country:GetFactoryCount() .. " factories.")
     country:GetStockpile():Debug()
     
+    if country:GetName() == "Australia" then
+        print "Australia is producing armor plates"
+        local fc = country:GetFactoryCount()
+        local factory = country:GetFactory(fc-1)
+        local plates = Resource.GetResourceByShortName("armor_plates")
+        local recipe = world:GetFirstRecipeForResource(plates)
+        --factory:SetRecipe(recipe)
+    end
+    
+    
     local territory = world:GetTerritory(1)
     print(territory)
     print(territory:GetName())
