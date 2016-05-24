@@ -17,6 +17,7 @@ warsim_SRC=\
 	serializer.cpp\
 	stockpile.cpp\
 	territory.cpp\
+	territorymanager.cpp\
 	world.cpp\
 	
 
