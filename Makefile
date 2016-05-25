@@ -19,6 +19,7 @@ warsim_SRC=\
 	territory.cpp\
 	territorymanager.cpp\
 	world.cpp\
+	scriptbindings.cpp\
 	
 
 warsim_OBJ=$(warsim_SRC:.cpp=.o)

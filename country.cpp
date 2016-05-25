@@ -6,21 +6,6 @@
 #include "territory.h"
 #include "world.h"
 
-OOLUA_EXPORT_FUNCTIONS(Country
-    ,AddFactory
-    ,RemoveFactory
-    //,GetFactory
-    ,AddTerritory
-    ,RemoveTerritory
-    ,GetStockpile
-)
-
-OOLUA_EXPORT_FUNCTIONS_CONST(Country
-    ,GetId
-    ,GetName
-    ,GetFactoryCount
-)
-
 Country::Country()
     : name_("invalid")
     , id_(0)

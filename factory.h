@@ -6,8 +6,6 @@
 #include <map>
 #include <memory>
 
-#include <oolua.h>
-
 class Stockpile;
 
 class FactorySpecialization

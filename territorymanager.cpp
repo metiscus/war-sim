@@ -2,6 +2,7 @@
 #include "territory.h"
 
 #include <cassert>
+#include <fstream>
 #include <map>
 #include <memory>
 #include "rapidxml_utils.hpp"
@@ -17,6 +18,13 @@ namespace TerritoryManager
         std::map<TerritoryId, uint32_t> territory_ids_;
     }
 
+    void Reset()
+    {
+        territory_ids_.clear();
+        territory_names_.clear();
+        territories_.clear();
+    }
+    
     void LoadTerritoryFile(const std::string& filename)
     {
         // Load default recipes
@@ -35,10 +43,7 @@ namespace TerritoryManager
             TerritoryPtr territory = std::make_shared<Territory>();
             if(territory->ReadInstance(node))
             {
-                territories_.emplace_back(territory);
-                uint32_t index = territories_.size() - 1;
-                territory_names_.insert(std::make_pair(territory->GetName(), index));
-                territory_ids_.insert(std::make_pair(territory->GetId(), index));
+                AddTerritory(territory);
             }
             else
             {
@@ -47,7 +52,39 @@ namespace TerritoryManager
         }
     }
     
-    Territory* GetTerritoryById(TerritoryId id)
+    void WriteTerritoryFile(const std::string& filename)
+    {
+        rapidxml::xml_document<> document;
+        auto node = document.allocate_node(rapidxml::node_element, "xml");
+        for(auto itr : territories_)
+        {
+            itr->WriteInstance(node);
+        }
+        
+        std::ofstream out(filename.c_str());
+        if(out.is_open())
+        {
+            std::string xml_as_string;
+            rapidxml::print(std::back_inserter(xml_as_string), document);
+            out<<xml_as_string;
+            out.close();
+        }
+    }
+    
+    void AddTerritory(std::shared_ptr<Territory> territory)
+    {
+        territories_.emplace_back(territory);
+        uint32_t index = territories_.size() - 1;
+        territory_names_.insert(std::make_pair(territory->GetName(), index));
+        territory_ids_.insert(std::make_pair(territory->GetId(), index));
+    }
+    
+    const Territory* GetTerritoryById(TerritoryId id)
+    {
+        return GetTerritoryByIdRw(id);
+    }    
+    
+    Territory* GetTerritoryByIdRw(TerritoryId id)
     {
         std::map<TerritoryId, uint32_t>::const_iterator itr = territory_ids_.find(id);
         if(itr != territory_ids_.end())
@@ -60,8 +97,13 @@ namespace TerritoryManager
             return nullptr;
         }
     }
-    
-    Territory* GetTerritoryByName(const std::string& name)
+
+    const Territory* GetTerritoryByName(const std::string& name)
+    {
+        return GetTerritoryByNameRw(name);
+    }
+
+    Territory* GetTerritoryByNameRw(const std::string& name)
     {
         std::map<std::string, uint32_t>::const_iterator itr = territory_names_.find(name);
         if(itr != territory_names_.end())

@@ -5,53 +5,14 @@
 #include "territory.h"
 #include "country.h"
 #include "stockpile.h"
-
-//OOLUA_EXPORT_NO_FUNCTIONS(World)
-OOLUA_EXPORT_FUNCTIONS(World
-    ,GetTerritory
-    ,GetCountry
-)
-
-OOLUA_EXPORT_FUNCTIONS_CONST(World)
+#include "territorymanager.h"
+#include "scriptbindings.h"
 
 WorldPtr World::s_world_;
 
 World::World()
 {
-    lua_.register_class<Territory>();
-    lua_.register_class<Country>();
-    lua_.register_class<World>();
-    lua_.register_class<Resource>();
-    lua_.register_class<Recipe>();
-    lua_.register_class<RecipeSlot>();
-    lua_.register_class<SlotList>();
-    lua_.register_class<Stockpile>();
-    lua_.register_class_static<Resource>("LoadResourceFile",
-        &OOLUA::Proxy_class<Resource>::LoadResourceFile);
-    lua_.register_class_static<Resource>("GetResourceShortName",
-        &OOLUA::Proxy_class<Resource>::GetResourceShortName);
-    lua_.register_class_static<Resource>("GetResourceByShortName",
-        &OOLUA::Proxy_class<Resource>::GetResourceByShortName);
-    lua_.register_class_static<Resource>("GetResourceBaseValue",
-        &OOLUA::Proxy_class<Resource>::GetResourceBaseValue);
-    
-    lua_.register_class_static<World>("GetIntProperty",
-        &OOLUA::Proxy_class<World>::GetIntProperty);
-    lua_.register_class_static<World>("GetRealProperty",
-        &OOLUA::Proxy_class<World>::GetRealProperty);
-    lua_.register_class_static<World>("GetStringProperty",
-        &OOLUA::Proxy_class<World>::GetStringProperty);
-
-    lua_.register_class_static<World>("SetIntProperty",
-        &OOLUA::Proxy_class<World>::SetIntProperty);
-    lua_.register_class_static<World>("SetRealProperty",
-        &OOLUA::Proxy_class<World>::SetRealProperty);
-    lua_.register_class_static<World>("SetStringProperty",
-        &OOLUA::Proxy_class<World>::SetStringProperty);
-
-    lua_.register_class_static<World>("GetWorldStrong",
-        &OOLUA::Proxy_class<World>::GetWorldStrong);
-    
+    lua_ = Script::CreateScriptEngine();
     property_map_["day"].SetInteger(0);
 }
 
@@ -110,9 +71,9 @@ void World::CreateDefaultWorld()
         node = node->next_sibling();
     }
     
-    if(!s_world_->lua_.run_file("data/world.lua"))
+    if(!s_world_->lua_->run_file("data/world.lua"))
     {
-        printf("LUA Error: '%s'\n", OOLUA::get_last_error(s_world_->lua_).c_str());
+        printf("LUA Error: '%s'\n", OOLUA::get_last_error(*(s_world_->lua_)).c_str());
     }
 }
 
@@ -128,20 +89,15 @@ void World::LoadSavedWorld(const std::string& name)
     if(node) node = node->first_node();
     s_world_->ReadInstance(node);
     
-    if(!s_world_->lua_.run_file("data/world.lua"))
+    if(!s_world_->lua_->run_file("data/world.lua"))
     {
-        printf("LUA Error: '%s'\n", OOLUA::get_last_error(s_world_->lua_).c_str());
+        printf("LUA Error: '%s'\n", OOLUA::get_last_error(*(s_world_->lua_)).c_str());
     }
 }
 
 void World::AddTerritory(std::shared_ptr<Territory> territory)
 {
-    auto itr = territories_.find(territory->GetId());
-    if(itr != territories_.end())
-    {
-        territories_.erase(itr);
-    }
-    territories_.insert(std::make_pair(territory->GetId(), territory));
+    TerritoryManager::AddTerritory(territory);
 }
 
 void World::AddCountry(std::shared_ptr<Country> country)
@@ -157,13 +113,7 @@ void World::AddCountry(std::shared_ptr<Country> country)
 
 Territory* World::GetTerritory(uint32_t id)
 {
-    std::shared_ptr<Territory> ret;
-    auto itr = territories_.find(id);
-    if(itr != territories_.end())
-    {
-        ret = itr->second;
-    }
-    return ret.get();
+    return TerritoryManager::GetTerritoryByIdRw(id);
 }
 
 Country* World::GetCountry(uint32_t id)
@@ -207,7 +157,7 @@ void World::Simulate()
 {
     property_map_["day"].SetInteger(property_map_["day"].GetInteger() + 1); 
     
-    OOLUA::Lua_function Caller(lua_);
+    OOLUA::Lua_function Caller(*lua_);
     Caller("OnSimulate");
     
     // do stuff 
@@ -305,6 +255,7 @@ bool World::WriteInstance(ISerializer::Node* node)
             }
         }
         
+#if 0
         auto territories = CreateChildNode(world_node, "territories");
         {
             for(auto itr: territories_)
@@ -312,6 +263,7 @@ bool World::WriteInstance(ISerializer::Node* node)
                 itr.second->WriteInstance(territories);
             }
         }
+#endif
     }
     return true;
 }

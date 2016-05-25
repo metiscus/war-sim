@@ -113,7 +113,6 @@ private:
     static WorldPtr s_world_;
     std::map<uint64_t, Resource> resources_;
     
-    std::map<uint32_t, std::shared_ptr<Territory> > territories_;
     std::map<uint32_t, std::shared_ptr<Country> > countries_;
 
     std::vector<RecipePtr> recipes_;
@@ -121,7 +120,7 @@ private:
 
     std::map<std::string, Property> property_map_;
     
-    OOLUA::Script lua_;
+    std::shared_ptr<OOLUA::Script> lua_;
     
     World();
 public:
@@ -151,19 +150,3 @@ public:
     static void         SetRealProperty(const char* name, double value);
     static void         SetStringProperty(const char* name, const char* value);
 };
-
-OOLUA_PROXY(World)
-    OOLUA_TAGS(
-        No_public_constructors
-    )
-
-    OOLUA_MFUNC(GetCountry)
-    OOLUA_MFUNC(GetTerritory)
-    OOLUA_SFUNC(GetWorldStrong)
-    OOLUA_SFUNC(GetIntProperty)
-    OOLUA_SFUNC(GetRealProperty)
-    OOLUA_SFUNC(GetStringProperty)
-    OOLUA_SFUNC(SetIntProperty)
-    OOLUA_SFUNC(SetRealProperty)
-    OOLUA_SFUNC(SetStringProperty)
-OOLUA_PROXY_END
