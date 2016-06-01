@@ -2,6 +2,8 @@
 
 #include "vector.h"
 
+namespace render
+{
 class Transform
 {
 private:
@@ -19,3 +21,4 @@ public:
     void SetRotation(const float& degrees);
     float GetRotation() const;
 };
+}

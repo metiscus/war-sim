@@ -2,6 +2,9 @@
 #include <cfloat>
 #include <cmath>
 
+namespace render 
+{
+
 Vector2::Vector2(float x_, float y_)
     : x(x_)
     , y(y_)
@@ -80,4 +83,5 @@ Vector2 Vector2::AsUnit() const
 Vector2 operator*(const float& lhs, const Vector2& rhs)
 {
     return Vector2(lhs*rhs.x, lhs*rhs.y);
+}
 }

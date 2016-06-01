@@ -3,6 +3,9 @@
 #include "transform.h"
 #include "vector.h"
 
+namespace render
+{
+
 class Node;
 class NodeVisitor
 {
@@ -37,3 +40,5 @@ public:
     
     virtual void Accept(NodeVisitor& visitor);
 };
+
+}

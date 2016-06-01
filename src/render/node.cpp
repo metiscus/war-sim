@@ -1,5 +1,8 @@
 #include "node.h"
 
+namespace render 
+{
+
 Node::Node()
 {
     layer_ = 0;
@@ -58,4 +61,5 @@ int Node::GetLayer() const
 void Node::Accept(NodeVisitor& visitor)
 {
     visitor.Visit(*this);
+}
 }

@@ -4,6 +4,9 @@
 #include "vector.h"
 #include <vector>
 
+namespace render 
+{
+    
 class Scene
 {
 private:
@@ -17,3 +20,5 @@ public:
     void Draw(float dt);
 
 };
+
+}

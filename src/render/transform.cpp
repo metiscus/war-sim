@@ -1,5 +1,8 @@
 #include "transform.h"
 
+namespace render
+{
+
 Transform::Transform()
     : position_(0.f, 0.f)
     , rotation_(0.f)
@@ -34,4 +37,5 @@ void Transform::SetRotation(const float& degrees)
 float Transform::GetRotation() const
 {
     return rotation_;
+}
 }

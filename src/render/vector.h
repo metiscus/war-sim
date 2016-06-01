@@ -1,5 +1,8 @@
 #pragma once
 
+namespace render
+{
+
 typedef struct Vector2
 {
     float x;
@@ -24,3 +27,4 @@ typedef struct Vector2
 
 Vector2 operator*(const float& lhs, const Vector2& rhs);
 
+}
