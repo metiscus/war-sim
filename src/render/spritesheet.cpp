@@ -14,7 +14,7 @@ public:
     SpriteRegionImpl()
     : sheet_(-1)
     { }
-    
+
     inline void SetSheet(int32_t sheet) { sheet_ = sheet; }
     inline void SetRectangle(const SDL_Rect& rect) { rect_ = rect; }
     
@@ -26,7 +26,12 @@ public:
 
 SpriteRegion::SpriteRegion()
 {
-    impl_.reset(new SpriteRegionImpl());
+    impl_ = new SpriteRegionImpl();
+}
+
+SpriteRegion::~SpriteRegion()
+{
+    delete impl_;
 }
 
 float SpriteRegion::GetWidth() const
@@ -77,7 +82,12 @@ public:
 
 SpriteSheet::SpriteSheet()
 {
-    impl_.reset(new SpriteSheetImpl());
+    impl_ = new SpriteSheetImpl();
+}
+
+SpriteSheet::~SpriteSheet()
+{
+    delete impl_;
 }
 
 std::shared_ptr<SpriteRegion> SpriteSheet::GetRegion(const std::string& name)

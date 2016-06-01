@@ -9,10 +9,15 @@ class SpriteRegionImpl;
 class SpriteRegion
 {
 private:
-    std::unique_ptr<SpriteRegionImpl> impl_;
+    SpriteRegionImpl* impl_;
 
 public:
-    SpriteRegion();
+    explicit SpriteRegion();
+    SpriteRegion(const SpriteRegion&) = delete;
+    SpriteRegion& operator=(const SpriteRegion&) = delete;
+
+    ~SpriteRegion();
+    
     float GetWidth() const;
     float GetHeight() const;
     
@@ -23,10 +28,14 @@ class SpriteSheetImpl;
 class SpriteSheet
 {
 private:
-    std::unique_ptr<SpriteSheetImpl> impl_;
+    SpriteSheetImpl* impl_;
 
 public:
-    SpriteSheet();
+    explicit SpriteSheet();
+    ~SpriteSheet();
+    SpriteSheet(const SpriteSheet&) = delete;
+    SpriteSheet& operator=(const SpriteSheet&) = delete;
+    
     void SetSheet(int32_t id);
     std::shared_ptr<SpriteRegion> GetRegion(const std::string& name);
 };
