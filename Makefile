@@ -1,25 +1,25 @@
 CC=gcc
 CFLAGS=-g -O0 -Wall -Wextra -MD
 CXX=g++
-CXXFLAGS=$(CFLAGS) -std=c++11 -Irapidxml-1.13 -Ioolua-2.0.1/include -Ilua-5.3.2/include
+CXXFLAGS=$(CFLAGS) -std=c++11 -Iexternal/rapidxml-1.13 -Iexternal/oolua-2.0.1/include -Iexternal/lua-5.3.2/include
 CXXFLAGS+=-DDEBUG
 LDDFLAGS=-L.
 
 default: warsim
 
 warsim_SRC=\
-	main.cpp\
-	country.cpp\
-	factory.cpp\
-	policy.cpp\
-	recipe.cpp\
-	resource.cpp\
-	serializer.cpp\
-	stockpile.cpp\
-	territory.cpp\
-	territorymanager.cpp\
-	world.cpp\
-	scriptbindings.cpp\
+	src/main.cpp\
+	src/country.cpp\
+	src/factory.cpp\
+	src/policy.cpp\
+	src/recipe.cpp\
+	src/resource.cpp\
+	src/serializer.cpp\
+	src/stockpile.cpp\
+	src/territory.cpp\
+	src/territorymanager.cpp\
+	src/world.cpp\
+	src/scriptbindings.cpp\
 	
 
 warsim_OBJ=$(warsim_SRC:.cpp=.o)
