@@ -20,6 +20,10 @@ warsim_SRC=\
 	src/territorymanager.cpp\
 	src/world.cpp\
 	src/scriptbindings.cpp\
+	src/render/camera.cpp\
+	src/render/node.cpp\
+	src/render/transform.cpp\
+	src/render/vector.cpp\
 	
 
 warsim_OBJ=$(warsim_SRC:.cpp=.o)
