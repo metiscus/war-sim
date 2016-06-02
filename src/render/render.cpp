@@ -111,8 +111,6 @@ namespace render
                     SDL_RenderCopy(renderer_, surface->Get(), &from, &to);
                 }
             }
-
-            
         }
     }
         

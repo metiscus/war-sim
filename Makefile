@@ -27,6 +27,8 @@ warsim_SRC=\
 	src/render/sprite.cpp\
 	src/render/spritesheet.cpp\
 	src/render/render.cpp\
+	src/render/scene.cpp\
+	src/render/group.cpp\
 	
 
 warsim_OBJ=$(warsim_SRC:.cpp=.o)

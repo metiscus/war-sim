@@ -1,6 +1,7 @@
 #pragma once
 
 #include "camera.h"
+#include "group.h"
 #include "vector.h"
 #include <vector>
 
@@ -10,12 +11,12 @@ namespace render
     class Scene
     {
     private:
-        Node root_;
+        Group root_;
         Camera camera_;
         
     public:
         Scene();
-        Node& GetRoot();
+        Group& GetRoot();
         Camera& GetCamera();
         
         void Draw(float dt);
