@@ -3,7 +3,7 @@ CFLAGS=-g -O0 -Wall -Wextra -MD
 CXX=g++
 CXXFLAGS=$(CFLAGS) -std=c++11 -Iexternal/rapidxml-1.13 -Iexternal/oolua-2.0.1/include -Iexternal/lua-5.3.2/include
 CXXFLAGS+=-DDEBUG
-LDDFLAGS=-L.
+LDFLAGS=-L.
 
 default: warsim
 
@@ -32,7 +32,7 @@ warsim_SRC=\
 warsim_OBJ=$(warsim_SRC:.cpp=.o)
 
 warsim: $(warsim_OBJ) $(warsim_SRC) liboolua.a liblua5.a
-	$(CXX) $(CXXFLAGS) -o warsim $(warsim_OBJ) $(LDDFLAGS) -loolua -llua5
+	$(CXX) $(CXXFLAGS) -o warsim $(warsim_OBJ) $(LDFLAGS) -loolua -llua5 -lSDL2
 	
 include oolua.mk
 include lua5.mk
