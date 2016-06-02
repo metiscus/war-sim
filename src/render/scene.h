@@ -16,6 +16,12 @@ namespace render
         
     public:
         Scene();
+        // This object is not copyable
+        Scene(const Scene&) = delete;
+        Scene& operator=(const Scene&) = delete;
+        // This object is movable
+        Scene(Scene&&) = default;
+        Scene& operator=(Scene&&) = default;
         Group& GetRoot();
         Camera& GetCamera();
         
