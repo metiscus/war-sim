@@ -1,8 +1,23 @@
 #include "scene.h"
+#include "sprite.h"
 
 namespace render
 {
-
+    class SceneVisitor : public NodeVisitor
+    {
+    public:
+        virtual void Visit(Node& node)
+        {
+            
+        }
+        
+        virtual void Visit(Sprite& node)
+        {
+            //convert sprite -> draw command
+            
+        }
+    };
+    
     Scene::Scene()
     {
     }

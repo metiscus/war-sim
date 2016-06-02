@@ -9,7 +9,7 @@ class SpriteRegionImpl;
 class SpriteRegion
 {
 private:
-    SpriteRegionImpl* impl_;
+    SpriteRegionImpl* impl_;;
 
 public:
     explicit SpriteRegion();
@@ -20,6 +20,7 @@ public:
     
     float GetWidth() const;
     float GetHeight() const;
+    int32_t GetSheet() const;
     
     friend class SpriteSheetImpl;
 };

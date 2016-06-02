@@ -46,6 +46,12 @@ float SpriteRegion::GetHeight() const
     else return 0;
 }
 
+int32_t SpriteRegion::GetSheet() const
+{
+    if(impl_) return impl_->GetSheet();
+    return -1;
+}
+
 //////////////////////////////////////////////////
 //////////////////////////////////////////////////
 class SpriteSheetImpl
